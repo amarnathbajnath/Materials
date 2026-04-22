@@ -1,0 +1,292 @@
+SKU,Item,Unit,Price,Logical_Group
+HDW-001,"1 1/2"" - 1"" Reducing washers",each,,10. Hardware & Consumables
+HDW-002,"1 1/2"" EMT clamps",each,$1.35,10. Hardware & Consumables
+SRV-001,"1 1/2"" Heat Shrink",ft.,$23.95,1. Service Entrance & Utility
+HDW-003,"1 1/2"" purlin screws",each,$0.60,10. Hardware & Consumables
+HDW-004,1 1/2x12 self-thread screws,each,$0.39,10. Hardware & Consumables
+HDW-005,"1 1/4"" - 1"" Reducing washers",each,,10. Hardware & Consumables
+HDW-006,"1 1/4"" EMT clamps",each,$1.25,10. Hardware & Consumables
+HDW-007,"1 1/4"" purlin screws",each,$0.60,10. Hardware & Consumables
+HDW-008,"1 1/4"" x 1/2"" Bolt and Nut",each,$2.95,10. Hardware & Consumables
+DEV-001,1-gang switch plates (Bticino),each,,9. Wiring Devices
+DEV-002,1-gang switch plates (Vimar),each,$8.95,9. Wiring Devices
+DEV-003,1-Way switches (Bticino),each,,9. Wiring Devices
+DEV-004,1-Way switches (Vimar),each,$13.95,9. Wiring Devices
+GEN-001,1.5mm² ECC wire,roll,$562.00,4. Building Wires & Grounding Cables
+GEN-002,1.5mm² s/s wire,roll,$187.00,4. Building Wires & Grounding Cables
+HDW-009,"1"" - 3/4"" Reducing washers",each,,10. Hardware & Consumables
+CON-001,"1"" couplings",each,$1.10,7. Conduit & Raceway
+CON-002,"1"" EMT clamps",each,$0.65,7. Conduit & Raceway
+CON-003,"1"" EMT conduit",length,,7. Conduit & Raceway
+HDW-010,"1"" gypsum screws",each,$0.12,10. Hardware & Consumables
+HDW-011,"1"" purlin screws",each,$0.45,10. Hardware & Consumables
+CON-004,"1"" PVC conduit",length,$12.95,7. Conduit & Raceway
+CON-005,"1"" PVC ends",each,$1.10,7. Conduit & Raceway
+CON-006,"1"" PVC trunking",length,,7. Conduit & Raceway
+CON-007,"1/2"" couplings",each,$0.35,7. Conduit & Raceway
+CON-008,"1/2"" EMT clamps",each,$0.30,7. Conduit & Raceway
+CON-009,"1/2"" EMT conduit",length,,7. Conduit & Raceway
+CON-010,"1/2"" PVC conduit",length,$5.75,7. Conduit & Raceway
+CON-011,"1/2"" PVC ends",each,$0.58,7. Conduit & Raceway
+CON-012,"1/2"" PVC trunking",length,$15.95,7. Conduit & Raceway
+HDW-012,"1/4"" x 1"" screw and nut",each,,10. Hardware & Consumables
+SRV-002,100A 1-Phase Meter Base,each,,1. Service Entrance & Utility
+DST-001,100A double-pole breaker,each,$235.00,2. Distribution Equipment
+DST-002,100A THQMV breaker,each,$675.00,2. Distribution Equipment
+DST-003,100A three-pole breaker,each,,2. Distribution Equipment
+GEN-003,10mm² s/s wire,roll,,4. Building Wires & Grounding Cables
+DEV-005,110V plug weather proof covers,each,$13.95,9. Wiring Devices
+DEV-006,115V Chrome Duplex plug cover,each,$16.50,9. Wiring Devices
+DEV-007,115V Duplex plug cover,each,$1.90,9. Wiring Devices
+DEV-008,115V Duplex Plug outlet,each,$5.95,9. Wiring Devices
+DST-004,12 Circuit 1-PH Panel,each,$770.00,2. Distribution Equipment
+SRV-003,125A 1-Phase Meter Base,each,$170.00,1. Service Entrance & Utility
+TRM-001,125A copper lugs,each,$12.95,6. Terminations & Connectors
+DST-005,125A double-pole BJ-Type breaker,each,,2. Distribution Equipment
+DST-006,125A double-pole breaker,each,$290.00,2. Distribution Equipment
+DST-007,125A double-pole breaker - Delexi Large Frame,each,$611.00,2. Distribution Equipment
+DST-008,125A THQMV breaker,each,$675.00,2. Distribution Equipment
+DST-009,125A three-pole BJ-Type breaker,each,,2. Distribution Equipment
+BOX-001,12x12 EMT pull box,each,$165.00,8. Boxes & Enclosures
+DST-010,150A double-pole BJ-Type breaker (Modern),each,"$1,272.50",2. Distribution Equipment
+DST-011,150A double-pole BJ-Type breaker (Voltron),each,$852.00,2. Distribution Equipment
+DST-012,150A THQMV breaker,each,$675.00,2. Distribution Equipment
+DST-013,150A three-pole BJ-Type breaker,each,,2. Distribution Equipment
+DST-014,15A single-pole breaker,each,$37.00,2. Distribution Equipment
+DST-015,15A single-pole breaker (1/2),each,$44.25,2. Distribution Equipment
+DST-016,15A three-pole breaker,each,,2. Distribution Equipment
+GEN-004,16mm² s/s wire (green),m,$20.00,4. Building Wires & Grounding Cables
+TRM-002,175A copper lugs,each,,6. Terminations & Connectors
+DST-017,175A double-pole BJ-Type breaker (Modern),each,"$1,272.50",2. Distribution Equipment
+DST-018,175A double-pole BJ-Type breaker (Voltron),each,$852.00,2. Distribution Equipment
+DST-019,175A THQMV breaker,each,$675.00,2. Distribution Equipment
+DST-020,175A three-pole BJ-Type breaker,each,,2. Distribution Equipment
+HDW-013,1x10 self-thread screws,each,$0.20,10. Hardware & Consumables
+HDW-014,1x12 self-thread screws,each,$0.35,10. Hardware & Consumables
+DST-021,2-Circuit -1-Phase Isolator,each,$195.00,2. Distribution Equipment
+DEV-009,2-gang switch plates (Bticino),each,,9. Wiring Devices
+DEV-010,2-gang switch plates (Vimar),each,$8.95,9. Wiring Devices
+DEV-011,2-pin male plug 115V,each,$3.95,9. Wiring Devices
+SRV-004,2-Way 100A 1-PH Meter Bank,each,"$1,050.00",1. Service Entrance & Utility
+SRV-005,2-Way 200A 1-PH Meter Bank (Boodoo's),each,"$2,348.36",1. Service Entrance & Utility
+SRV-006,2-Way 200A 1-PH Meter Bank (Modern - TQD/ CA Breakers),each,"$2,650.00",1. Service Entrance & Utility
+SRV-007,2-Way 200A 3-PH Meter Bank,each,,1. Service Entrance & Utility
+DEV-012,2-Way switches (Bticino),each,,9. Wiring Devices
+DEV-013,2-Way switches (Vimar),each,,9. Wiring Devices
+GEN-005,2.5mm² ECC wire,roll,$888.00,4. Building Wires & Grounding Cables
+GEN-006,2.5mm² s/s wire,roll,$265.00,4. Building Wires & Grounding Cables
+HDW-015,"2"" - 1 1/2"" Reducing washers",each,,10. Hardware & Consumables
+HDW-016,"2"" - 1 1/4"" Reducing washers",each,,10. Hardware & Consumables
+HDW-017,"2"" - 1"" Reducing washers",each,,10. Hardware & Consumables
+DST-022,20 Circuit 1-PH Panel,each,,2. Distribution Equipment
+SRV-008,200A 1-Phase Meter Base,each,$225.00,1. Service Entrance & Utility
+SRV-009,200A 1-Phase Meter Base - Jumbo,each,,1. Service Entrance & Utility
+SRV-010,200A 1-Phase Stainless Steel Meter Base,each,$895.00,1. Service Entrance & Utility
+DST-023,200A 2-pole Main Breaker - Delexi,each,$385.00,2. Distribution Equipment
+SRV-011,200A 3-Phase Meter Base,each,,1. Service Entrance & Utility
+TRM-003,200A copper lugs,each,$30.00,6. Terminations & Connectors
+DST-024,200A double-pole BJ-Type breaker,each,,2. Distribution Equipment
+SRV-012,200A double-pole Main breaker,each,$385.00,1. Service Entrance & Utility
+DST-025,200A THQMV breaker,each,$675.00,2. Distribution Equipment
+DST-026,200A three-pole BJ-Type breaker,each,,2. Distribution Equipment
+DST-027,200A TQD 2-pole breakers,each,$995.00,2. Distribution Equipment
+DEV-014,20A 110V toggle switch,each,$19.95,9. Wiring Devices
+DEV-015,20A 220V male plug,each,,9. Wiring Devices
+DEV-016,20A 220V pilot light toggle switch,each,,9. Wiring Devices
+DEV-017,20A 220V Tandem Plug outlet,each,$15.95,9. Wiring Devices
+DST-028,20A double-pole breaker,each,$88.00,2. Distribution Equipment
+DST-029,20A double-pole breaker (1/2),each,$101.00,2. Distribution Equipment
+DEV-018,20A GFCI outlets,each,$89.00,9. Wiring Devices
+DST-030,20A single-pole breaker,each,$37.00,2. Distribution Equipment
+DST-031,20A single-pole breaker (1/2),each,$44.25,2. Distribution Equipment
+DST-032,20A three-pole breaker,each,,2. Distribution Equipment
+PWR-001,20L weather proof glands,each,,3. Power Cables (Armored)
+PWR-002,20S weather proof glands,each,,3. Power Cables (Armored)
+TRM-004,225A copper lugs,each,$35.00,6. Terminations & Connectors
+DST-033,225A double-pole BJ-Type breaker,each,,2. Distribution Equipment
+DST-034,225A three-pole BJ-Type breaker,each,,2. Distribution Equipment
+SRV-013,24ft. x 5mm Fabricated Electrical Steel Pole,each,"$1,460.00",1. Service Entrance & Utility
+TRM-005,250MCM split bolts,each,$80.00,6. Terminations & Connectors
+PWR-003,25L weather proof glands,each,$25.00,3. Power Cables (Armored)
+GEN-007,25mm² s/s wire (green),m,$46.75,4. Building Wires & Grounding Cables
+PWR-004,25S weather proof glands,each,,3. Power Cables (Armored)
+BOX-002,2x4 EMT blank cover,each,$4.95,8. Boxes & Enclosures
+BOX-003,2x4 EMT cans,each,$5.95,8. Boxes & Enclosures
+BOX-004,2x4 PVC blank cover,each,,8. Boxes & Enclosures
+BOX-005,2x4 PVC cans,each,$2.95,8. Boxes & Enclosures
+BOX-006,2x4 PVC trunking box,each,$13.95,8. Boxes & Enclosures
+BOX-007,2x4 weather proof blank cover,each,$3.95,8. Boxes & Enclosures
+SRV-014,3 Core Termination Kit (Modern),each,$450.00,1. Service Entrance & Utility
+PWR-005,3 x 10mm² PVC armored cable,m,,3. Power Cables (Armored)
+PWR-006,3 x 10mm² XLPE armored cable,m,$69.00,3. Power Cables (Armored)
+PWR-007,3 x 120mm² PVC armored cable,m,,3. Power Cables (Armored)
+PWR-008,3 x 120mm² XLPE armored cable,m,$704.33,3. Power Cables (Armored)
+PWR-009,3 x 150mm² PVC armored cable,m,,3. Power Cables (Armored)
+PWR-010,3 x 150mm² XLPE armored cable,m,$897.50,3. Power Cables (Armored)
+PWR-011,3 x 185mm² PVC armored cable,m,,3. Power Cables (Armored)
+PWR-012,3 x 185mm² XLPE armored cable,m,,3. Power Cables (Armored)
+PWR-013,3 x 240mm² PVC armored cable,m,,3. Power Cables (Armored)
+PWR-014,3 x 240mm² XLPE armored cable,m,,3. Power Cables (Armored)
+PWR-015,3 x 25mm² PVC armored cable,m,$136.00,3. Power Cables (Armored)
+PWR-016,3 x 25mm² XLPE armored cable,m,,3. Power Cables (Armored)
+PWR-017,3 x 35mm² PVC armored cable,m,$165.00,3. Power Cables (Armored)
+PWR-018,3 x 35mm² XLPE armored cable,m,$178.00,3. Power Cables (Armored)
+PWR-019,3 x 50mm² PVC armored cable,m,$195.00,3. Power Cables (Armored)
+PWR-020,3 x 50mm² XLPE armored cable,m,$264.00,3. Power Cables (Armored)
+PWR-021,3 x 70mm² PVC armored cable,m,,3. Power Cables (Armored)
+PWR-022,3 x 70mm² XLPE armored cable,m,$376.00,3. Power Cables (Armored)
+PWR-023,3 x 95mm² PVC armored cable,m,,3. Power Cables (Armored)
+PWR-024,3 x 95mm² XLPE armored cable,m,,3. Power Cables (Armored)
+DEV-019,3-gang switch plates (Bticino),each,,9. Wiring Devices
+DEV-020,3-gang switch plates (Vimar),each,$8.95,9. Wiring Devices
+DST-035,3-Phase Isolator,each,,2. Distribution Equipment
+DEV-021,3-pin 115V male plug,each,,9. Wiring Devices
+CON-013,"3"" Normal PVC bend",each,$53.00,7. Conduit & Raceway
+CON-014,"3"" PVC pipe SDR41",length,$88.00,7. Conduit & Raceway
+HDW-018,"3/4"" - 1/2"" Reducing washers",each,,10. Hardware & Consumables
+HDW-019,"3/4"" concrete nails",each,$0.14,10. Hardware & Consumables
+CON-015,"3/4"" couplings",each,$0.50,7. Conduit & Raceway
+CON-016,"3/4"" EMT clamps",each,$0.45,7. Conduit & Raceway
+CON-017,"3/4"" EMT conduit",length,,7. Conduit & Raceway
+CON-018,"3/4"" PVC conduit",length,$7.95,7. Conduit & Raceway
+CON-019,"3/4"" PVC ends",each,$0.85,7. Conduit & Raceway
+CON-020,"3/4"" x1"" PVC trunking",length,,7. Conduit & Raceway
+DST-036,30 Circuit 1-PH Panel,each,,2. Distribution Equipment
+DST-037,30 Circuit 3-PH Panel,each,,2. Distribution Equipment
+TRM-006,300A copper lugs,each,,6. Terminations & Connectors
+DST-038,300MCM Delexi Lugs,each,$35.00,2. Distribution Equipment
+TRM-007,300MCM split bolts,each,$85.00,6. Terminations & Connectors
+DEV-022,30A 220V male plug,each,$48.00,9. Wiring Devices
+DEV-023,30A 220V pilot light toggle switch,each,$94.00,9. Wiring Devices
+DEV-024,30A 220V Plug outlet 4-pin,each,$55.00,9. Wiring Devices
+DST-039,30A double-pole breaker,each,$88.00,2. Distribution Equipment
+DST-040,30A double-pole breaker (1/2),each,$101.00,2. Distribution Equipment
+DEV-025,30A plug weather proof covers,each,$19.00,9. Wiring Devices
+DST-041,30A single-pole breaker,each,$37.00,2. Distribution Equipment
+DST-042,30A single-pole breaker (1/2),each,$44.25,2. Distribution Equipment
+DST-043,30A three-pole breaker,each,,2. Distribution Equipment
+DEV-026,30A/50A Chrome cover,each,$16.50,9. Wiring Devices
+SRV-015,30ft. x 5mm Fabricated Electrical Steel Pole,each,"$1,950.00",1. Service Entrance & Utility
+PWR-025,32L weather proof glands,each,$41.00,3. Power Cables (Armored)
+PWR-026,32S weather proof glands,each,$48.00,3. Power Cables (Armored)
+TRM-008,350MCM split bolts,each,$85.00,6. Terminations & Connectors
+GEN-008,35mm² s/s wire (green),m,,4. Building Wires & Grounding Cables
+BOX-008,3x3 EMT can,each,,8. Boxes & Enclosures
+BOX-009,3x3 PVC can,each,,8. Boxes & Enclosures
+BOX-010,3x6 EMT can,each,,8. Boxes & Enclosures
+SRV-016,4 Core Cable Booth (120mm -  300mm),each,$190.00,1. Service Entrance & Utility
+PWR-027,4 x 120mm² PVC armored cable,m,,3. Power Cables (Armored)
+PWR-028,4 x 120mm² XLPE armored cable,m,$735.00,3. Power Cables (Armored)
+PWR-029,4 x 150mm² PVC armored cable,m,,3. Power Cables (Armored)
+PWR-030,4 x 150mm² XLPE armored cable,m,,3. Power Cables (Armored)
+PWR-031,4 x 185mm² PVC armored cable,m,,3. Power Cables (Armored)
+PWR-032,4 x 185mm² XLPE armored cable,m,,3. Power Cables (Armored)
+PWR-033,4 x 240mm² PVC armored cable,m,,3. Power Cables (Armored)
+PWR-034,4 x 240mm² XLPE armored cable,m,"$1,130.00",3. Power Cables (Armored)
+PWR-035,4 x 25mm² PVC armored cable,m,,3. Power Cables (Armored)
+PWR-036,4 x 25mm² XLPE armored cable,m,,3. Power Cables (Armored)
+PWR-037,4 x 35mm² PVC armored cable,m,,3. Power Cables (Armored)
+PWR-038,4 x 35mm² XLPE armored cable,m,,3. Power Cables (Armored)
+PWR-039,4 x 50mm² PVC armored cable,m,,3. Power Cables (Armored)
+PWR-040,4 x 50mm² XLPE armored cable,m,,3. Power Cables (Armored)
+PWR-041,4 x 70mm² PVC armored cable,m,,3. Power Cables (Armored)
+PWR-042,4 x 70mm² XLPE armored cable,m,$422.00,3. Power Cables (Armored)
+PWR-043,4 x 95mm² PVC armored cable,m,,3. Power Cables (Armored)
+PWR-044,4 x 95mm² XLPE armored cable,m,,3. Power Cables (Armored)
+GEN-009,4.0mm² ECC wire,roll,,4. Building Wires & Grounding Cables
+GEN-010,4.0mm² s/s wire,roll,$471.00,4. Building Wires & Grounding Cables
+SRV-017,"4"" - 6"" Stainless Steel Hose Clamps",each,$13.00,1. Service Entrance & Utility
+DEV-027,"4"" light receptacles",each,$13.95,9. Wiring Devices
+HDW-020,"4"" Metal cutting disc",each,$3.00,10. Hardware & Consumables
+DST-044,40 Circuit 1-PH Panel,each,"$1,895.00",2. Distribution Equipment
+DST-045,400A three-pole breaker - Delexi Large Frame,each,"$1,182.00",2. Distribution Equipment
+DEV-028,400W LED flood light,each,"$1,880.00",9. Wiring Devices
+DST-046,40A double-pole breaker,each,$88.00,2. Distribution Equipment
+DST-047,40A double-pole breaker (1/2),each,$101.00,2. Distribution Equipment
+DST-048,40A three-pole breaker,each,,2. Distribution Equipment
+PWR-045,40L weather proof glands,each,$56.00,3. Power Cables (Armored)
+PWR-046,40S weather proof glands,each,,3. Power Cables (Armored)
+DEV-029,45A Cooker Plug outlet,each,,9. Wiring Devices
+BOX-011,4x11/16 EMT blank cover,each,,8. Boxes & Enclosures
+BOX-012,4x11/16 EMT cans,each,,8. Boxes & Enclosures
+BOX-013,4x11/16 Plastering device covers,each,,8. Boxes & Enclosures
+BOX-014,4x11/16 PVC blank cover,each,,8. Boxes & Enclosures
+BOX-015,4x11/16 PVC cans,each,$5.95,8. Boxes & Enclosures
+BOX-016,4x11/16 Single device covers,each,$4.50,8. Boxes & Enclosures
+BOX-017,4x11/16 weather proof blank cover,each,,8. Boxes & Enclosures
+DEV-030,4x4 double toggle switch cover,each,$8.95,9. Wiring Devices
+DEV-031,4x4 double toggle switch EMT cover,each,$16.50,9. Wiring Devices
+BOX-018,4x4 EMT blank cover,each,$4.95,8. Boxes & Enclosures
+BOX-019,4x4 EMT cans,each,$5.95,8. Boxes & Enclosures
+BOX-020,4x4 Plastering device covers,each,,8. Boxes & Enclosures
+BOX-021,4x4 PVC blank cover,each,,8. Boxes & Enclosures
+BOX-022,4x4 PVC cans,each,$4.75,8. Boxes & Enclosures
+BOX-023,4x4 Single device covers,each,$3.60,8. Boxes & Enclosures
+BOX-024,4x4 weather proof blank cover,each,,8. Boxes & Enclosures
+TRM-009,500MCM Split Bolt KSU31,each,$350.00,6. Terminations & Connectors
+DEV-032,50A 220V male plug,each,$65.00,9. Wiring Devices
+DEV-033,50A 220V Plug outlet 4-pin,each,,9. Wiring Devices
+DST-049,50A double-pole breaker,each,$88.00,2. Distribution Equipment
+DST-050,50A double-pole breaker (1/2),each,$129.00,2. Distribution Equipment
+DEV-034,50A plug weather proof covers,each,$19.00,9. Wiring Devices
+DST-051,50A three-pole breaker,each,,2. Distribution Equipment
+PWR-047,50L weather proof glands,each,$114.00,3. Power Cables (Armored)
+GEN-011,50mm² s/s wire (green),m,,4. Building Wires & Grounding Cables
+PWR-048,50S weather proof glands,each,,3. Power Cables (Armored)
+BOX-025,6-gang toggle switch box,each,$90.00,8. Boxes & Enclosures
+GEN-012,6.0mm² s/s wire,roll,,4. Building Wires & Grounding Cables
+DST-052,60A double-pole breaker,each,,2. Distribution Equipment
+DST-053,60A three-pole breaker,each,,2. Distribution Equipment
+PWR-049,63L weather proof glands,each,,3. Power Cables (Armored)
+PWR-050,63S weather proof glands,each,,3. Power Cables (Armored)
+HDW-021,"7"" Concrete cutting disc",each,$45.00,10. Hardware & Consumables
+TRM-010,70A copper lugs,each,,6. Terminations & Connectors
+DST-054,70A double-pole breaker,each,$185.00,2. Distribution Equipment
+DST-055,70A three-pole breaker,each,,2. Distribution Equipment
+GEN-013,70mm² s/s wire (green),m,$119.50,4. Building Wires & Grounding Cables
+PWR-051,75L weather proof glands,each,,3. Power Cables (Armored)
+PWR-052,75S weather proof glands,each,,3. Power Cables (Armored)
+DST-056,8 Circuit 1-PH Panel,each,$510.00,2. Distribution Equipment
+GND-001,8ft. copper electrode,each,$65.00,5. Grounding & Bonding
+DEV-035,8ft. LED Fixture Only,each,$175.00,9. Wiring Devices
+DEV-036,8ft. LED Tubes,each,$90.00,9. Wiring Devices
+DST-057,90A double-pole breaker,each,$195.00,2. Distribution Equipment
+DST-058,90A three-pole breaker,each,,2. Distribution Equipment
+PWR-053,90L weather proof glands,each,,3. Power Cables (Armored)
+PWR-054,90S weather proof glands,each,,3. Power Cables (Armored)
+GEN-014,95mm² s/s wire (green),m,$185.50,4. Building Wires & Grounding Cables
+SRV-018,Black Silicone,tube,$21.00,1. Service Entrance & Utility
+TRM-011,Blue connectors,each,,6. Terminations & Connectors
+HDW-022,Blue rawl plugs,each,$0.20,10. Hardware & Consumables
+HDW-023,Buckle clip,pack,$15.95,10. Hardware & Consumables
+SRV-019,Cable Booth (16mm -  35mm),each,$190.00,1. Service Entrance & Utility
+SRV-020,Cable Booth (35mm -  120mm),each,$210.00,1. Service Entrance & Utility
+SRV-021,D-Iron,each,$55.00,1. Service Entrance & Utility
+DEV-037,Duplex plug outlet (surface),each,$17.95,9. Wiring Devices
+TRM-012,Earth Lug,each,$10.00,6. Terminations & Connectors
+HDW-024,Electrical Tape,roll,$8.50,10. Hardware & Consumables
+DEV-038,GFCI plug weather proof covers,each,$17.50,9. Wiring Devices
+HDW-025,Green rawl plugs,each,$0.15,10. Hardware & Consumables
+HDW-026,M10 rawl bolt,each,$9.95,10. Hardware & Consumables
+HDW-027,M6 rawl bolt,each,$3.95,10. Hardware & Consumables
+HDW-028,M8 rawl bolt,each,$3.95,10. Hardware & Consumables
+HDW-029,Nail Gun shots,pack,$48.00,10. Hardware & Consumables
+BOX-026,Octagon EMT blank cover,each,$3.50,8. Boxes & Enclosures
+BOX-027,Octagon EMT cans,each,$4.95,8. Boxes & Enclosures
+BOX-028,Octagon PVC blank cover,each,$2.50,8. Boxes & Enclosures
+BOX-029,Octagon PVC cans,each,$3.20,8. Boxes & Enclosures
+BOX-030,Octagon weather proof blank cover,each,$2.50,8. Boxes & Enclosures
+HDW-030,Orange rawl plugs,each,$0.60,10. Hardware & Consumables
+TRM-013,Red connectors,each,$0.60,6. Terminations & Connectors
+SRV-022,Reducer,each,$21.95,1. Service Entrance & Utility
+DEV-039,Switch plate backing (Bticino),each,$5.95,9. Wiring Devices
+DEV-040,Switch plate backing (Vimar),each,$5.95,9. Wiring Devices
+DEV-041,Tandem plug cover,each,$1.90,9. Wiring Devices
+DEV-042,Tandem plug weather proof cover,each,$17.95,9. Wiring Devices
+DEV-043,Toggle switch cover,each,$2.30,9. Wiring Devices
+DEV-044,Toggle switch weather proof plug covers,each,$17.95,9. Wiring Devices
+DST-059,TYE Isolator 22x12x7,each,$595.00,2. Distribution Equipment
+DST-060,TYE Temporary Panel,each,"$1,695.00",2. Distribution Equipment
+DEV-045,Weather proof bell base - single-hole,each,$9.00,9. Wiring Devices
+DEV-046,weather proof bell socket,each,$13.95,9. Wiring Devices
+TRM-014,Yellow connectors,each,$0.35,6. Terminations & Connectors
