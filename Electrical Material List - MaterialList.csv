@@ -1,1002 +1,292 @@
-SKU,Item,Unit,
-HDW-001,1 1/2" - 1" Reducing washers,each,
-HDW-002,1 1/2" EMT clamps,each,
-SRV-001,1 1/2" Heat Shrink,ft.,
-HDW-003,1 1/2" purlin screws,each,
-HDW-004,1 1/2x12 self-thread screws,each,
-HDW-005,1 1/4" - 1" Reducing washers,each,
-HDW-006,1 1/4" EMT clamps,each,
-HDW-007,1 1/4" purlin screws,each,,
-HDW-008,1 1/4" x 1/2" Bolt and Nut,each,
-DEV-001,1-gang switch plates (Bticino),each,
-DEV-002,1-gang switch plates (Vimar),each,
-DEV-003,1-Way switches (Bticino),each,
-DEV-004,1-Way switches (Vimar),each,
-GEN-001,1.5mm² ECC wire,roll,
-GEN-002,1.5mm² s/s wire,roll,
-HDW-009,1" - 3/4" Reducing washers,each,
-CON-001,1" couplings,each,
-CON-002,1" EMT clamps,each,
-CON-003,1" EMT conduit,length,
-HDW-010,1" gypsum screws,each,
-HDW-011,1" purlin screws,each,,
-CON-004,1" PVC conduit,length,,
-CON-005,1" PVC ends,each,,
-CON-006,1" PVC trunking,length,,
-CON-007,1/2" couplings,each,,
-CON-008,1/2" EMT clamps,each,,
-CON-009,1/2" EMT conduit,length,,
-CON-010,1/2" PVC conduit,length,,
-CON-011,1/2" PVC ends,each,,
-CON-012,1/2" PVC trunking,length,,
-HDW-012,1/4" x 1" screw and nut,each,,
-SRV-002,100A 1-Phase Meter Base,each,,
-DST-001,100A double-pole breaker,each,,
-DST-002,100A THQMV breaker,each,,
-DST-003,100A three-pole breaker,each,,
-GEN-003,10mm² s/s wire,roll,,
-DEV-005,110V plug weather proof covers,each,,
-DEV-006,115V Chrome Duplex plug cover,each,,
-DEV-007,115V Duplex plug cover,each,,
-DEV-008,115V Duplex Plug outlet,each,,
-DST-004,12 Circuit 1-PH Panel,each,,
-SRV-003,125A 1-Phase Meter Base,each,,
-TRM-001,125A copper lugs,each,,
-DST-005,125A double-pole BJ-Type breaker,each,,
-DST-006,125A double-pole breaker,each,,
-DST-007,125A double-pole breaker - Delexi Large Frame,each,,
-DST-008,125A THQMV breaker,each,,
-DST-009,125A three-pole BJ-Type breaker,each,,
-BOX-001,12x12 EMT pull box,each,,
-DST-010,150A double-pole BJ-Type breaker (Modern),each,,
-DST-011,150A double-pole BJ-Type breaker (Voltron),each,,
-DST-012,150A THQMV breaker,each,,
-DST-013,150A three-pole BJ-Type breaker,each,,
-DST-014,15A single-pole breaker,each,,
-DST-015,15A single-pole breaker (1/2),each,,
-DST-016,15A three-pole breaker,each,,
-GEN-004,16mm² s/s wire (green),m,,
-TRM-002,175A copper lugs,each,,
-DST-017,175A double-pole BJ-Type breaker (Modern),each,,
-DST-018,175A double-pole BJ-Type breaker (Voltron),each,,
-DST-019,175A THQMV breaker,each,,
-DST-020,175A three-pole BJ-Type breaker,each,,
-HDW-013,1x10 self-thread screws,each,,
-HDW-014,1x12 self-thread screws,each,,
-DST-021,2-Circuit -1-Phase Isolator,each,,
-DEV-009,2-gang switch plates (Bticino),each,,
-DEV-010,2-gang switch plates (Vimar),each,,
-DEV-011,2-pin male plug 115V,each,,
-SRV-004,2-Way 100A 1-PH Meter Bank,each,,
-SRV-005,2-Way 200A 1-PH Meter Bank (Boodoo's),each,,
-SRV-006,2-Way 200A 1-PH Meter Bank (Modern - TQD/ CA Breakers),each,,
-SRV-007,2-Way 200A 3-PH Meter Bank,each,,
-DEV-012,2-Way switches (Bticino),each,,
-DEV-013,2-Way switches (Vimar),each,,
-GEN-005,2.5mm² ECC wire,roll,,
-GEN-006,2.5mm² s/s wire,roll,,
-HDW-015,2" - 1 1/2" Reducing washers,each,,
-HDW-016,2" - 1 1/4" Reducing washers,each,,
-HDW-017,2" - 1" Reducing washers,each,,
-DST-022,20 Circuit 1-PH Panel,each,,
-SRV-008,200A 1-Phase Meter Base,each,,
-SRV-009,200A 1-Phase Meter Base - Jumbo,each,,
-SRV-010,200A 1-Phase Stainless Steel Meter Base,each,,
-DST-023,200A 2-pole Main Breaker - Delexi,each,,
-SRV-011,200A 3-Phase Meter Base,each,,
-TRM-003,200A copper lugs,each,,
-DST-024,200A double-pole BJ-Type breaker,each,,
-SRV-012,200A double-pole Main breaker,each,,
-DST-025,200A THQMV breaker,each,,
-DST-026,200A three-pole BJ-Type breaker,each,,
-DST-027,200A TQD 2-pole breakers,each,,
-DEV-014,20A 110V toggle switch,each,,
-DEV-015,20A 220V male plug,each,,
-DEV-016,20A 220V pilot light toggle switch,each,,
-DEV-017,20A 220V Tandem Plug outlet,each,,
-DST-028,20A double-pole breaker,each,,
-DST-029,20A double-pole breaker (1/2),each,,
-DEV-018,20A GFCI outlets,each,,
-DST-030,20A single-pole breaker,each,,
-DST-031,20A single-pole breaker (1/2),each,,
-DST-032,20A three-pole breaker,each,,
-PWR-001,20L weather proof glands,each,,
-PWR-002,20S weather proof glands,each,,
-TRM-004,225A copper lugs,each,,
-DST-033,225A double-pole BJ-Type breaker,each,,
-DST-034,225A three-pole BJ-Type breaker,each,,
-SRV-013,24ft. x 5mm Fabricated Electrical Steel Pole,each,,
-TRM-005,250MCM split bolts,each,,
-PWR-003,25L weather proof glands,each,,
-GEN-007,25mm² s/s wire (green),m,,
-PWR-004,25S weather proof glands,each,,
-BOX-002,2x4 EMT blank cover,each,,
-BOX-003,2x4 EMT cans,each,,
-BOX-004,2x4 PVC blank cover,each,,
-BOX-005,2x4 PVC cans,each,,
-BOX-006,2x4 PVC trunking box,each,,
-BOX-007,2x4 weather proof blank cover,each,,
-SRV-014,3 Core Termination Kit (Modern),each,,
-PWR-005,3 x 10mm² PVC armored cable,m,,
-PWR-006,3 x 10mm² XLPE armored cable,m,,
-PWR-007,3 x 120mm² PVC armored cable,m,,
-PWR-008,3 x 120mm² XLPE armored cable,m,,
-PWR-009,3 x 150mm² PVC armored cable,m,,
-PWR-010,3 x 150mm² XLPE armored cable,m,,
-PWR-011,3 x 185mm² PVC armored cable,m,,
-PWR-012,3 x 185mm² XLPE armored cable,m,,
-PWR-013,3 x 240mm² PVC armored cable,m,,
-PWR-014,3 x 240mm² XLPE armored cable,m,,
-PWR-015,3 x 25mm² PVC armored cable,m,,
-PWR-016,3 x 25mm² XLPE armored cable,m,,
-PWR-017,3 x 35mm² PVC armored cable,m,,
-PWR-018,3 x 35mm² XLPE armored cable,m,,
-PWR-019,3 x 50mm² PVC armored cable,m,,
-PWR-020,3 x 50mm² XLPE armored cable,m,,
-PWR-021,3 x 70mm² PVC armored cable,m,,
-PWR-022,3 x 70mm² XLPE armored cable,m,,
-PWR-023,3 x 95mm² PVC armored cable,m,,
-PWR-024,3 x 95mm² XLPE armored cable,m,,
-DEV-019,3-gang switch plates (Bticino),each,,
-DEV-020,3-gang switch plates (Vimar),each,,
-DST-035,3-Phase Isolator,each,,
-DEV-021,3-pin 115V male plug,each,,
-CON-013,3" Normal PVC bend,each,,
-CON-014,3" PVC pipe SDR41,length,,
-HDW-018,3/4" - 1/2" Reducing washers,each,,
-HDW-019,3/4" concrete nails,each,,
-CON-015,3/4" couplings,each,,
-CON-016,3/4" EMT clamps,each,,
-CON-017,3/4" EMT conduit,length,,
-CON-018,3/4" PVC conduit,length,,
-CON-019,3/4" PVC ends,each,,
-CON-020,3/4" x1" PVC trunking,length,,
-DST-036,30 Circuit 1-PH Panel,each,,
-DST-037,30 Circuit 3-PH Panel,each,,
-TRM-006,300A copper lugs,each,,
-DST-038,300MCM Delexi Lugs,each,,
-TRM-007,300MCM split bolts,each,,
-DEV-022,30A 220V male plug,each,,
-DEV-023,30A 220V pilot light toggle switch,each,,
-DEV-024,30A 220V Plug outlet 4-pin,each,,
-DST-039,30A double-pole breaker,each,,
-DST-040,30A double-pole breaker (1/2),each,,
-DEV-025,30A plug weather proof covers,each,,
-DST-041,30A single-pole breaker,each,,
-DST-042,30A single-pole breaker (1/2),each,,
-DST-043,30A three-pole breaker,each,,
-DEV-026,30A/50A Chrome cover,each,,
-SRV-015,30ft. x 5mm Fabricated Electrical Steel Pole,each,,
-PWR-025,32L weather proof glands,each,,
-PWR-026,32S weather proof glands,each,,
-TRM-008,350MCM split bolts,each,,
-GEN-008,35mm² s/s wire (green),m,,
-BOX-008,3x3 EMT can,each,,
-BOX-009,3x3 PVC can,each,,
-BOX-010,3x6 EMT can,each,,
-SRV-016,4 Core Cable Booth (120mm -  300mm),each,,
-PWR-027,4 x 120mm² PVC armored cable,m,,
-PWR-028,4 x 120mm² XLPE armored cable,m,,
-PWR-029,4 x 150mm² PVC armored cable,m,,
-PWR-030,4 x 150mm² XLPE armored cable,m,,
-PWR-031,4 x 185mm² PVC armored cable,m,,
-PWR-032,4 x 185mm² XLPE armored cable,m,,
-PWR-033,4 x 240mm² PVC armored cable,m,,
-PWR-034,4 x 240mm² XLPE armored cable,m,,
-PWR-035,4 x 25mm² PVC armored cable,m,,
-PWR-036,4 x 25mm² XLPE armored cable,m,,
-PWR-037,4 x 35mm² PVC armored cable,m,,
-PWR-038,4 x 35mm² XLPE armored cable,m,,
-PWR-039,4 x 50mm² PVC armored cable,m,,
-PWR-040,4 x 50mm² XLPE armored cable,m,,
-PWR-041,4 x 70mm² PVC armored cable,m,,
-PWR-042,4 x 70mm² XLPE armored cable,m,,
-PWR-043,4 x 95mm² PVC armored cable,m,,
-PWR-044,4 x 95mm² XLPE armored cable,m,,
-GEN-009,4.0mm² ECC wire,roll,,
-GEN-010,4.0mm² s/s wire,roll,,
-SRV-017,4" - 6" Stainless Steel Hose Clamps,each,,
-DEV-027,4" light receptacles,each,,
-HDW-020,4" Metal cutting disc,each,,
-DST-044,40 Circuit 1-PH Panel,each,,
-DST-045,400A three-pole breaker - Delexi Large Frame,each,,
-DEV-028,400W LED flood light,each,,
-DST-046,40A double-pole breaker,each,,
-DST-047,40A double-pole breaker (1/2),each,,
-DST-048,40A three-pole breaker,each,,
-PWR-045,40L weather proof glands,each,,
-PWR-046,40S weather proof glands,each,,
-DEV-029,45A Cooker Plug outlet,each,,
-BOX-011,4x11/16 EMT blank cover,each,,
-BOX-012,4x11/16 EMT cans,each,,
-BOX-013,4x11/16 Plastering device covers,each,,
-BOX-014,4x11/16 PVC blank cover,each,,
-BOX-015,4x11/16 PVC cans,each,,
-BOX-016,4x11/16 Single device covers,each,,
-BOX-017,4x11/16 weather proof blank cover,each,,
-DEV-030,4x4 double toggle switch cover,each,,
-DEV-031,4x4 double toggle switch EMT cover,each,,
-BOX-018,4x4 EMT blank cover,each,,
-BOX-019,4x4 EMT cans,each,,
-BOX-020,4x4 Plastering device covers,each,,
-BOX-021,4x4 PVC blank cover,each,,
-BOX-022,4x4 PVC cans,each,,
-BOX-023,4x4 Single device covers,each,,
-BOX-024,4x4 weather proof blank cover,each,,
-TRM-009,500MCM Split Bolt KSU31,each,,
-DEV-032,50A 220V male plug,each,,
-DEV-033,50A 220V Plug outlet 4-pin,each,,
-DST-049,50A double-pole breaker,each,,
-DST-050,50A double-pole breaker (1/2),each,,
-DEV-034,50A plug weather proof covers,each,,
-DST-051,50A three-pole breaker,each,,
-PWR-047,50L weather proof glands,each,,
-GEN-011,50mm² s/s wire (green),m,,
-PWR-048,50S weather proof glands,each,,
-BOX-025,6-gang toggle switch box,each,,
-GEN-012,6.0mm² s/s wire,roll,,
-DST-052,60A double-pole breaker,each,,
-DST-053,60A three-pole breaker,each,,
-PWR-049,63L weather proof glands,each,,
-PWR-050,63S weather proof glands,each,,
-HDW-021,7" Concrete cutting disc,each,,
-TRM-010,70A copper lugs,each,,
-DST-054,70A double-pole breaker,each,,
-DST-055,70A three-pole breaker,each,,
-GEN-013,70mm² s/s wire (green),m,,
-PWR-051,75L weather proof glands,each,,
-PWR-052,75S weather proof glands,each,,
-DST-056,8 Circuit 1-PH Panel,each,,
-GND-001,8ft. copper electrode,each,,
-DEV-035,8ft. LED Fixture Only,each,,
-DEV-036,8ft. LED Tubes,each,,
-DST-057,90A double-pole breaker,each,,
-DST-058,90A three-pole breaker,each,,
-PWR-053,90L weather proof glands,each,,
-PWR-054,90S weather proof glands,each,,
-GEN-014,95mm² s/s wire (green),m,,
-SRV-018,Black Silicone,tube,,
-TRM-011,Blue connectors,each,,
-HDW-022,Blue rawl plugs,each,,
-HDW-023,Buckle clip,pack,,
-SRV-019,Cable Booth (16mm -  35mm),each,,
-SRV-020,Cable Booth (35mm -  120mm),each,,
-SRV-021,D-Iron,each,,
-DEV-037,Duplex plug outlet (surface),each,,
-TRM-012,Earth Lug,each,,
-HDW-024,Electrical Tape,roll,,
-DEV-038,GFCI plug weather proof covers,each,,
-HDW-025,Green rawl plugs,each,,
-HDW-026,M10 rawl bolt,each,,
-HDW-027,M6 rawl bolt,each,,
-HDW-028,M8 rawl bolt,each,,
-HDW-029,Nail Gun shots,pack,,
-BOX-026,Octagon EMT blank cover,each,,
-BOX-027,Octagon EMT cans,each,,
-BOX-028,Octagon PVC blank cover,each,,
-BOX-029,Octagon PVC cans,each,,
-BOX-030,Octagon weather proof blank cover,each,,
-HDW-030,Orange rawl plugs,each,,
-TRM-013,Red connectors,each,,
-SRV-022,Reducer,each,,
-DEV-039,Switch plate backing (Bticino),each,,
-DEV-040,Switch plate backing (Vimar),each,,
-DEV-041,Tandem plug cover,each,,
-DEV-042,Tandem plug weather proof cover,each,,
-DEV-043,Toggle switch cover,each,,
-DEV-044,Toggle switch weather proof plug covers,each,,
-DST-059,TYE Isolator 22x12x7,each,,
-DST-060,TYE Temporary Panel,each,,
-DEV-045,Weather proof bell base - single-hole,each,,
-DEV-046,weather proof bell socket,each,,
-TRM-014,Yellow connectors,each,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
+SKU,Item,Unit
+HDW-001,"1 1/2"" - 1"" Reducing washers",each
+HDW-002,"1 1/2"" EMT clamps",each
+SRV-001,"1 1/2"" Heat Shrink",ft.
+HDW-003,"1 1/2"" purlin screws",each
+HDW-004,1 1/2x12 self-thread screws,each
+HDW-005,"1 1/4"" - 1"" Reducing washers",each
+HDW-006,"1 1/4"" EMT clamps",each
+HDW-007,"1 1/4"" purlin screws",each
+HDW-008,"1 1/4"" x 1/2"" Bolt and Nut",each
+DEV-001,1-gang switch plates (Bticino),each
+DEV-002,1-gang switch plates (Vimar),each
+DEV-003,1-Way switches (Bticino),each
+DEV-004,1-Way switches (Vimar),each
+GEN-001,1.5mm² ECC wire,roll
+GEN-002,1.5mm² s/s wire,roll
+HDW-009,"1"" - 3/4"" Reducing washers",each
+CON-001,"1"" couplings",each
+CON-002,"1"" EMT clamps",each
+CON-003,"1"" EMT conduit",length
+HDW-010,"1"" gypsum screws",each
+HDW-011,"1"" purlin screws",each
+CON-004,"1"" PVC conduit",length
+CON-005,"1"" PVC ends",each
+CON-006,"1"" PVC trunking",length
+CON-007,"1/2"" couplings",each
+CON-008,"1/2"" EMT clamps",each
+CON-009,"1/2"" EMT conduit",length
+CON-010,"1/2"" PVC conduit",length
+CON-011,"1/2"" PVC ends",each
+CON-012,"1/2"" PVC trunking",length
+HDW-012,"1/4"" x 1"" screw and nut",each
+SRV-002,100A 1-Phase Meter Base,each
+DST-001,100A double-pole breaker,each
+DST-002,100A THQMV breaker,each
+DST-003,100A three-pole breaker,each
+GEN-003,10mm² s/s wire,roll
+DEV-005,110V plug weather proof covers,each
+DEV-006,115V Chrome Duplex plug cover,each
+DEV-007,115V Duplex plug cover,each
+DEV-008,115V Duplex Plug outlet,each
+DST-004,12 Circuit 1-PH Panel,each
+SRV-003,125A 1-Phase Meter Base,each
+TRM-001,125A copper lugs,each
+DST-005,125A double-pole BJ-Type breaker,each
+DST-006,125A double-pole breaker,each
+DST-007,125A double-pole breaker - Delexi Large Frame,each
+DST-008,125A THQMV breaker,each
+DST-009,125A three-pole BJ-Type breaker,each
+BOX-001,12x12 EMT pull box,each
+DST-010,150A double-pole BJ-Type breaker (Modern),each
+DST-011,150A double-pole BJ-Type breaker (Voltron),each
+DST-012,150A THQMV breaker,each
+DST-013,150A three-pole BJ-Type breaker,each
+DST-014,15A single-pole breaker,each
+DST-015,15A single-pole breaker (1/2),each
+DST-016,15A three-pole breaker,each
+GEN-004,16mm² s/s wire (green),m
+TRM-002,175A copper lugs,each
+DST-017,175A double-pole BJ-Type breaker (Modern),each
+DST-018,175A double-pole BJ-Type breaker (Voltron),each
+DST-019,175A THQMV breaker,each
+DST-020,175A three-pole BJ-Type breaker,each
+HDW-013,1x10 self-thread screws,each
+HDW-014,1x12 self-thread screws,each
+DST-021,2-Circuit -1-Phase Isolator,each
+DEV-009,2-gang switch plates (Bticino),each
+DEV-010,2-gang switch plates (Vimar),each
+DEV-011,2-pin male plug 115V,each
+SRV-004,2-Way 100A 1-PH Meter Bank,each
+SRV-005,2-Way 200A 1-PH Meter Bank (Boodoo's),each
+SRV-006,2-Way 200A 1-PH Meter Bank (Modern - TQD/ CA Breakers),each
+SRV-007,2-Way 200A 3-PH Meter Bank,each
+DEV-012,2-Way switches (Bticino),each
+DEV-013,2-Way switches (Vimar),each
+GEN-005,2.5mm² ECC wire,roll
+GEN-006,2.5mm² s/s wire,roll
+HDW-015,"2"" - 1 1/2"" Reducing washers",each
+HDW-016,"2"" - 1 1/4"" Reducing washers",each
+HDW-017,"2"" - 1"" Reducing washers",each
+DST-022,20 Circuit 1-PH Panel,each
+SRV-008,200A 1-Phase Meter Base,each
+SRV-009,200A 1-Phase Meter Base - Jumbo,each
+SRV-010,200A 1-Phase Stainless Steel Meter Base,each
+DST-023,200A 2-pole Main Breaker - Delexi,each
+SRV-011,200A 3-Phase Meter Base,each
+TRM-003,200A copper lugs,each
+DST-024,200A double-pole BJ-Type breaker,each
+SRV-012,200A double-pole Main breaker,each
+DST-025,200A THQMV breaker,each
+DST-026,200A three-pole BJ-Type breaker,each
+DST-027,200A TQD 2-pole breakers,each
+DEV-014,20A 110V toggle switch,each
+DEV-015,20A 220V male plug,each
+DEV-016,20A 220V pilot light toggle switch,each
+DEV-017,20A 220V Tandem Plug outlet,each
+DST-028,20A double-pole breaker,each
+DST-029,20A double-pole breaker (1/2),each
+DEV-018,20A GFCI outlets,each
+DST-030,20A single-pole breaker,each
+DST-031,20A single-pole breaker (1/2),each
+DST-032,20A three-pole breaker,each
+PWR-001,20L weather proof glands,each
+PWR-002,20S weather proof glands,each
+TRM-004,225A copper lugs,each
+DST-033,225A double-pole BJ-Type breaker,each
+DST-034,225A three-pole BJ-Type breaker,each
+SRV-013,24ft. x 5mm Fabricated Electrical Steel Pole,each
+TRM-005,250MCM split bolts,each
+PWR-003,25L weather proof glands,each
+GEN-007,25mm² s/s wire (green),m
+PWR-004,25S weather proof glands,each
+BOX-002,2x4 EMT blank cover,each
+BOX-003,2x4 EMT cans,each
+BOX-004,2x4 PVC blank cover,each
+BOX-005,2x4 PVC cans,each
+BOX-006,2x4 PVC trunking box,each
+BOX-007,2x4 weather proof blank cover,each
+SRV-014,3 Core Termination Kit (Modern),each
+PWR-005,3 x 10mm² PVC armored cable,m
+PWR-006,3 x 10mm² XLPE armored cable,m
+PWR-007,3 x 120mm² PVC armored cable,m
+PWR-008,3 x 120mm² XLPE armored cable,m
+PWR-009,3 x 150mm² PVC armored cable,m
+PWR-010,3 x 150mm² XLPE armored cable,m
+PWR-011,3 x 185mm² PVC armored cable,m
+PWR-012,3 x 185mm² XLPE armored cable,m
+PWR-013,3 x 240mm² PVC armored cable,m
+PWR-014,3 x 240mm² XLPE armored cable,m
+PWR-015,3 x 25mm² PVC armored cable,m
+PWR-016,3 x 25mm² XLPE armored cable,m
+PWR-017,3 x 35mm² PVC armored cable,m
+PWR-018,3 x 35mm² XLPE armored cable,m
+PWR-019,3 x 50mm² PVC armored cable,m
+PWR-020,3 x 50mm² XLPE armored cable,m
+PWR-021,3 x 70mm² PVC armored cable,m
+PWR-022,3 x 70mm² XLPE armored cable,m
+PWR-023,3 x 95mm² PVC armored cable,m
+PWR-024,3 x 95mm² XLPE armored cable,m
+DEV-019,3-gang switch plates (Bticino),each
+DEV-020,3-gang switch plates (Vimar),each
+DST-035,3-Phase Isolator,each
+DEV-021,3-pin 115V male plug,each
+CON-013,"3"" Normal PVC bend",each
+CON-014,"3"" PVC pipe SDR41",length
+HDW-018,"3/4"" - 1/2"" Reducing washers",each
+HDW-019,"3/4"" concrete nails",each
+CON-015,"3/4"" couplings",each
+CON-016,"3/4"" EMT clamps",each
+CON-017,"3/4"" EMT conduit",length
+CON-018,"3/4"" PVC conduit",length
+CON-019,"3/4"" PVC ends",each
+CON-020,"3/4"" x1"" PVC trunking",length
+DST-036,30 Circuit 1-PH Panel,each
+DST-037,30 Circuit 3-PH Panel,each
+TRM-006,300A copper lugs,each
+DST-038,300MCM Delexi Lugs,each
+TRM-007,300MCM split bolts,each
+DEV-022,30A 220V male plug,each
+DEV-023,30A 220V pilot light toggle switch,each
+DEV-024,30A 220V Plug outlet 4-pin,each
+DST-039,30A double-pole breaker,each
+DST-040,30A double-pole breaker (1/2),each
+DEV-025,30A plug weather proof covers,each
+DST-041,30A single-pole breaker,each
+DST-042,30A single-pole breaker (1/2),each
+DST-043,30A three-pole breaker,each
+DEV-026,30A/50A Chrome cover,each
+SRV-015,30ft. x 5mm Fabricated Electrical Steel Pole,each
+PWR-025,32L weather proof glands,each
+PWR-026,32S weather proof glands,each
+TRM-008,350MCM split bolts,each
+GEN-008,35mm² s/s wire (green),m
+BOX-008,3x3 EMT can,each
+BOX-009,3x3 PVC can,each
+BOX-010,3x6 EMT can,each
+SRV-016,4 Core Cable Booth (120mm -  300mm),each
+PWR-027,4 x 120mm² PVC armored cable,m
+PWR-028,4 x 120mm² XLPE armored cable,m
+PWR-029,4 x 150mm² PVC armored cable,m
+PWR-030,4 x 150mm² XLPE armored cable,m
+PWR-031,4 x 185mm² PVC armored cable,m
+PWR-032,4 x 185mm² XLPE armored cable,m
+PWR-033,4 x 240mm² PVC armored cable,m
+PWR-034,4 x 240mm² XLPE armored cable,m
+PWR-035,4 x 25mm² PVC armored cable,m
+PWR-036,4 x 25mm² XLPE armored cable,m
+PWR-037,4 x 35mm² PVC armored cable,m
+PWR-038,4 x 35mm² XLPE armored cable,m
+PWR-039,4 x 50mm² PVC armored cable,m
+PWR-040,4 x 50mm² XLPE armored cable,m
+PWR-041,4 x 70mm² PVC armored cable,m
+PWR-042,4 x 70mm² XLPE armored cable,m
+PWR-043,4 x 95mm² PVC armored cable,m
+PWR-044,4 x 95mm² XLPE armored cable,m
+GEN-009,4.0mm² ECC wire,roll
+GEN-010,4.0mm² s/s wire,roll
+SRV-017,"4"" - 6"" Stainless Steel Hose Clamps",each
+DEV-027,"4"" light receptacles",each
+HDW-020,"4"" Metal cutting disc",each
+DST-044,40 Circuit 1-PH Panel,each
+DST-045,400A three-pole breaker - Delexi Large Frame,each
+DEV-028,400W LED flood light,each
+DST-046,40A double-pole breaker,each
+DST-047,40A double-pole breaker (1/2),each
+DST-048,40A three-pole breaker,each
+PWR-045,40L weather proof glands,each
+PWR-046,40S weather proof glands,each
+DEV-029,45A Cooker Plug outlet,each
+BOX-011,4x11/16 EMT blank cover,each
+BOX-012,4x11/16 EMT cans,each
+BOX-013,4x11/16 Plastering device covers,each
+BOX-014,4x11/16 PVC blank cover,each
+BOX-015,4x11/16 PVC cans,each
+BOX-016,4x11/16 Single device covers,each
+BOX-017,4x11/16 weather proof blank cover,each
+DEV-030,4x4 double toggle switch cover,each
+DEV-031,4x4 double toggle switch EMT cover,each
+BOX-018,4x4 EMT blank cover,each
+BOX-019,4x4 EMT cans,each
+BOX-020,4x4 Plastering device covers,each
+BOX-021,4x4 PVC blank cover,each
+BOX-022,4x4 PVC cans,each
+BOX-023,4x4 Single device covers,each
+BOX-024,4x4 weather proof blank cover,each
+TRM-009,500MCM Split Bolt KSU31,each
+DEV-032,50A 220V male plug,each
+DEV-033,50A 220V Plug outlet 4-pin,each
+DST-049,50A double-pole breaker,each
+DST-050,50A double-pole breaker (1/2),each
+DEV-034,50A plug weather proof covers,each
+DST-051,50A three-pole breaker,each
+PWR-047,50L weather proof glands,each
+GEN-011,50mm² s/s wire (green),m
+PWR-048,50S weather proof glands,each
+BOX-025,6-gang toggle switch box,each
+GEN-012,6.0mm² s/s wire,roll
+DST-052,60A double-pole breaker,each
+DST-053,60A three-pole breaker,each
+PWR-049,63L weather proof glands,each
+PWR-050,63S weather proof glands,each
+HDW-021,"7"" Concrete cutting disc",each
+TRM-010,70A copper lugs,each
+DST-054,70A double-pole breaker,each
+DST-055,70A three-pole breaker,each
+GEN-013,70mm² s/s wire (green),m
+PWR-051,75L weather proof glands,each
+PWR-052,75S weather proof glands,each
+DST-056,8 Circuit 1-PH Panel,each
+GND-001,8ft. copper electrode,each
+DEV-035,8ft. LED Fixture Only,each
+DEV-036,8ft. LED Tubes,each
+DST-057,90A double-pole breaker,each
+DST-058,90A three-pole breaker,each
+PWR-053,90L weather proof glands,each
+PWR-054,90S weather proof glands,each
+GEN-014,95mm² s/s wire (green),m
+SRV-018,Black Silicone,tube
+TRM-011,Blue connectors,each
+HDW-022,Blue rawl plugs,each
+HDW-023,Buckle clip,pack
+SRV-019,Cable Booth (16mm -  35mm),each
+SRV-020,Cable Booth (35mm -  120mm),each
+SRV-021,D-Iron,each
+DEV-037,Duplex plug outlet (surface),each
+TRM-012,Earth Lug,each
+HDW-024,Electrical Tape,roll
+DEV-038,GFCI plug weather proof covers,each
+HDW-025,Green rawl plugs,each
+HDW-026,M10 rawl bolt,each
+HDW-027,M6 rawl bolt,each
+HDW-028,M8 rawl bolt,each
+HDW-029,Nail Gun shots,pack
+BOX-026,Octagon EMT blank cover,each
+BOX-027,Octagon EMT cans,each
+BOX-028,Octagon PVC blank cover,each
+BOX-029,Octagon PVC cans,each
+BOX-030,Octagon weather proof blank cover,each
+HDW-030,Orange rawl plugs,each
+TRM-013,Red connectors,each
+SRV-022,Reducer,each
+DEV-039,Switch plate backing (Bticino),each
+DEV-040,Switch plate backing (Vimar),each
+DEV-041,Tandem plug cover,each
+DEV-042,Tandem plug weather proof cover,each
+DEV-043,Toggle switch cover,each
+DEV-044,Toggle switch weather proof plug covers,each
+DST-059,TYE Isolator 22x12x7,each
+DST-060,TYE Temporary Panel,each
+DEV-045,Weather proof bell base - single-hole,each
+DEV-046,weather proof bell socket,each
+TRM-014,Yellow connectors,each
