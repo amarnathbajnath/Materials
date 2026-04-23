@@ -17,10 +17,11 @@
     <div class="flex justify-between items-center mb-8">
       <div>
         <h1 class="text-3xl font-semibold text-gray-900">Job Costing Dashboard</h1>
-        <p class="text-gray-600">Live from GitHub • Prices update automatically</p>
+        <p class="text-gray-600">Risha Vishal Electrical & Construction Co. Ltd.</p>
       </div>
-      <div class="text-right">
-        <p id="status" class="text-sm text-emerald-600 font-medium">Loading materials from GitHub...</p>
+      <div class="text-right flex flex-col items-end gap-2">
+        <p id="status" class="text-sm text-emerald-600 font-medium">⏳ Loading materials...</p>
+        <button onclick="loadMaterials()" class="text-xs border border-gray-300 text-gray-500 hover:text-blue-600 hover:border-blue-400 px-3 py-1.5 rounded-xl transition-colors">↻ Refresh</button>
       </div>
     </div>
 
@@ -206,24 +207,12 @@
   </div>
 
   <script>
-    const CSV_URL = "https://raw.githubusercontent.com/amarnathbajnath/Materials/refs/heads/main/Electrical%20Material%20List%20-%20MaterialList.csv";
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQF-dVNCimVYFht-LgwEeKT4rEtW-IDphibc5oSV60YBjLxGn4KGT45nU2U58EfBCYbF0UdDxdoe88r/pub?gid=0&single=true&output=csv";
 
     let allMaterials = [];
     let addedItems = [];
     let selectedSuggestionIndex = -1;
     let currentSuggestions = [];
-
-    async function loadMaterials() {
-      const status = document.getElementById('status');
-      try {
-        const res = await fetch(CSV_URL);
-        const text = await res.text();
-        allMaterials = parseCSV(text);
-        status.textContent = '✅ ' + allMaterials.length + ' items loaded from GitHub';
-      } catch (err) {
-        status.innerHTML = '❌ Error loading CSV<br><small style="color:red">' + err.message + '</small>';
-      }
-    }
 
     function parseCSV(csv) {
       const lines = csv.trim().split('\n');
@@ -240,10 +229,26 @@
           } else { current += ch; }
         }
         values.push(current.trim());
-        const rawPrice = values[3] ? values[3].trim() : '';
+        const rawPrice = values[3] ? values[3].trim().replace(/[$,]/g, '') : '';
         const price = rawPrice !== '' && !isNaN(parseFloat(rawPrice)) ? parseFloat(rawPrice) : null;
         return { SKU: values[0]||'', Item: values[1]||'', Unit: values[2]||'', Price: price };
       }).filter(m => m.Item);
+    }
+
+    async function loadMaterials() {
+      const status = document.getElementById('status');
+      status.textContent = '⏳ Loading materials...';
+      try {
+        const res = await fetch(CSV_URL + '&t=' + Date.now());
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const text = await res.text();
+        const parsed = parseCSV(text);
+        if (!parsed.length) throw new Error('No items found in sheet');
+        allMaterials = parsed;
+        status.textContent = '✅ ' + allMaterials.length + ' items loaded';
+      } catch (err) {
+        status.innerHTML = '❌ Could not load sheet — <span style="color:#6b7280">' + err.message + '</span>';
+      }
     }
 
     function filterOther() {
