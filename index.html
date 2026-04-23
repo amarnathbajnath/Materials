@@ -396,7 +396,7 @@
       const scope    = document.getElementById('scope').value || '';
       const notes    = document.getElementById('notes').value || '';
 
-      doc.setFontSize(20); doc.text('Material List', 20, 20);
+      doc.setFontSize(20); doc.text('Job Costing', 20, 20);
       doc.setFontSize(12);
       doc.text('Customer: ' + customer, 20, 35);
       doc.text('Address: ' + address, 20, 42);
@@ -411,7 +411,7 @@
       // helpers
       function fmtPrice(item) {
         return (item.Price !== null && item.Price !== undefined)
-          ? 'TT$ ' + (item.Price * item.Qty).toFixed(2) : 'N/A';
+          ? (item.Price * item.Qty).toFixed(2) : 'N/A';
       }
       function drawHeader(yy) {
         doc.setFontSize(9); doc.setFont(undefined,'bold');
@@ -452,7 +452,7 @@
         y += 3; doc.line(130, y, 190, y); y += 5;
         doc.setFont(undefined,'bold'); doc.setFontSize(9);
         doc.text('Subtotal:', 130, y);
-        doc.text('TT$ ' + matTotal.toFixed(2) + (matHasNA ? ' + N/A' : ''), 190, y, {align:'right'});
+        doc.text(matTotal.toFixed(2) + (matHasNA ? ' + N/A' : ''), 190, y, {align:'right'});
         doc.setFont(undefined,'normal'); y += 8;
       }
 
@@ -487,7 +487,7 @@
       const notes    = document.getElementById('notes').value || '';
       const esc = v => '"' + String(v).replace(/"/g,'""') + '"';
       const calcPrice = m => (m.Price !== null && m.Price !== undefined)
-        ? 'TT$ ' + (m.Price * m.Qty).toFixed(2) : 'N/A';
+        ? (m.Price * m.Qty).toFixed(2) : 'N/A';
       const rows = [
         ['Material List Export'],
         ['Customer', customer],
@@ -509,7 +509,7 @@
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = url; a.download = 'Material_List_' + customer.replace(/ /g,'_') + '_' + date + '.csv';
+      a.href = url; a.download = 'Costing - ' + customer.replace(/ /g,'-') + '-' + date + '.csv';
       a.click(); URL.revokeObjectURL(url);
     }
 
