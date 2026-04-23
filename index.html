@@ -17,7 +17,7 @@
     <div class="flex justify-between items-center mb-8">
       <div>
         <h1 class="text-3xl font-semibold text-gray-900">Job Costing Dashboard</h1>
-        <p class="text-gray-600">Risha Vishal Electrical & Construction Co. Ltd.</p>
+        <p class="text-gray-600">Risha Vishal Electrical &amp; Construction Co. Ltd.</p>
       </div>
       <div class="text-right flex flex-col items-end gap-2">
         <p id="status" class="text-sm text-emerald-600 font-medium">⏳ Loading materials...</p>
@@ -41,14 +41,10 @@
       </div>
     </div>
 
-    <!-- Scope (standalone, numbered list) -->
+    <!-- Scope (standalone, 5-line expandable) -->
     <div class="bg-white rounded-2xl shadow p-6 mb-8">
-      <div class="flex items-center justify-between mb-3">
-        <label class="block text-sm font-bold text-gray-800">Scope</label>
-        <button onclick="addScopeItem()" class="text-sm bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-1.5 rounded-xl transition-colors">+ Add Item</button>
-      </div>
-      <ol id="scopeList" class="space-y-2 list-none"></ol>
-      <p id="scopeEmpty" class="text-gray-400 italic text-sm">No scope items yet. Click "+ Add Item" to begin.</p>
+      <label class="block text-sm font-bold text-gray-800 mb-2">Scope</label>
+      <textarea id="scope" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500" placeholder="Describe the scope of this job..."></textarea>
     </div>
 
     <!-- MATERIAL LIST -->
@@ -214,6 +210,18 @@
     let selectedSuggestionIndex = -1;
     let currentSuggestions = [];
 
+    async function loadMaterials() {
+      const status = document.getElementById('status');
+      try {
+        const res = await fetch(CSV_URL + '&t=' + Date.now());
+        const text = await res.text();
+        allMaterials = parseCSV(text);
+        status.textContent = '✅ ' + allMaterials.length + ' items loaded';
+      } catch (err) {
+        status.innerHTML = '❌ Error loading CSV<br><small style="color:red">' + err.message + '</small>';
+      }
+    }
+
     function parseCSV(csv) {
       const lines = csv.trim().split('\n');
       return lines.slice(1).map(line => {
@@ -229,26 +237,8 @@
           } else { current += ch; }
         }
         values.push(current.trim());
-        const rawPrice = values[3] ? values[3].trim().replace(/[$,]/g, '') : '';
-        const price = rawPrice !== '' && !isNaN(parseFloat(rawPrice)) ? parseFloat(rawPrice) : null;
-        return { SKU: values[0]||'', Item: values[1]||'', Unit: values[2]||'', Price: price };
+        return { SKU: values[0]||'', Item: values[1]||'', Unit: values[2]||'' };
       }).filter(m => m.Item);
-    }
-
-    async function loadMaterials() {
-      const status = document.getElementById('status');
-      status.textContent = '⏳ Loading materials...';
-      try {
-        const res = await fetch(CSV_URL + '&t=' + Date.now());
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const text = await res.text();
-        const parsed = parseCSV(text);
-        if (!parsed.length) throw new Error('No items found in sheet');
-        allMaterials = parsed;
-        status.textContent = '✅ ' + allMaterials.length + ' items loaded';
-      } catch (err) {
-        status.innerHTML = '❌ Could not load sheet — <span style="color:#6b7280">' + err.message + '</span>';
-      }
     }
 
     function filterOther() {
@@ -395,7 +385,7 @@
       const customer = document.getElementById('customer').value || 'Customer';
       const address  = document.getElementById('address').value || '';
       const date     = document.getElementById('date').value || new Date().toLocaleDateString();
-      const scopeItems = window._scopeItems || [];
+      const scope    = document.getElementById('scope').value || '';
       const notes    = document.getElementById('notes').value || '';
 
       doc.setFontSize(20); doc.text('Material List', 20, 20);
@@ -410,85 +400,40 @@
         doc.text(sl, 20, y); y += sl.length * 7 + 4;
       }
 
-      // Helper: format price cell
-      function priceCell(item) {
-        if (item.Price === null || item.Price === undefined) return 'N/A';
-        return 'TT$ ' + item.Price.toFixed(2);
-      }
-      function totalCell(item) {
-        if (item.Price === null || item.Price === undefined) return 'N/A';
-        return 'TT$ ' + (item.Price * item.Qty).toFixed(2);
-      }
-      function drawTableHeader(yPos) {
-        doc.setFontSize(9); doc.setFont(undefined,'bold');
-        doc.text('SKU',        20, yPos);
-        doc.text('Qty',        58, yPos);
-        doc.text('Unit',       72, yPos);
-        doc.text('Item',       92, yPos);
-        doc.text('Unit Price', 148, yPos, {align:'right'});
-        doc.text('Total',      190, yPos, {align:'right'});
-        doc.setFont(undefined,'normal');
-        yPos += 4; doc.line(20, yPos, 190, yPos); yPos += 5;
-        return yPos;
-      }
-      function drawItemRow(item, yPos) {
-        doc.setFontSize(9);
-        doc.text(item.SKU,                  20,  yPos);
-        doc.text(String(item.Qty),           58,  yPos);
-        doc.text(item.Unit,                  72,  yPos);
-        doc.text(item.Item.substring(0,45),  92,  yPos);
-        doc.text(priceCell(item),            148, yPos, {align:'right'});
-        doc.text(totalCell(item),            190, yPos, {align:'right'});
-        return yPos + 7;
-      }
-
-      // Scope as numbered list
-      if (scopeItems.length) {
-        y += 4;
-        doc.setFontSize(11); doc.setFont(undefined,'bold'); doc.text('Scope of Work', 20, y); y += 7;
-        doc.setFontSize(9); doc.setFont(undefined,'normal');
-        scopeItems.forEach((s, i) => {
-          if (y > 272) { doc.addPage(); y = 20; }
-          const lines = doc.splitTextToSize((i+1) + '. ' + s, 165);
-          doc.text(lines, 20, y); y += lines.length * 6;
-        });
-        y += 4;
-      }
-
       y += 6;
-      doc.setFontSize(12); doc.setFont(undefined,'bold'); doc.text('MATERIALS', 20, y); y += 8;
-      doc.setFontSize(9); doc.setFont(undefined,'normal');
-      y = drawTableHeader(y);
+      doc.setFontSize(13); doc.setFont(undefined,'bold'); doc.text('MATERIALS', 20, y); y += 10;
+      doc.setFontSize(10);
+      doc.text('SKU', 20, y); doc.text('Item', 52, y); doc.text('Unit', 152, y); doc.text('Qty', 178, y);
+      doc.setFont(undefined,'normal'); y += 5; doc.line(20, y, 190, y); y += 6;
 
-      let grandTotal = 0; let hasAllPrices = true;
       if (!addedItems.length) {
-        doc.text('No items added.', 20, y); y += 8;
+        doc.text('No items added.', 20, y);
       } else {
         addedItems.forEach(item => {
-          if (y > 272) { doc.addPage(); y = 20; y = drawTableHeader(y); }
-          y = drawItemRow(item, y);
-          if (item.Price !== null && item.Price !== undefined) grandTotal += item.Price * item.Qty;
-          else hasAllPrices = false;
+          if (y > 272) { doc.addPage(); y = 20; }
+          doc.text(item.SKU, 20, y);
+          doc.text(item.Item.substring(0, 52), 52, y);
+          doc.text(item.Unit, 152, y);
+          doc.text(String(item.Qty), 178, y);
+          y += 7;
         });
-        // subtotal line
-        y += 2; doc.line(120, y, 190, y); y += 5;
-        doc.setFont(undefined,'bold'); doc.setFontSize(9);
-        doc.text('Materials Subtotal:', 120, y);
-        doc.text(hasAllPrices ? 'TT$ ' + grandTotal.toFixed(2) : 'TT$ ' + grandTotal.toFixed(2) + ' + N/A', 190, y, {align:'right'});
-        doc.setFont(undefined,'normal'); y += 8;
       }
 
       if (tmpItems.length) {
-        y += 6;
+        y += 10;
         if (y > 255) { doc.addPage(); y = 20; }
-        doc.setFontSize(12); doc.setFont(undefined,'bold'); doc.text('ITEMS NOT LISTED', 20, y); y += 8;
-        doc.setFontSize(9); doc.setFont(undefined,'normal');
-        y = drawTableHeader(y);
+        doc.setFontSize(13); doc.setFont(undefined,'bold'); doc.text('ITEMS NOT LISTED', 20, y); y += 10;
+        doc.setFontSize(10);
+        doc.text('SKU', 20, y); doc.text('Item', 52, y); doc.text('Unit', 152, y); doc.text('Qty', 178, y);
+        doc.setFont(undefined,'normal'); y += 5; doc.line(20, y, 190, y); y += 6;
         tmpItems.forEach(item => {
-          if (y > 272) { doc.addPage(); y = 20; y = drawTableHeader(y); }
-          y = drawItemRow(item, y);
+          if (y > 272) { doc.addPage(); y = 20; }
+          doc.text(item.SKU, 20, y);
+          doc.text(item.Item.substring(0, 52), 52, y);
+          doc.text(item.Unit, 152, y);
+          doc.text(String(item.Qty), 178, y);
+          y += 7;
         });
-        y += 8;
       }
 
       if (notes) {
@@ -505,28 +450,22 @@
       const customer = document.getElementById('customer').value || 'Customer';
       const address  = document.getElementById('address').value || '';
       const date     = document.getElementById('date').value || new Date().toISOString().split('T')[0];
+      const scope    = document.getElementById('scope').value || '';
       const notes    = document.getElementById('notes').value || '';
       const esc = v => '"' + String(v).replace(/"/g,'""') + '"';
-      const scopeItems = window._scopeItems || [];
-      const priceVal = item => (item.Price !== null && item.Price !== undefined) ? item.Price.toFixed(2) : 'N/A';
-      const totalVal = item => (item.Price !== null && item.Price !== undefined) ? (item.Price * item.Qty).toFixed(2) : 'N/A';
-      const scopeRows = scopeItems.map((s, i) => ['', (i+1) + '. ' + s]);
       const rows = [
         ['Material List Export'],
         ['Customer', customer],
         ['Address', address],
         ['Date', date],
+        ['Scope', scope],
         [],
-        ['SCOPE OF WORK'],
-        ...scopeRows,
-        [],
-        ['MATERIALS'],
-        ['SKU', 'Qty', 'Unit', 'Item', 'Unit Price (TTD)', 'Total (TTD)'],
-        ...addedItems.map(m => [m.SKU, m.Qty, m.Unit, m.Item, priceVal(m), totalVal(m)]),
+        ['SKU', 'Item', 'Unit', 'Qty'],
+        ...addedItems.map(m => [m.SKU, m.Item, m.Unit, m.Qty]),
         [],
         ['ITEMS NOT LISTED'],
-        ['SKU', 'Qty', 'Unit', 'Item', 'Unit Price (TTD)', 'Total (TTD)'],
-        ...tmpItems.map(m => [m.SKU, m.Qty, m.Unit, m.Item, 'N/A', 'N/A']),
+        ['SKU', 'Item', 'Unit', 'Qty'],
+        ...tmpItems.map(m => [m.SKU, m.Item, m.Unit, m.Qty]),
         [],
         ['Notes', notes]
       ];
@@ -536,46 +475,6 @@
       const a = document.createElement('a');
       a.href = url; a.download = 'Material_List_' + customer.replace(/ /g,'_') + '_' + date + '.csv';
       a.click(); URL.revokeObjectURL(url);
-    }
-
-    // ── Scope numbered list ───────────────────────────────────────────
-    window._scopeItems = [];
-
-    function addScopeItem() {
-      window._scopeItems.push('');
-      renderScopeList();
-      // focus the new input
-      const inputs = document.querySelectorAll('.scope-input');
-      if (inputs.length) inputs[inputs.length - 1].focus();
-    }
-
-    function removeScopeItem(index) {
-      window._scopeItems.splice(index, 1);
-      renderScopeList();
-    }
-
-    function updateScopeItem(index, value) {
-      window._scopeItems[index] = value;
-    }
-
-    function renderScopeList() {
-      const ol = document.getElementById('scopeList');
-      const empty = document.getElementById('scopeEmpty');
-      ol.innerHTML = '';
-      if (!window._scopeItems.length) { empty.style.display = ''; return; }
-      empty.style.display = 'none';
-      window._scopeItems.forEach((text, i) => {
-        const li = document.createElement('li');
-        li.className = 'flex items-start gap-2';
-        li.innerHTML =
-          '<span class="mt-3 text-sm font-medium text-gray-500 w-6 text-right flex-shrink-0">' + (i+1) + '.</span>' +
-          '<input type="text" value="' + text.replace(/"/g, '&quot;') + '" placeholder="Scope item..." ' +
-          'class="scope-input flex-1 border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500" ' +
-          'oninput="updateScopeItem(' + i + ', this.value)" ' +
-          'onkeydown="if(event.key==='Enter'){event.preventDefault();addScopeItem();}">' +
-          '<button onclick="removeScopeItem(' + i + ')" class="mt-2.5 text-red-400 hover:text-red-600 font-bold text-base flex-shrink-0" title="Remove">&#x2715;</button>';
-        ol.appendChild(li);
-      });
     }
 
     // ── Items Not Listed ──────────────────────────────────────────
