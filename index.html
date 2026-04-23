@@ -44,7 +44,7 @@
     <!-- Scope (standalone, 5-line expandable) -->
     <div class="bg-white rounded-2xl shadow p-6 mb-8">
       <label class="block text-sm font-bold text-gray-800 mb-2">Scope</label>
-      <textarea id="scope" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500" placeholder="Describe the scope of this job using a Numbered List..."></textarea>
+      <textarea id="scope" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500" placeholder="Describe the scope of this job..."></textarea>
     </div>
 
     <!-- MATERIAL LIST -->
@@ -212,13 +212,17 @@
 
     async function loadMaterials() {
       const status = document.getElementById('status');
+      status.textContent = '⏳ Loading materials...';
       try {
         const res = await fetch(CSV_URL + '&t=' + Date.now());
+        if (!res.ok) throw new Error('HTTP ' + res.status);
         const text = await res.text();
-        allMaterials = parseCSV(text);
+        const parsed = parseCSV(text);
+        if (!parsed.length) throw new Error('Sheet appears empty');
+        allMaterials = parsed;
         status.textContent = '✅ ' + allMaterials.length + ' items loaded';
       } catch (err) {
-        status.innerHTML = '❌ Error loading CSV<br><small style="color:red">' + err.message + '</small>';
+        status.innerHTML = '❌ Load failed — <span style="color:#6b7280;font-size:0.75rem">' + err.message + '</span>';
       }
     }
 
@@ -237,7 +241,10 @@
           } else { current += ch; }
         }
         values.push(current.trim());
-        return { SKU: values[0]||'', Item: values[1]||'', Unit: values[2]||'' };
+        // Columns: SKU, Item, Unit, Price (Price optional)
+        const rawPrice = values[3] ? values[3].trim().replace(/[$,TTD ]/g, '') : '';
+        const price = rawPrice !== '' && !isNaN(parseFloat(rawPrice)) ? parseFloat(rawPrice) : null;
+        return { SKU: values[0]||'', Item: values[1]||'', Unit: values[2]||'', Price: price };
       }).filter(m => m.Item);
     }
 
@@ -344,15 +351,16 @@
     function confirmQtyModal() {
       if (!pendingItem) return;
       const qty = parseFloat(document.getElementById('qtyModalQty').value) || 1;
-      addItemToList(pendingItem.SKU, pendingItem.Item, pendingItem.Unit, qty);
+      addItemToList(pendingItem.SKU, pendingItem.Item, pendingItem.Unit, qty, pendingItem.Price);
       closeQtyModal();
     }
 
-    function addItemToList(sku, itemName, unit, qty) {
+    function addItemToList(sku, itemName, unit, qty, price) {
       qty = qty || 1;
+      price = (price !== undefined) ? price : null;
       const existing = addedItems.find(i => i.SKU === sku && i.Item === itemName);
       if (existing) { existing.Qty += qty; renderMaterialList(); return; }
-      addedItems.push({ SKU: sku, Item: itemName, Unit: unit, Qty: qty });
+      addedItems.push({ SKU: sku, Item: itemName, Unit: unit, Qty: qty, Price: price });
       renderMaterialList();
     }
 
@@ -400,40 +408,65 @@
         doc.text(sl, 20, y); y += sl.length * 7 + 4;
       }
 
-      y += 6;
-      doc.setFontSize(13); doc.setFont(undefined,'bold'); doc.text('MATERIALS', 20, y); y += 10;
-      doc.setFontSize(10);
-      doc.text('SKU', 20, y); doc.text('Item', 52, y); doc.text('Unit', 152, y); doc.text('Qty', 178, y);
-      doc.setFont(undefined,'normal'); y += 5; doc.line(20, y, 190, y); y += 6;
+      // helpers
+      function fmtPrice(item) {
+        return (item.Price !== null && item.Price !== undefined)
+          ? 'TT$ ' + (item.Price * item.Qty).toFixed(2) : 'N/A';
+      }
+      function drawHeader(yy) {
+        doc.setFontSize(9); doc.setFont(undefined,'bold');
+        doc.text('SKU',        20,  yy);
+        doc.text('Qty',        60,  yy);
+        doc.text('Unit',       75,  yy);
+        doc.text('Item',       95,  yy);
+        doc.text('Price (TTD)',190, yy, {align:'right'});
+        doc.setFont(undefined,'normal');
+        yy += 4; doc.line(20, yy, 190, yy); yy += 5;
+        return yy;
+      }
+      function drawRow(item, yy) {
+        doc.setFontSize(9);
+        doc.text(String(item.SKU),              20,  yy);
+        doc.text(String(item.Qty),              60,  yy);
+        doc.text(String(item.Unit),             75,  yy);
+        doc.text(item.Item.substring(0, 42),    95,  yy);
+        doc.text(fmtPrice(item),               190,  yy, {align:'right'});
+        return yy + 7;
+      }
 
+      y += 6;
+      doc.setFontSize(12); doc.setFont(undefined,'bold'); doc.text('MATERIALS', 20, y); y += 8;
+      doc.setFontSize(9);  doc.setFont(undefined,'normal');
+      y = drawHeader(y);
+
+      let matTotal = 0; let matHasNA = false;
       if (!addedItems.length) {
-        doc.text('No items added.', 20, y);
+        doc.text('No items added.', 20, y); y += 8;
       } else {
         addedItems.forEach(item => {
-          if (y > 272) { doc.addPage(); y = 20; }
-          doc.text(item.SKU, 20, y);
-          doc.text(item.Item.substring(0, 52), 52, y);
-          doc.text(item.Unit, 152, y);
-          doc.text(String(item.Qty), 178, y);
-          y += 7;
+          if (y > 272) { doc.addPage(); y = 20; y = drawHeader(y); }
+          y = drawRow(item, y);
+          if (item.Price !== null && item.Price !== undefined) matTotal += item.Price * item.Qty;
+          else matHasNA = true;
         });
+        y += 3; doc.line(130, y, 190, y); y += 5;
+        doc.setFont(undefined,'bold'); doc.setFontSize(9);
+        doc.text('Subtotal:', 130, y);
+        doc.text('TT$ ' + matTotal.toFixed(2) + (matHasNA ? ' + N/A' : ''), 190, y, {align:'right'});
+        doc.setFont(undefined,'normal'); y += 8;
       }
 
       if (tmpItems.length) {
-        y += 10;
+        y += 4;
         if (y > 255) { doc.addPage(); y = 20; }
-        doc.setFontSize(13); doc.setFont(undefined,'bold'); doc.text('ITEMS NOT LISTED', 20, y); y += 10;
-        doc.setFontSize(10);
-        doc.text('SKU', 20, y); doc.text('Item', 52, y); doc.text('Unit', 152, y); doc.text('Qty', 178, y);
-        doc.setFont(undefined,'normal'); y += 5; doc.line(20, y, 190, y); y += 6;
+        doc.setFontSize(12); doc.setFont(undefined,'bold'); doc.text('ITEMS NOT LISTED', 20, y); y += 8;
+        doc.setFontSize(9);  doc.setFont(undefined,'normal');
+        y = drawHeader(y);
         tmpItems.forEach(item => {
-          if (y > 272) { doc.addPage(); y = 20; }
-          doc.text(item.SKU, 20, y);
-          doc.text(item.Item.substring(0, 52), 52, y);
-          doc.text(item.Unit, 152, y);
-          doc.text(String(item.Qty), 178, y);
-          y += 7;
+          if (y > 272) { doc.addPage(); y = 20; y = drawHeader(y); }
+          y = drawRow(item, y);
         });
+        y += 8;
       }
 
       if (notes) {
@@ -453,6 +486,8 @@
       const scope    = document.getElementById('scope').value || '';
       const notes    = document.getElementById('notes').value || '';
       const esc = v => '"' + String(v).replace(/"/g,'""') + '"';
+      const calcPrice = m => (m.Price !== null && m.Price !== undefined)
+        ? 'TT$ ' + (m.Price * m.Qty).toFixed(2) : 'N/A';
       const rows = [
         ['Material List Export'],
         ['Customer', customer],
@@ -460,12 +495,13 @@
         ['Date', date],
         ['Scope', scope],
         [],
-        ['SKU', 'Item', 'Unit', 'Qty'],
-        ...addedItems.map(m => [m.SKU, m.Item, m.Unit, m.Qty]),
+        ['MATERIALS'],
+        ['SKU', 'Qty', 'Unit', 'Item', 'Price (TTD)'],
+        ...addedItems.map(m => [m.SKU, m.Qty, m.Unit, m.Item, calcPrice(m)]),
         [],
         ['ITEMS NOT LISTED'],
-        ['SKU', 'Item', 'Unit', 'Qty'],
-        ...tmpItems.map(m => [m.SKU, m.Item, m.Unit, m.Qty]),
+        ['SKU', 'Qty', 'Unit', 'Item', 'Price (TTD)'],
+        ...tmpItems.map(m => [m.SKU, m.Qty, m.Unit, m.Item, 'N/A']),
         [],
         ['Notes', notes]
       ];
