@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electrical Job Costing Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+    body { font-family: 'Inter', system_ui, sans-serif; }
+    #scope { min-height: 7.5rem; resize: vertical; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen pb-12">
+  <div class="max-w-6xl mx-auto p-6">
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-3xl font-semibold text-gray-900">Job Costing Dashboard</h1>
+        <p class="text-gray-600">Risha Vishal Electrical &amp; Construction Co. Ltd.</p>
+      </div>
+      <div class="text-right flex flex-col items-end gap-2">
+        <p id="status" class="text-sm text-emerald-600 font-medium">⏳ Loading materials...</p>
+        <button onclick="loadMaterials()" class="text-xs border border-gray-300 text-gray-500 hover:text-blue-600 hover:border-blue-400 px-3 py-1.5 rounded-xl transition-colors">↻ Refresh</button>
+      </div>
+    </div>
+
+    <!-- Job Details -->
+    <div class="bg-white rounded-2xl shadow p-6 mb-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Customer Name</label>
+        <input id="customer" type="text" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500" placeholder="John Smith">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Job Address</label>
+        <input id="address" type="text" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500" placeholder="123 Main Road, Chaguanas">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Date / Reference</label>
+        <input id="date" type="date" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500">
+      </div>
+    </div>
+
+    <!-- Scope (standalone, 5-line expandable) -->
+    <div class="bg-white rounded-2xl shadow p-6 mb-8">
+      <label class="block text-sm font-bold text-gray-800 mb-2">Scope</label>
+      <textarea id="scope" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500" placeholder="Describe the scope of this job..."></textarea>
+    </div>
+
+    <!-- MATERIAL LIST -->
+    <div class="bg-white rounded-3xl shadow mb-10">
+      <div class="px-6 pt-4 pb-0">
+        <h2 class="font-semibold text-xl mb-3">Material List</h2>
+        <!-- Search row + dropdown — all in one relative container so dropdown isn't clipped -->
+        <div class="relative pb-4 border-b">
+          <input id="searchOther" type="text" placeholder="Search by item name or SKU..."
+                 class="w-full border border-gray-300 rounded-2xl px-5 py-3 focus:outline-none focus:border-blue-500"
+                 oninput="filterOther()" onkeydown="handleSearchKey(event)" autocomplete="off">
+          <ul id="suggestionList"
+              class="absolute left-0 right-0 z-50 bg-white border border-gray-200 rounded-2xl shadow-xl mt-1 max-h-72 overflow-y-auto hidden"
+              style="top:100%;"></ul>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="text-left p-4 font-medium w-28">SKU</th>
+              <th class="text-center p-4 font-medium w-28">Qty</th>
+              <th class="text-left p-4 font-medium w-24">Unit</th>
+              <th class="text-left p-4 font-medium">Item</th>
+              <th class="text-center p-4 font-medium w-20">Remove</th>
+            </tr>
+          </thead>
+          <tbody id="materialListBody" class="divide-y">
+            <tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No items added yet. Search and add materials above.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ITEMS NOT LISTED -->
+    <div class="bg-white rounded-3xl shadow mb-10">
+      <div class="px-6 py-4 border-b flex items-center justify-between">
+        <h2 class="font-semibold text-xl">Items Not Listed</h2>
+        <button onclick="openAddModal()"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-2xl transition-colors">
+          + Add New Item
+        </button>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="text-left p-4 font-medium w-28">SKU</th>
+              <th class="text-center p-4 font-medium w-28">Qty</th>
+              <th class="text-left p-4 font-medium w-24">Unit</th>
+              <th class="text-left p-4 font-medium">Item</th>
+              <th class="text-center p-4 font-medium w-20">Remove</th>
+            </tr>
+          </thead>
+          <tbody id="tmpListBody" class="divide-y">
+            <tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No unlisted items added yet. Click "Add New Item" to add one.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Add New Item Modal -->
+    <div id="addModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+      <div class="absolute inset-0 bg-black bg-opacity-40" onclick="closeAddModal()"></div>
+      <div class="relative bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md mx-4">
+        <h3 class="text-xl font-semibold text-gray-900 mb-6">Add Unlisted Item</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Item Name <span class="text-red-500">*</span></label>
+            <input id="modalItemName" type="text"
+                   class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500"
+                   placeholder="e.g. Custom conduit fitting"
+                   onkeydown="if(event.key==='Enter') confirmAddModal()">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+            <input id="modalQty" type="number" value="1" min="0" step="any"
+                   class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500"
+                   onkeydown="if(event.key==='Enter') confirmAddModal()">
+          </div>
+          <div class="flex gap-4">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-500 mb-1">SKU (auto)</label>
+              <div id="modalSkuPreview" class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm font-mono text-gray-400">TMP-001</div>
+            </div>
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-500 mb-1">Unit (auto)</label>
+              <div class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-400">each</div>
+            </div>
+          </div>
+        </div>
+        <div class="flex gap-3 mt-8">
+          <button onclick="closeAddModal()"
+                  class="flex-1 border border-gray-300 text-gray-700 font-medium py-3 rounded-2xl hover:bg-gray-50 transition-colors">
+            Cancel
+          </button>
+          <button onclick="confirmAddModal()"
+                  class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-2xl transition-colors">
+            Add Item
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Qty Modal (search selection) -->
+    <div id="qtyModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+      <div class="absolute inset-0 bg-black bg-opacity-40" onclick="closeQtyModal()"></div>
+      <div class="relative bg-white rounded-3xl shadow-2xl p-8 w-full max-w-sm mx-4">
+        <h3 class="text-xl font-semibold text-gray-900 mb-1" id="qtyModalTitle">Add Item</h3>
+        <p id="qtyModalSku" class="text-xs font-mono text-gray-400 mb-6"></p>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+            <input id="qtyModalQty" type="number" value="1" min="0" step="any"
+                   class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500"
+                   onkeydown="if(event.key==='Enter') confirmQtyModal()">
+          </div>
+          <div class="flex gap-4">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-500 mb-1">Unit</label>
+              <div id="qtyModalUnit" class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-400"></div>
+            </div>
+          </div>
+        </div>
+        <div class="flex gap-3 mt-8">
+          <button onclick="closeQtyModal()"
+                  class="flex-1 border border-gray-300 text-gray-700 font-medium py-3 rounded-2xl hover:bg-gray-50 transition-colors">
+            Cancel
+          </button>
+          <button onclick="confirmQtyModal()"
+                  class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-2xl transition-colors">
+            Add to List
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="bg-white rounded-3xl shadow p-6 mb-10">
+      <h2 class="font-semibold text-xl mb-3">Notes</h2>
+      <textarea id="notes" rows="5" class="w-full border border-gray-300 rounded-2xl px-5 py-4 focus:outline-none focus:border-blue-500" placeholder="Additional notes for this job..."></textarea>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="bg-emerald-600 text-white rounded-3xl p-8">
+      <button onclick="generatePDF()"
+              class="w-full bg-white text-emerald-700 hover:bg-emerald-50 font-semibold py-4 rounded-2xl flex items-center justify-center gap-3 text-xl transition-colors">
+        Generate Material List PDF
+      </button>
+      <button onclick="exportCSV()"
+              class="mt-3 w-full border border-white text-white hover:bg-emerald-700 font-medium py-4 rounded-2xl flex items-center justify-center gap-3 transition-colors">
+        Export as CSV
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQF-dVNCimVYFht-LgwEeKT4rEtW-IDphibc5oSV60YBjLxGn4KGT45nU2U58EfBCYbF0UdDxdoe88r/pub?gid=0&single=true&output=csv";
+
+    let allMaterials = [];
+    let addedItems = [];
+    let selectedSuggestionIndex = -1;
+    let currentSuggestions = [];
+
+    async function loadMaterials() {
+      const status = document.getElementById('status');
+      try {
+        const res = await fetch(CSV_URL + '&t=' + Date.now());
+        const text = await res.text();
+        allMaterials = parseCSV(text);
+        status.textContent = '✅ ' + allMaterials.length + ' items loaded';
+      } catch (err) {
+        status.innerHTML = '❌ Error loading CSV<br><small style="color:red">' + err.message + '</small>';
+      }
+    }
+
+    function parseCSV(csv) {
+      const lines = csv.trim().split('\n');
+      return lines.slice(1).map(line => {
+        const values = [];
+        let current = '', inQuotes = false;
+        for (let i = 0; i < line.length; i++) {
+          const ch = line[i];
+          if (ch === '"') {
+            if (inQuotes && line[i+1] === '"') { current += '"'; i++; }
+            else { inQuotes = !inQuotes; }
+          } else if (ch === ',' && !inQuotes) {
+            values.push(current.trim()); current = '';
+          } else { current += ch; }
+        }
+        values.push(current.trim());
+        return { SKU: values[0]||'', Item: values[1]||'', Unit: values[2]||'' };
+      }).filter(m => m.Item);
+    }
+
+    function filterOther() {
+      const term = document.getElementById('searchOther').value.toLowerCase().trim();
+      const list = document.getElementById('suggestionList');
+      selectedSuggestionIndex = -1;
+
+      if (!term) { hideSuggestions(); return; }
+
+      currentSuggestions = allMaterials
+        .filter(m => m.Item.toLowerCase().includes(term) || m.SKU.toLowerCase().includes(term))
+        .slice(0, 15);
+
+      if (!currentSuggestions.length) { hideSuggestions(); return; }
+
+      list.innerHTML = currentSuggestions.map((m, i) =>
+        '<li id="sug-' + i + '" class="px-5 py-3 cursor-pointer flex items-center gap-3 text-sm border-b border-gray-50 last:border-0 hover:bg-blue-50" onmousedown="event.preventDefault()" onclick="selectSuggestion(' + i + ')">' +
+          '<span style="font-family:monospace;font-size:0.68rem;color:#bbb;width:5.5rem;flex-shrink:0">' + m.SKU + '</span>' +
+          '<span style="flex:1;font-weight:500;color:#111827">' + m.Item + '</span>' +
+          '<span style="font-size:0.72rem;color:#9ca3af;flex-shrink:0;margin-left:8px">' + m.Unit + '</span>' +
+        '</li>'
+      ).join('');
+      list.classList.remove('hidden');
+    }
+
+    function hideSuggestions() {
+      document.getElementById('suggestionList').classList.add('hidden');
+      currentSuggestions = [];
+      selectedSuggestionIndex = -1;
+    }
+
+    function highlightSuggestion() {
+      document.querySelectorAll('#suggestionList li').forEach((li, i) => {
+        li.style.background = i === selectedSuggestionIndex ? '#EFF6FF' : '';
+      });
+      const active = document.getElementById('sug-' + selectedSuggestionIndex);
+      if (active) active.scrollIntoView({ block: 'nearest' });
+    }
+
+    function handleSearchKey(e) {
+      const list = document.getElementById('suggestionList');
+      const open = !list.classList.contains('hidden');
+      const count = currentSuggestions.length;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (!open) return;
+        selectedSuggestionIndex = Math.min(selectedSuggestionIndex + 1, count - 1);
+        highlightSuggestion();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (!open) return;
+        selectedSuggestionIndex = Math.max(selectedSuggestionIndex - 1, -1);
+        highlightSuggestion();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (open && selectedSuggestionIndex >= 0) selectSuggestion(selectedSuggestionIndex);
+        else addSearchedItem();
+      } else if (e.key === 'Escape') {
+        hideSuggestions();
+      }
+    }
+
+    // Holds the item chosen from the dropdown until Qty is confirmed
+    let pendingItem = null;
+
+    function selectSuggestion(index) {
+      const m = currentSuggestions[index];
+      if (!m) return;
+      hideSuggestions();
+      document.getElementById('searchOther').value = '';
+      openQtyModal(m);
+    }
+
+    function addSearchedItem() {
+      const idx = selectedSuggestionIndex >= 0 ? selectedSuggestionIndex : 0;
+      if (currentSuggestions.length > 0) { selectSuggestion(idx); return; }
+      const term = document.getElementById('searchOther').value.trim();
+      if (!term) return;
+      const m = allMaterials.find(x => x.Item.toLowerCase() === term.toLowerCase())
+             || allMaterials.find(x => x.Item.toLowerCase().includes(term.toLowerCase()));
+      if (m) openQtyModal(m);
+      else    addItemToList('—', term, '—');
+      document.getElementById('searchOther').value = '';
+      hideSuggestions();
+    }
+
+    function openQtyModal(m) {
+      pendingItem = m;
+      document.getElementById('qtyModalTitle').textContent = m.Item;
+      document.getElementById('qtyModalSku').textContent = m.SKU;
+      document.getElementById('qtyModalUnit').textContent = m.Unit;
+      document.getElementById('qtyModalQty').value = '1';
+      document.getElementById('qtyModal').classList.remove('hidden');
+      setTimeout(() => document.getElementById('qtyModalQty').select(), 50);
+    }
+
+    function closeQtyModal() {
+      document.getElementById('qtyModal').classList.add('hidden');
+      pendingItem = null;
+    }
+
+    function confirmQtyModal() {
+      if (!pendingItem) return;
+      const qty = parseFloat(document.getElementById('qtyModalQty').value) || 1;
+      addItemToList(pendingItem.SKU, pendingItem.Item, pendingItem.Unit, qty);
+      closeQtyModal();
+    }
+
+    function addItemToList(sku, itemName, unit, qty) {
+      qty = qty || 1;
+      const existing = addedItems.find(i => i.SKU === sku && i.Item === itemName);
+      if (existing) { existing.Qty += qty; renderMaterialList(); return; }
+      addedItems.push({ SKU: sku, Item: itemName, Unit: unit, Qty: qty });
+      renderMaterialList();
+    }
+
+    function removeItem(index) { addedItems.splice(index, 1); renderMaterialList(); }
+    function updateQty(index, value) { addedItems[index].Qty = parseFloat(value) || 0; }
+
+    function renderMaterialList() {
+      const tbody = document.getElementById('materialListBody');
+      tbody.innerHTML = '';
+      if (!addedItems.length) {
+        tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No items added yet. Search and add materials above.</td></tr>';
+        return;
+      }
+      addedItems.forEach((item, i) => {
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-gray-50';
+        row.innerHTML =
+          '<td class="p-4" style="font-family:monospace;font-size:0.75rem;color:#9ca3af">' + item.SKU + '</td>' +
+          '<td class="p-4 text-center"><input type="number" value="' + item.Qty + '" min="0" step="any" class="w-20 text-center border border-gray-300 rounded-xl py-2 focus:outline-none focus:border-blue-500" onchange="updateQty(' + i + ', this.value)"></td>' +
+          '<td class="p-4 text-gray-500">' + item.Unit + '</td>' +
+          '<td class="p-4 font-medium text-gray-800">' + item.Item + '</td>' +
+          '<td class="p-4 text-center"><button onclick="removeItem(' + i + ')" class="text-red-400 hover:text-red-600 font-bold text-lg" title="Remove">✕</button></td>';
+        tbody.appendChild(row);
+      });
+    }
+
+    function generatePDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const customer = document.getElementById('customer').value || 'Customer';
+      const address  = document.getElementById('address').value || '';
+      const date     = document.getElementById('date').value || new Date().toLocaleDateString();
+      const scope    = document.getElementById('scope').value || '';
+      const notes    = document.getElementById('notes').value || '';
+
+      doc.setFontSize(20); doc.text('Material List', 20, 20);
+      doc.setFontSize(12);
+      doc.text('Customer: ' + customer, 20, 35);
+      doc.text('Address: ' + address, 20, 42);
+      doc.text('Date: ' + date, 20, 49);
+
+      let y = 56;
+      if (scope) {
+        const sl = doc.splitTextToSize('Scope: ' + scope, 170);
+        doc.text(sl, 20, y); y += sl.length * 7 + 4;
+      }
+
+      y += 6;
+      doc.setFontSize(13); doc.setFont(undefined,'bold'); doc.text('MATERIALS', 20, y); y += 10;
+      doc.setFontSize(10);
+      doc.text('SKU', 20, y); doc.text('Item', 52, y); doc.text('Unit', 152, y); doc.text('Qty', 178, y);
+      doc.setFont(undefined,'normal'); y += 5; doc.line(20, y, 190, y); y += 6;
+
+      if (!addedItems.length) {
+        doc.text('No items added.', 20, y);
+      } else {
+        addedItems.forEach(item => {
+          if (y > 272) { doc.addPage(); y = 20; }
+          doc.text(item.SKU, 20, y);
+          doc.text(item.Item.substring(0, 52), 52, y);
+          doc.text(item.Unit, 152, y);
+          doc.text(String(item.Qty), 178, y);
+          y += 7;
+        });
+      }
+
+      if (tmpItems.length) {
+        y += 10;
+        if (y > 255) { doc.addPage(); y = 20; }
+        doc.setFontSize(13); doc.setFont(undefined,'bold'); doc.text('ITEMS NOT LISTED', 20, y); y += 10;
+        doc.setFontSize(10);
+        doc.text('SKU', 20, y); doc.text('Item', 52, y); doc.text('Unit', 152, y); doc.text('Qty', 178, y);
+        doc.setFont(undefined,'normal'); y += 5; doc.line(20, y, 190, y); y += 6;
+        tmpItems.forEach(item => {
+          if (y > 272) { doc.addPage(); y = 20; }
+          doc.text(item.SKU, 20, y);
+          doc.text(item.Item.substring(0, 52), 52, y);
+          doc.text(item.Unit, 152, y);
+          doc.text(String(item.Qty), 178, y);
+          y += 7;
+        });
+      }
+
+      if (notes) {
+        y += 10;
+        if (y > 255) { doc.addPage(); y = 20; }
+        doc.setFont(undefined,'bold'); doc.text('Notes:', 20, y); doc.setFont(undefined,'normal'); y += 7;
+        doc.text(doc.splitTextToSize(notes, 170), 20, y);
+      }
+
+      doc.save('Material_List_' + customer.replace(/ /g,'_') + '_' + date + '.pdf');
+    }
+
+    function exportCSV() {
+      const customer = document.getElementById('customer').value || 'Customer';
+      const address  = document.getElementById('address').value || '';
+      const date     = document.getElementById('date').value || new Date().toISOString().split('T')[0];
+      const scope    = document.getElementById('scope').value || '';
+      const notes    = document.getElementById('notes').value || '';
+      const esc = v => '"' + String(v).replace(/"/g,'""') + '"';
+      const rows = [
+        ['Material List Export'],
+        ['Customer', customer],
+        ['Address', address],
+        ['Date', date],
+        ['Scope', scope],
+        [],
+        ['SKU', 'Item', 'Unit', 'Qty'],
+        ...addedItems.map(m => [m.SKU, m.Item, m.Unit, m.Qty]),
+        [],
+        ['ITEMS NOT LISTED'],
+        ['SKU', 'Item', 'Unit', 'Qty'],
+        ...tmpItems.map(m => [m.SKU, m.Item, m.Unit, m.Qty]),
+        [],
+        ['Notes', notes]
+      ];
+      const csv = rows.map(r => r.map(esc).join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'Material_List_' + customer.replace(/ /g,'_') + '_' + date + '.csv';
+      a.click(); URL.revokeObjectURL(url);
+    }
+
+    // ── Items Not Listed ──────────────────────────────────────────
+    let tmpItems = [];
+
+    function nextTmpSku() {
+      if (!tmpItems.length) return 'TMP-001';
+      const nums = tmpItems.map(t => {
+        const m = t.SKU.match(/TMP-(\d+)/);
+        return m ? parseInt(m[1]) : 0;
+      });
+      return 'TMP-' + String(Math.max(...nums) + 1).padStart(3, '0');
+    }
+
+    function openAddModal() {
+      document.getElementById('modalItemName').value = '';
+      document.getElementById('modalQty').value = '1';
+      document.getElementById('modalSkuPreview').textContent = nextTmpSku();
+      document.getElementById('addModal').classList.remove('hidden');
+      setTimeout(() => document.getElementById('modalItemName').focus(), 50);
+    }
+
+    function closeAddModal() {
+      document.getElementById('addModal').classList.add('hidden');
+    }
+
+    function confirmAddModal() {
+      const name = document.getElementById('modalItemName').value.trim();
+      if (!name) {
+        document.getElementById('modalItemName').classList.add('border-red-400');
+        document.getElementById('modalItemName').focus();
+        return;
+      }
+      document.getElementById('modalItemName').classList.remove('border-red-400');
+      const qty  = parseFloat(document.getElementById('modalQty').value) || 1;
+      const sku  = nextTmpSku();
+      tmpItems.push({ SKU: sku, Item: name, Unit: 'each', Qty: qty });
+      renderTmpList();
+      closeAddModal();
+    }
+
+    function removeTmpItem(index) { tmpItems.splice(index, 1); renderTmpList(); }
+    function updateTmpQty(index, value) { tmpItems[index].Qty = parseFloat(value) || 0; }
+
+    function renderTmpList() {
+      const tbody = document.getElementById('tmpListBody');
+      tbody.innerHTML = '';
+      if (!tmpItems.length) {
+        tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No unlisted items added yet. Click “Add New Item” to add one.</td></tr>';
+        return;
+      }
+      tmpItems.forEach((item, i) => {
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-gray-50';
+        row.innerHTML =
+          '<td class="p-4" style="font-family:monospace;font-size:0.75rem;color:#9ca3af">' + item.SKU + '</td>' +
+          '<td class="p-4 text-center"><input type="number" value="' + item.Qty + '" min="0" step="any" class="w-20 text-center border border-gray-300 rounded-xl py-2 focus:outline-none focus:border-blue-500" onchange="updateTmpQty(' + i + ', this.value)"></td>' +
+          '<td class="p-4 text-gray-500">' + item.Unit + '</td>' +
+          '<td class="p-4 font-medium text-gray-800">' + item.Item + '</td>' +
+          '<td class="p-4 text-center"><button onclick="removeTmpItem(' + i + ')" class="text-red-400 hover:text-red-600 font-bold text-lg" title="Remove">&#x2715;</button></td>';
+        tbody.appendChild(row);
+      });
+    }
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAddModal(); closeQtyModal(); } });
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('#searchOther') && !e.target.closest('#suggestionList'))
+        hideSuggestions();
+    });
+
+    window.onload = () => {
+      document.getElementById('date').value = new Date().toISOString().split('T')[0];
+      loadMaterials();
+    };
+  </script>
+</body>
+</html>
