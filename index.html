@@ -45,7 +45,10 @@
       <div class="job-section" data-job-index="0">
         <!-- Scope (standalone, 5-line expandable) -->
         <div class="bg-white rounded-2xl shadow p-6 mb-8">
-          <label class="block text-xl font-bold text-gray-800 mb-2">Scope</label>
+          <div class="flex justify-between items-center mb-2">
+            <label class="block text-xl font-bold text-gray-800">Scope</label>
+            <button onclick="removeSection(0)" class="text-red-500 hover:text-red-700 font-medium text-sm" title="Remove Section">✕</button>
+          </div>
           <textarea id="scope-0" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500" placeholder="Describe the scope of this job..."></textarea>
         </div>
 
@@ -264,7 +267,10 @@
       return `
       <div class="job-section" data-job-index="${jobIndex}">
         <div class="bg-white rounded-2xl shadow p-6 mb-8">
-          <label class="block text-xl font-bold text-gray-800 mb-2">Scope</label>
+          <div class="flex justify-between items-center mb-2">
+            <label class="block text-xl font-bold text-gray-800">Scope</label>
+            <button onclick="removeSection(${jobIndex})" class="text-red-500 hover:text-red-700 font-medium text-sm" title="Remove Section">✕</button>
+          </div>
           <textarea id="scope-${jobIndex}" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500" placeholder="Describe the scope of this job..."></textarea>
         </div>
 
@@ -340,6 +346,26 @@
         const input = document.getElementById('searchOther-' + nextIndex);
         if (input) input.focus();
       }, 50);
+    }
+
+    function removeSection(jobIndex) {
+      if (jobs.length <= 1) return; // Prevent removing the last section
+      jobs.splice(jobIndex, 1);
+      reRenderAllSections();
+      currentJobIndex = Math.min(currentJobIndex, jobs.length - 1);
+    }
+
+    function reRenderAllSections() {
+      const container = document.getElementById('jobSections');
+      container.innerHTML = '';
+      jobs.forEach((job, i) => {
+        const temp = document.createElement('div');
+        temp.innerHTML = createJobSection(i);
+        const section = temp.firstElementChild;
+        if (section) container.appendChild(section);
+        renderMaterialList(i);
+        renderTmpList(i);
+      });
     }
 
     function filterOther(jobIndex) {
