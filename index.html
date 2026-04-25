@@ -4,701 +4,208 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Electrical Job Costing Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
-    :root {
-      --navy:    #0d1b2a;
-      --navy2:   #1b2e45;
-      --blue:    #1565c0;
-      --blue2:   #1e88e5;
-      --gold:    #f9a825;
-      --gold2:   #ffc107;
-      --green:   #1b5e20;
-      --green2:  #2e7d32;
-      --white:   #f5f7fa;
-      --grey:    #e8edf3;
-      --muted:   #8899aa;
-      --spec:    #fff8e1;
-      --inp:     #e3f2fd;
-      --radius:  6px;
-      --shadow:  0 2px 12px rgba(0,0,0,0.18);
-    }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    body {
-      font-family: 'Barlow', sans-serif;
-      background: var(--navy);
-      color: var(--white);
-      min-height: 100vh;
-      background-image:
-        radial-gradient(ellipse at 10% 0%, rgba(21,101,192,0.18) 0%, transparent 60%),
-        radial-gradient(ellipse at 90% 100%, rgba(249,168,37,0.10) 0%, transparent 55%);
-    }
-
-    /* Header */
-    header {
-      background: linear-gradient(135deg, var(--navy2) 0%, #0a1628 100%);
-      border-bottom: 3px solid var(--gold);
-      padding: 28px 32px 22px;
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
-    }
-
-    .logo {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 900;
-      font-size: 2rem;
-      letter-spacing: 1px;
-      color: var(--gold);
-      line-height: 1;
-    }
-
-    .logo span {
-      color: var(--white);
-    }
-
-    header h1 {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 600;
-      font-size: 1.1rem;
-      color: var(--muted);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    .header-right {
-      margin-left: auto;
-      display: flex;
-      gap: 10px;
-    }
-
-    .btn {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-      font-size: 0.95rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      border: none;
-      cursor: pointer;
-      padding: 10px 20px;
-      border-radius: var(--radius);
-      transition: all 0.18s;
-    }
-
-    .btn-gold {
-      background: var(--gold);
-      color: var(--navy);
-    }
-
-    .btn-gold:hover {
-      background: var(--gold2);
-      transform: translateY(-1px);
-      box-shadow: var(--shadow);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--white);
-      border: 1.5px solid var(--muted);
-    }
-
-    .btn-outline:hover {
-      border-color: var(--white);
-    }
-
-    /* Main layout */
-    .container {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 32px 24px 80px;
-    }
-
-    /* Job info card */
-    .job-card {
-      background: var(--navy2);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 10px;
-      padding: 24px 28px;
-      margin-bottom: 28px;
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 16px 24px;
-    }
-
-    .job-card h2 {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-      font-size: 0.8rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--gold);
-      grid-column: 1/-1;
-      margin-bottom: 4px;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .field label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .field input,
-    .field select {
-      background: rgba(255,255,255,0.07);
-      border: 1.5px solid rgba(255,255,255,0.15);
-      border-radius: var(--radius);
-      color: var(--white);
-      font-family: 'Barlow', sans-serif;
-      font-size: 0.95rem;
-      padding: 9px 12px;
-      transition: border-color 0.18s;
-    }
-
-    .field input:focus,
-    .field select:focus {
-      outline: none;
-      border-color: var(--blue2);
-      background: rgba(30,136,229,0.1);
-    }
-
-    .field input::placeholder {
-      color: var(--muted);
-    }
-
-    /* Section */
-    .section {
-      background: var(--navy2);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 10px;
-      margin-bottom: 20px;
-      overflow: hidden;
-    }
-
-    .section-header {
-      background: linear-gradient(90deg, rgba(249,168,37,0.2) 0%, transparent 100%);
-      border-bottom: 1px solid rgba(249,168,37,0.3);
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .section-header h3 {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-      font-size: 0.9rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--gold);
-    }
-
-    .section-toggle {
-      margin-left: auto;
-      color: var(--muted);
-      font-size: 1.1rem;
-      transition: transform 0.2s;
-    }
-
-    .section.collapsed .section-toggle {
-      transform: rotate(-90deg);
-    }
-
-    .section.collapsed .section-body {
-      display: none;
-    }
-
-    .section-body {
-      padding: 0;
-    }
-
-    /* Item row */
-    .item-row {
-      display: grid;
-      grid-template-columns: 28px 1fr auto auto auto auto;
-      gap: 0;
-      align-items: stretch;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      transition: background 0.12s;
-    }
-
-    .item-row:last-child {
-      border-bottom: none;
-    }
-
-    .item-row:hover {
-      background: rgba(255,255,255,0.03);
-    }
-
-    .item-num {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.72rem;
-      color: var(--muted);
-      padding: 0 4px;
-      border-right: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .item-desc {
-      padding: 10px 14px;
-      font-size: 0.9rem;
-      color: var(--white);
-      display: flex;
-      align-items: center;
-      border-right: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .item-cell {
-      padding: 8px;
-      border-right: 1px solid rgba(255,255,255,0.06);
-      display: flex;
-      align-items: center;
-    }
-
-    .item-cell:last-child {
-      border-right: none;
-    }
-
-    .item-cell input {
-      width: 100%;
-      background: transparent;
-      border: none;
-      color: var(--white);
-      font-family: 'Barlow', sans-serif;
-      font-size: 0.9rem;
-      text-align: center;
-      padding: 4px 6px;
-      border-radius: 4px;
-      transition: background 0.15s;
-    }
-
-    .item-cell input:focus {
-      outline: none;
-      background: rgba(255,255,255,0.09);
-    }
-
-    .spec-cell input {
-      background: rgba(255,248,225,0.06);
-      color: #ffe082;
-      font-weight: 600;
-    }
-
-    .spec-cell input:focus {
-      background: rgba(255,248,225,0.13);
-    }
-
-    .qty-cell input {
-      background: rgba(227,242,253,0.06);
-      color: #90caf9;
-      font-weight: 600;
-    }
-
-    .qty-cell input:focus {
-      background: rgba(227,242,253,0.12);
-    }
-
-    .price-cell input {
-      background: rgba(249,168,37,0.06);
-      color: #ffd54f;
-      font-weight: 600;
-    }
-
-    .price-cell input:focus {
-      background: rgba(249,168,37,0.12);
-    }
-
-    .total-cell {
-      min-width: 110px;
-      text-align: right;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: var(--white);
-      padding: 10px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-    }
-
-    .total-cell.has-value {
-      color: #a5d6a7;
-    }
-
-    /* Column headers */
-    .col-headers {
-      display: grid;
-      grid-template-columns: 28px 1fr auto auto auto auto;
-      background: rgba(0,0,0,0.25);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .col-h {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-      font-size: 0.72rem;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--muted);
-      padding: 7px 10px;
-      text-align: center;
-      border-right: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .col-h:last-child {
-      border-right: none;
-    }
-
-    .col-h.desc {
-      text-align: left;
-    }
-
-    /* Summary bar */
-    .summary-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(90deg, var(--navy2) 0%, #0a1628 100%);
-      border-top: 2px solid var(--gold);
-      padding: 12px 32px;
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      z-index: 200;
-      box-shadow: 0 -4px 24px rgba(0,0,0,0.4);
-    }
-
-    .sum-item {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .sum-label {
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .sum-value {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: var(--white);
-    }
-
-    .sum-value.total {
-      color: var(--gold);
-      font-size: 1.5rem;
-    }
-
-    .sum-divider {
-      width: 1px;
-      height: 36px;
-      background: rgba(255,255,255,0.12);
-    }
-
-    .sum-pct {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .pct-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .pct-row label {
-      font-size: 0.72rem;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-
-    .pct-row input {
-      width: 64px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 4px;
-      color: var(--gold2);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-      font-size: 0.95rem;
-      text-align: center;
-      padding: 3px 6px;
-    }
-
-    .pct-row input:focus {
-      outline: none;
-      border-color: var(--gold);
-    }
-
-    /* Print output */
-    #printArea {
-      display: none;
-      background: white;
-      color: #111;
-      font-family: 'Barlow', sans-serif;
-      padding: 32px;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    #printArea h1 {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.6rem;
-      color: #0d1b2a;
-    }
-
-    #printArea table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 12px;
-      font-size: 0.85rem;
-    }
-
-    #printArea th {
-      background: #0d1b2a;
-      color: white;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      padding: 7px 10px;
-      text-align: left;
-    }
-
-    #printArea td {
-      padding: 6px 10px;
-      border-bottom: 1px solid #e0e0e0;
-    }
-
-    #printArea tr:nth-child(even) td {
-      background: #f8f9fa;
-    }
-
-    #printArea .sec-row td {
-      background: #f5a623;
-      color: #0d1b2a;
-      font-weight: 700;
-      font-family: 'Barlow Condensed', sans-serif;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      font-size: 0.8rem;
-    }
-
-    #printArea .totals-table {
-      margin-top: 20px;
-      width: 340px;
-      margin-left: auto;
-    }
-
-    #printArea .totals-table td {
-      font-size: 0.9rem;
-    }
-
-    #printArea .grand-total td {
-      background: #0d1b2a;
-      color: #f9a825;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-      font-size: 1.1rem;
-    }
-
-    @media print {
-      body > *:not(#printArea) {
-        display: none !important;
-      }
-      #printArea {
-        display: block !important;
-      }
-    }
-
-    @media (max-width: 680px) {
-      .job-card {
-        grid-template-columns: 1fr 1fr;
-      }
-      .tabs {
-        padding: 0 12px;
-      }
-      .container {
-        padding: 16px 12px 100px;
-      }
-      .summary-bar {
-        flex-wrap: wrap;
-        padding: 10px 16px;
-        gap: 12px;
-      }
-      .col-headers,
-      .item-row {
-        grid-template-columns: 22px 1fr 56px 68px 80px 90px;
-      }
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&display=swap');
+    body { font-family: 'Barlow', sans-serif; }
+    #scope { min-height: 7.5rem; resize: vertical; }
   </style>
 </head>
-<body>
-  <div class="container">
-    <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; gap:18px; margin-bottom:32px;">
+<body class="min-h-screen pb-12 app-shell">
+  <div class="max-w-6xl mx-auto p-6 app-container">
+    <div class="flex justify-between items-center mb-8 page-header">
       <div>
-        <h1 style="font-size:2.35rem; font-weight:800; margin-bottom:6px; color:var(--white);">⚡ Job Costing Dashboard ⚡</h1>
-        <p style="font-size:1rem; color:var(--muted);">Risha Vishal Electrical & Construction Co. Ltd.</p>
+        <h1 class="text-3xl font-semibold title-white">⚡Job Costing Dashboard⚡</h1>
+        <p class="subtitle">Risha Vishal Electrical &amp; Construction Co. Ltd.</p>
       </div>
-      <div style="text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:10px;">
-        <p id="status" style="font-size:0.9rem; color:var(--green); font-weight:600;">⏳ Loading materials...</p>
-        <button onclick="loadMaterials()" class="btn btn-outline" style="padding:10px 18px;">↻ Refresh</button>
+      <div class="text-right flex flex-col items-end gap-2">
+        <p id="status" class="text-sm text-emerald-600 font-medium">⏳ Loading materials...</p>
+        <button onclick="loadMaterials()" class="btn-outline text-xs px-3 py-1.5">↻ Refresh</button>
       </div>
     </div>
 
-    <div class="job-card">
-      <h2>⚡ Job Information</h2>
-      <div class="field"><label>Customer Name</label><input id="customer" type="text" placeholder="John Smith"></div>
-      <div class="field"><label>Job Address</label><input id="address" type="text" placeholder="123 Main Road, Chaguanas"></div>
-      <div class="field"><label>Date / Reference</label><input id="date" type="date"></div>
+    <!-- Job Details -->
+    <div class="rounded-2xl shadow p-6 mb-6 grid grid-cols-1 md:grid-cols-3 gap-6 panel">
+      <div>
+        <label class="field-label">Customer Name</label>
+        <input id="customer" type="text" class="w-full rounded-xl px-4 py-3 focus:outline-none field-input" placeholder="John Smith">
+      </div>
+      <div>
+        <label class="field-label">Job Address</label>
+        <input id="address" type="text" class="w-full rounded-xl px-4 py-3 focus:outline-none field-input" placeholder="123 Main Road, Chaguanas">
+      </div>
+      <div>
+        <label class="field-label">Date / Reference</label>
+        <input id="date" type="date" class="w-full rounded-xl px-4 py-3 focus:outline-none field-input">
+      </div>
     </div>
 
     <div id="jobSections">
       <div class="job-section" data-job-index="0">
-        <div class="section">
-          <div class="section-header" style="cursor:default;">
-            <h3>Scope</h3>
+        <!-- Scope (standalone, 5-line expandable) -->
+        <div class="rounded-2xl shadow p-6 mb-8 panel">
+          <div class="flex justify-between items-center mb-2">
+            <label class="block text-xl font-bold title-white">Scope</label>
+            <button onclick="removeSection(0)" class="text-red-500 hover:text-red-700 font-medium text-sm" title="Remove Section">✕</button>
           </div>
-          <div class="section-body">
-            <textarea id="scope-0" style="width:100%; min-height:7.5rem; resize:vertical; background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.12); border-radius:var(--radius); color:var(--white); font-family:'Barlow',sans-serif; font-size:0.95rem; padding:12px;" placeholder="Describe the scope of this job..."></textarea>
-          </div>
+          <textarea id="scope-0" class="w-full rounded-xl px-4 py-3 focus:outline-none field-input" placeholder="Describe the scope of this job..."></textarea>
         </div>
 
-        <div class="section">
-          <div class="section-header" style="cursor:default;">
-            <h3>Material List</h3>
-          </div>
-          <div class="section-body">
-            <div style="position:relative; padding:16px 20px 12px;">
+        <!-- MATERIAL LIST -->
+        <div class="rounded-3xl shadow mb-10 table-panel">
+          <div class="px-6 pt-4 pb-0">
+            <h2 class="font-semibold text-xl mb-3 title-white">Material List</h2>
+            <!-- Search row + dropdown — all in one relative container so dropdown isn't clipped -->
+            <div class="relative pb-4 border-b">
               <input id="searchOther-0" type="text" placeholder="Search by item name or SKU..."
-                     style="width:100%; background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.12); border-radius:var(--radius); color:var(--white); font-family:'Barlow',sans-serif; font-size:0.95rem; padding:12px;"
+                     class="w-full rounded-2xl px-5 py-3 focus:outline-none field-input"
                      oninput="filterOther(0)" onkeydown="handleSearchKey(event, 0)" autocomplete="off">
-              <ul id="suggestionList-0" class="hidden"
-                  style="position:absolute; left:0; right:0; background:white; border:1px solid rgba(226,232,240,0.9); border-radius:16px; box-shadow:0 12px 24px rgba(15,23,42,0.08); margin-top:8px; max-height:260px; overflow-y:auto; z-index:50;"></ul>
+              <ul id="suggestionList-0" class="suggestion-list hidden" style="top:100%;"></ul>
             </div>
+          </div>
 
-            <div style="overflow-x:auto;">
-              <table style="width:100%; border-collapse:collapse;">
-                <thead>
-                  <tr style="background:rgba(255,255,255,0.06);">
-                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">SKU</th>
-                    <th style="padding:14px 12px; text-align:center; color:var(--muted); font-size:0.82rem;">Qty</th>
-                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">Unit</th>
-                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">Item</th>
-                    <th style="padding:14px 12px; text-align:center; color:var(--muted); font-size:0.82rem;">Remove</th>
-                  </tr>
-                </thead>
-                <tbody id="materialListBody-0">
-                  <tr><td colspan="5" style="padding:32px 16px; text-align:center; color:var(--muted);">No items added yet. Search and add materials above.</td></tr>
-                </tbody>
-              </table>
-            </div>
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="table-header">
+                <tr>
+                  <th class="text-left p-4 font-medium w-28">SKU</th>
+                  <th class="text-center p-4 font-medium w-28">Qty</th>
+                  <th class="text-left p-4 font-medium w-24">Unit</th>
+                  <th class="text-left p-4 font-medium">Item</th>
+                  <th class="text-center p-4 font-medium w-20">Remove</th>
+                </tr>
+              </thead>
+              <tbody id="materialListBody-0">
+                <tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No items added yet. Search and add materials above.</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
-        <div class="section">
-          <div class="section-header" style="display:flex; align-items:center; gap:12px;">
-            <h3>Items Not Listed</h3>
-            <button onclick="openAddModal(0)" class="btn btn-gold" style="margin-left:auto; color:var(--navy);">+ Add New Item</button>
+        <!-- ITEMS NOT LISTED -->
+        <div class="rounded-3xl shadow mb-10 panel">
+          <div class="px-6 py-4 border-b flex items-center justify-between">
+            <h2 class="font-semibold text-xl title-white">Items Not Listed</h2>
+            <button onclick="openAddModal(0)" class="btn-primary px-6 py-2.5">
+              + Add New Item
+            </button>
           </div>
-          <div class="section-body">
-            <div style="overflow-x:auto;">
-              <table style="width:100%; border-collapse:collapse;">
-                <thead>
-                  <tr style="background:rgba(255,255,255,0.06);">
-                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">SKU</th>
-                    <th style="padding:14px 12px; text-align:center; color:var(--muted); font-size:0.82rem;">Qty</th>
-                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">Unit</th>
-                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">Item</th>
-                    <th style="padding:14px 12px; text-align:center; color:var(--muted); font-size:0.82rem;">Remove</th>
-                  </tr>
-                </thead>
-                <tbody id="tmpListBody-0">
-                  <tr><td colspan="5" style="padding:32px 16px; text-align:center; color:var(--muted);">No unlisted items added yet. Click "Add New Item" to add one.</td></tr>
-                </tbody>
-              </table>
-            </div>
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="table-header">
+                <tr>
+                  <th class="text-left p-4 font-medium w-28">SKU</th>
+                  <th class="text-center p-4 font-medium w-28">Qty</th>
+                  <th class="text-left p-4 font-medium w-24">Unit</th>
+                  <th class="text-left p-4 font-medium">Item</th>
+                  <th class="text-center p-4 font-medium w-20">Remove</th>
+                </tr>
+              </thead>
+              <tbody id="tmpListBody-0" class="divide-y">
+                <tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No unlisted items added yet. Click "Add New Item" to add one.</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
 
-    <div style="margin:32px 0;">
-      <button id="addNewSectionBtn" onclick="addNewSection()" class="btn btn-gold" style="color:var(--navy);">+ Add New Section</button>
+    <div id="addNewSectionContainer" class="mb-10">
+      <button id="addNewSectionBtn" onclick="addNewSection()" class="btn-primary w-full max-w-xs mx-auto block text-center">
+        + Add New Section
+      </button>
     </div>
 
-    <div style="display:flex; flex-wrap:wrap; gap:14px; margin-bottom:32px;">
-      <button onclick="generatePDF()" class="btn btn-outline">PDF</button>
-      <button onclick="exportCSV()" class="btn btn-outline">CSV</button>
-      <button onclick="clearAll()" class="btn btn-gold" style="color:var(--navy);">Clear All</button>
-    </div>
-
-    <div id="addModal" class="modal-overlay hidden" style="position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.45);">
-      <div class="modal-content" style="background:var(--navy2); border:1px solid rgba(255,255,255,0.14); border-radius:18px; padding:28px; width:min(100%,420px); position:relative;">
-        <h3 style="font-size:1.25rem; margin-bottom:18px; color:var(--gold);">Add Unlisted Item</h3>
-        <div style="display:flex; flex-direction:column; gap:16px;">
-          <div class="field"><label>Item Name <span style="color:#fdd835;">*</span></label><input id="modalItemName" type="text" placeholder="Enter item name" style="width:100%;" onkeydown="if(event.key==='Enter') confirmAddModal()"></div>
-          <div class="field"><label>Quantity</label><input id="modalQty" type="number" value="1" min="0" step="any" style="width:100%;" onkeydown="if(event.key==='Enter') confirmAddModal()"></div>
-          <div style="display:flex; gap:14px;">
-            <div class="field" style="flex:1;"><label>SKU (auto)</label><div id="modalSkuPreview" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius); padding:12px; color:var(--muted); font-family:monospace;">TMP-001</div></div>
-            <div class="field" style="flex:1;"><label>Unit (auto)</label><div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius); padding:12px; color:var(--muted);">each</div></div>
+    <!-- Add New Item Modal -->
+    <div id="addModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+      <div class="absolute inset-0 bg-black bg-opacity-40" onclick="closeAddModal()"></div>
+      <div class="modal-card mx-4">
+        <h3 class="modal-title">Add Unlisted Item</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="modal-label">Item Name <span class="text-accent">*</span></label>
+            <input id="modalItemName" type="text"
+                   class="w-full rounded-xl px-4 py-3 focus:outline-none field-input"
+                   placeholder="e.g. Custom conduit fitting"
+                   onkeydown="if(event.key==='Enter') confirmAddModal()">
+          </div>
+          <div>
+            <label class="modal-label">Quantity</label>
+            <input id="modalQty" type="number" value="1" min="0" step="any"
+                   class="w-full rounded-xl px-4 py-3 focus:outline-none field-input"
+                   onkeydown="if(event.key==='Enter') confirmAddModal()">
+          </div>
+          <div class="flex gap-4">
+            <div class="flex-1">
+              <label class="modal-label">SKU (auto)</label>
+              <div id="modalSkuPreview" class="modal-badge rounded-xl px-4 py-3 text-sm font-mono">TMP-001</div>
+            </div>
+            <div class="flex-1">
+              <label class="modal-label">Unit (auto)</label>
+              <div class="modal-badge rounded-xl px-4 py-3 text-sm">each</div>
+            </div>
           </div>
         </div>
-        <div style="display:flex; gap:12px; margin-top:24px;">
-          <button onclick="closeAddModal()" class="btn btn-outline" style="flex:1;">Cancel</button>
-          <button onclick="confirmAddModal()" class="btn btn-gold" style="flex:1; color:var(--navy);">Add Item</button>
+        <div class="flex gap-3 mt-8 modal-actions">
+          <button onclick="closeAddModal()" class="btn-outline flex-1 py-3">
+            Cancel
+          </button>
+          <button onclick="confirmAddModal()" class="btn-primary flex-1 py-3">
+            Add Item
+          </button>
         </div>
       </div>
     </div>
 
-    <div id="qtyModal" class="modal-overlay hidden" style="position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.45);">
-      <div style="background:var(--navy2); border:1px solid rgba(255,255,255,0.14); border-radius:18px; padding:28px; width:min(100%,420px); position:relative;">
-        <h3 id="qtyModalTitle" style="font-size:1.25rem; margin-bottom:12px; color:var(--gold);">Add Item</h3>
-        <p id="qtyModalSku" style="font-family:monospace; color:var(--muted); margin-bottom:16px;"></p>
-        <div style="display:flex; flex-direction:column; gap:16px;">
-          <div class="field"><label>Quantity</label><input id="qtyModalQty" type="number" value="1" min="0" step="any" style="width:100%;" onkeydown="if(event.key==='Enter') confirmQtyModal()"></div>
-          <div class="field"><label>Unit</label><div id="qtyModalUnit" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius); padding:12px; color:var(--muted);"></div></div>
+    <!-- Qty Modal (search selection) -->
+    <div id="qtyModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+      <div class="absolute inset-0 bg-black bg-opacity-40" onclick="closeQtyModal()"></div>
+      <div class="modal-card mx-4">
+        <h3 class="modal-title" id="qtyModalTitle">Add Item</h3>
+        <p id="qtyModalSku" class="text-xs font-mono modal-meta"></p>
+        <div class="space-y-4">
+          <div>
+            <label class="modal-label">Quantity</label>
+            <input id="qtyModalQty" type="number" value="1" min="0" step="any"
+                   class="w-full rounded-xl px-4 py-3 focus:outline-none field-input"
+                   onkeydown="if(event.key==='Enter') confirmQtyModal()">
+          </div>
+          <div class="flex gap-4">
+            <div class="flex-1">
+              <label class="modal-label">Unit</label>
+              <div id="qtyModalUnit" class="modal-badge rounded-xl px-4 py-3 text-sm"></div>
+            </div>
+          </div>
         </div>
-        <div style="display:flex; gap:12px; margin-top:24px;">
-          <button onclick="closeQtyModal()" class="btn btn-outline" style="flex:1;">Cancel</button>
-          <button onclick="confirmQtyModal()" class="btn btn-gold" style="flex:1; color:var(--navy);">Add to List</button>
+        <div class="flex gap-3 mt-8 modal-actions">
+          <button onclick="closeQtyModal()" class="btn-outline flex-1 py-3">
+            Cancel
+          </button>
+          <button onclick="confirmQtyModal()" class="btn-primary flex-1 py-3">
+            Add to List
+          </button>
         </div>
       </div>
     </div>
 
-    <div class="section" style="padding:24px; margin-bottom:32px;">
-      <h2 style="margin-bottom:16px; color:var(--white);">Notes</h2>
-      <textarea id="notes" rows="5" style="width:100%; background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.12); border-radius:var(--radius); color:var(--white); font-family:'Barlow',sans-serif; font-size:0.95rem; padding:14px;" placeholder="Additional notes for this job..."></textarea>
+    <!-- Notes -->
+    <div class="rounded-3xl shadow p-6 mb-10 panel">
+      <h2 class="font-semibold text-xl mb-3 title-white">Notes</h2>
+      <textarea id="notes" rows="5" class="w-full rounded-2xl px-5 py-4 focus:outline-none field-input" placeholder="Additional notes for this job..."></textarea>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="rounded-3xl p-8 panel action-panel-green">
+      <button onclick="generatePDF()"
+              class="btn-secondary w-full font-semibold py-4 rounded-2xl flex items-center justify-center gap-3 text-xl">
+        Share Material List PDF
+      </button>
+      <button onclick="exportCSV()"
+              class="mt-3 btn-outline w-full font-medium py-4 rounded-2xl flex items-center justify-center gap-3">
+        Share Material List CSV
+      </button>
     </div>
   </div>
 
@@ -752,69 +259,67 @@
     function createJobSection(jobIndex) {
       return `
       <div class="job-section" data-job-index="${jobIndex}">
-        <div class="section">
-          <div class="section-header" style="cursor:default;">
-            <h3>Scope</h3>
-            <button onclick="removeSection(${jobIndex})" class="btn btn-outline" style="margin-left:auto; padding:8px 12px;">Remove</button>
+        <div class="rounded-2xl shadow p-6 mb-8 panel">
+          <div class="flex justify-between items-center mb-2">
+            <label class="block text-xl font-bold title-white">Scope</label>
+            <button onclick="removeSection(${jobIndex})" class="text-red-500 hover:text-red-700 font-medium text-sm" title="Remove Section">✕</button>
           </div>
-          <div class="section-body">
-            <textarea id="scope-${jobIndex}" style="width:100%; min-height:7.5rem; resize:vertical; background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.12); border-radius:var(--radius); color:var(--white); font-family:'Barlow',sans-serif; font-size:0.95rem; padding:12px;" placeholder="Describe the scope of this job..."></textarea>
-          </div>
+          <textarea id="scope-${jobIndex}" class="w-full rounded-xl px-4 py-3 focus:outline-none field-input" placeholder="Describe the scope of this job..."></textarea>
         </div>
 
-        <div class="section">
-          <div class="section-header" style="cursor:default;">
-            <h3>Material List</h3>
-          </div>
-          <div class="section-body">
-            <div style="position:relative; padding:16px 20px 12px;">
+        <div class="rounded-3xl shadow mb-10 table-panel">
+          <div class="px-6 pt-4 pb-0">
+            <h2 class="font-semibold text-xl mb-3 title-white">Material List</h2>
+            <div class="relative pb-4 border-b">
               <input id="searchOther-${jobIndex}" type="text" placeholder="Search by item name or SKU..."
-                     style="width:100%; background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.12); border-radius:var(--radius); color:var(--white); font-family:'Barlow',sans-serif; font-size:0.95rem; padding:12px;"
+                     class="w-full rounded-2xl px-5 py-3 focus:outline-none field-input"
                      oninput="filterOther(${jobIndex})" onkeydown="handleSearchKey(event, ${jobIndex})" autocomplete="off">
-              <ul id="suggestionList-${jobIndex}" class="hidden"
-                  style="position:absolute; left:0; right:0; background:white; border:1px solid rgba(226,232,240,0.9); border-radius:16px; box-shadow:0 12px 24px rgba(15,23,42,0.08); margin-top:8px; max-height:260px; overflow-y:auto; z-index:50;"></ul>
+              <ul id="suggestionList-${jobIndex}"
+                  class="suggestion-list hidden"
+                  style="top:100%;"></ul>
             </div>
-            <div style="overflow-x:auto;">
-              <table style="width:100%; border-collapse:collapse;">
-                <thead>
-                  <tr style="background:rgba(255,255,255,0.06);">
-                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">SKU</th>
-                    <th style="padding:14px 12px; text-align:center; color:var(--muted); font-size:0.82rem;">Qty</th>
-                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">Unit</th>
-                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">Item</th>
-                    <th style="padding:14px 12px; text-align:center; color:var(--muted); font-size:0.82rem;">Remove</th>
-                  </tr>
-                </thead>
-                <tbody id="materialListBody-${jobIndex}">
-                  <tr><td colspan="5" style="padding:32px 16px; text-align:center; color:var(--muted);">No items added yet. Search and add materials above.</td></tr>
-                </tbody>
-              </table>
-            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="table-header">
+                <tr>
+                  <th class="text-left font-medium w-28">SKU</th>
+                  <th class="text-center font-medium w-28">Qty</th>
+                  <th class="text-left font-medium w-24">Unit</th>
+                  <th class="text-left font-medium">Item</th>
+                  <th class="text-center font-medium w-20">Remove</th>
+                </tr>
+              </thead>
+              <tbody id="materialListBody-${jobIndex}">
+                <tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No items added yet. Search and add materials above.</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
-        <div class="section">
-          <div class="section-header" style="display:flex; align-items:center; gap:12px;">
-            <h3>Items Not Listed</h3>
-            <button onclick="openAddModal(${jobIndex})" class="btn btn-gold" style="margin-left:auto; color:var(--navy);">+ Add New Item</button>
+        <div class="rounded-3xl shadow mb-10 table-panel">
+          <div class="px-6 py-4 border-b flex items-center justify-between">
+            <h2 class="font-semibold text-xl title-white">Items Not Listed</h2>
+            <button onclick="openAddModal(${jobIndex})" class="btn-primary px-6 py-2.5">
+              + Add New Item
+            </button>
           </div>
-          <div class="section-body">
-            <div style="overflow-x:auto;">
-              <table style="width:100%; border-collapse:collapse;">
-                <thead>
-                  <tr style="background:rgba(255,255,255,0.06);">
-                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">SKU</th>
-                    <th style="padding:14px 12px; text-align:center; color:var(--muted); font-size:0.82rem;">Qty</th>
-                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">Unit</th>
-                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">Item</th>
-                    <th style="padding:14px 12px; text-align:center; color:var(--muted); font-size:0.82rem;">Remove</th>
-                  </tr>
-                </thead>
-                <tbody id="tmpListBody-${jobIndex}">
-                  <tr><td colspan="5" style="padding:32px 16px; text-align:center; color:var(--muted);">No unlisted items added yet. Click "Add New Item" to add one.</td></tr>
-                </tbody>
-              </table>
-            </div>
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="table-header">
+                <tr>
+                  <th class="text-left font-medium w-28">SKU</th>
+                  <th class="text-center font-medium w-28">Qty</th>
+                  <th class="text-left font-medium w-24">Unit</th>
+                  <th class="text-left font-medium">Item</th>
+                  <th class="text-center font-medium w-20">Remove</th>
+                </tr>
+              </thead>
+              <tbody id="tmpListBody-${jobIndex}">
+                <tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No unlisted items added yet. Click "Add New Item" to add one.</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>`;
@@ -1023,13 +528,13 @@
       }
       job.addedItems.forEach((item, i) => {
         const row = document.createElement('tr');
-        row.className = 'item-row';
+        row.className = 'hover:bg-gray-50';
         row.innerHTML =
-          '<td class="item-cell item-num">' + item.SKU + '</td>' +
-          '<td class="item-cell qty-cell"><input type="number" value="' + item.Qty + '" min="0" step="any" class="qty-input" onchange="updateQty(' + jobIndex + ', ' + i + ', this.value)"></td>' +
-          '<td class="item-cell">' + item.Unit + '</td>' +
-          '<td class="item-cell item-desc">' + item.Item + '</td>' +
-          '<td class="item-cell"><button onclick="removeItem(' + jobIndex + ', ' + i + ')" class="remove-btn" title="Remove">✕</button></td>';
+          '<td class="p-4" style="font-family:monospace;font-size:0.75rem;color:#9ca3af">' + item.SKU + '</td>' +
+          '<td class="p-4 text-center"><input type="number" value="' + item.Qty + '" min="0" step="any" class="w-20 text-center border border-gray-300 rounded-xl py-2 focus:outline-none focus:border-blue-500" onchange="updateQty(' + jobIndex + ', ' + i + ', this.value)"></td>' +
+          '<td class="p-4 text-gray-500">' + item.Unit + '</td>' +
+          '<td class="p-4 font-medium text-gray-800">' + item.Item + '</td>' +
+          '<td class="p-4 text-center"><button onclick="removeItem(' + jobIndex + ', ' + i + ')" class="text-red-400 hover:text-red-600 font-bold text-lg" title="Remove">✕</button></td>';
         tbody.appendChild(row);
       });
     }
@@ -1250,13 +755,13 @@
       }
       job.tmpItems.forEach((item, i) => {
         const row = document.createElement('tr');
-        row.className = 'item-row';
+        row.className = 'hover:bg-gray-50';
         row.innerHTML =
-          '<td class="item-cell item-num">' + item.SKU + '</td>' +
-          '<td class="item-cell qty-cell"><input type="number" value="' + item.Qty + '" min="0" step="any" class="qty-input" onchange="updateTmpQty(' + jobIndex + ', ' + i + ', this.value)"></td>' +
-          '<td class="item-cell">' + item.Unit + '</td>' +
-          '<td class="item-cell item-desc">' + item.Item + '</td>' +
-          '<td class="item-cell"><button onclick="removeTmpItem(' + jobIndex + ', ' + i + ')" class="remove-btn" title="Remove">✕</button></td>';
+          '<td class="p-4" style="font-family:monospace;font-size:0.75rem;color:#9ca3af">' + item.SKU + '</td>' +
+          '<td class="p-4 text-center"><input type="number" value="' + item.Qty + '" min="0" step="any" class="w-20 text-center border border-gray-300 rounded-xl py-2 focus:outline-none focus:border-blue-500" onchange="updateTmpQty(' + jobIndex + ', ' + i + ', this.value)"></td>' +
+          '<td class="p-4 text-gray-500">' + item.Unit + '</td>' +
+          '<td class="p-4 font-medium text-gray-800">' + item.Item + '</td>' +
+          '<td class="p-4 text-center"><button onclick="removeTmpItem(' + jobIndex + ', ' + i + ')" class="text-red-400 hover:text-red-600 font-bold text-lg" title="Remove">&#x2715;</button></td>';
         tbody.appendChild(row);
       });
     }
