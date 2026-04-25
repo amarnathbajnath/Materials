@@ -4,78 +4,624 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Electrical Job Costing Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-    body { font-family: 'Inter', system_ui, sans-serif; }
-    #scope { min-height: 7.5rem; resize: vertical; }
+    :root {
+      --navy:    #0d1b2a;
+      --navy2:   #1b2e45;
+      --blue:    #1565c0;
+      --blue2:   #1e88e5;
+      --gold:    #f9a825;
+      --gold2:   #ffc107;
+      --green:   #1b5e20;
+      --green2:  #2e7d32;
+      --white:   #f5f7fa;
+      --grey:    #e8edf3;
+      --muted:   #8899aa;
+      --spec:    #fff8e1;
+      --inp:     #e3f2fd;
+      --radius:  6px;
+      --shadow:  0 2px 12px rgba(0,0,0,0.18);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      min-height: 100vh;
+      background-image:
+        radial-gradient(ellipse at 10% 0%, rgba(21,101,192,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse at 90% 100%, rgba(249,168,37,0.10) 0%, transparent 55%);
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, var(--navy2) 0%, #0a1628 100%);
+      border-bottom: 3px solid var(--gold);
+      padding: 28px 32px 22px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    }
+
+    .logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 2rem;
+      letter-spacing: 1px;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .logo span {
+      color: var(--white);
+    }
+
+    header h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .header-right {
+      margin-left: auto;
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      padding: 10px 20px;
+      border-radius: var(--radius);
+      transition: all 0.18s;
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    .btn-gold:hover {
+      background: var(--gold2);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 1.5px solid var(--muted);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--white);
+    }
+
+    /* Main layout */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+
+    /* Job info card */
+    .job-card {
+      background: var(--navy2);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin-bottom: 28px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px 24px;
+    }
+
+    .job-card h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      grid-column: 1/-1;
+      margin-bottom: 4px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .field label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .field input,
+    .field select {
+      background: rgba(255,255,255,0.07);
+      border: 1.5px solid rgba(255,255,255,0.15);
+      border-radius: var(--radius);
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.95rem;
+      padding: 9px 12px;
+      transition: border-color 0.18s;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      outline: none;
+      border-color: var(--blue2);
+      background: rgba(30,136,229,0.1);
+    }
+
+    .field input::placeholder {
+      color: var(--muted);
+    }
+
+    /* Section */
+    .section {
+      background: var(--navy2);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .section-header {
+      background: linear-gradient(90deg, rgba(249,168,37,0.2) 0%, transparent 100%);
+      border-bottom: 1px solid rgba(249,168,37,0.3);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .section-header h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .section-toggle {
+      margin-left: auto;
+      color: var(--muted);
+      font-size: 1.1rem;
+      transition: transform 0.2s;
+    }
+
+    .section.collapsed .section-toggle {
+      transform: rotate(-90deg);
+    }
+
+    .section.collapsed .section-body {
+      display: none;
+    }
+
+    .section-body {
+      padding: 0;
+    }
+
+    /* Item row */
+    .item-row {
+      display: grid;
+      grid-template-columns: 28px 1fr auto auto auto auto;
+      gap: 0;
+      align-items: stretch;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: background 0.12s;
+    }
+
+    .item-row:last-child {
+      border-bottom: none;
+    }
+
+    .item-row:hover {
+      background: rgba(255,255,255,0.03);
+    }
+
+    .item-num {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      color: var(--muted);
+      padding: 0 4px;
+      border-right: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .item-desc {
+      padding: 10px 14px;
+      font-size: 0.9rem;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      border-right: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .item-cell {
+      padding: 8px;
+      border-right: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+    }
+
+    .item-cell:last-child {
+      border-right: none;
+    }
+
+    .item-cell input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 4px 6px;
+      border-radius: 4px;
+      transition: background 0.15s;
+    }
+
+    .item-cell input:focus {
+      outline: none;
+      background: rgba(255,255,255,0.09);
+    }
+
+    .spec-cell input {
+      background: rgba(255,248,225,0.06);
+      color: #ffe082;
+      font-weight: 600;
+    }
+
+    .spec-cell input:focus {
+      background: rgba(255,248,225,0.13);
+    }
+
+    .qty-cell input {
+      background: rgba(227,242,253,0.06);
+      color: #90caf9;
+      font-weight: 600;
+    }
+
+    .qty-cell input:focus {
+      background: rgba(227,242,253,0.12);
+    }
+
+    .price-cell input {
+      background: rgba(249,168,37,0.06);
+      color: #ffd54f;
+      font-weight: 600;
+    }
+
+    .price-cell input:focus {
+      background: rgba(249,168,37,0.12);
+    }
+
+    .total-cell {
+      min-width: 110px;
+      text-align: right;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--white);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .total-cell.has-value {
+      color: #a5d6a7;
+    }
+
+    /* Column headers */
+    .col-headers {
+      display: grid;
+      grid-template-columns: 28px 1fr auto auto auto auto;
+      background: rgba(0,0,0,0.25);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .col-h {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 7px 10px;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .col-h:last-child {
+      border-right: none;
+    }
+
+    .col-h.desc {
+      text-align: left;
+    }
+
+    /* Summary bar */
+    .summary-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(90deg, var(--navy2) 0%, #0a1628 100%);
+      border-top: 2px solid var(--gold);
+      padding: 12px 32px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      z-index: 200;
+      box-shadow: 0 -4px 24px rgba(0,0,0,0.4);
+    }
+
+    .sum-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sum-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .sum-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--white);
+    }
+
+    .sum-value.total {
+      color: var(--gold);
+      font-size: 1.5rem;
+    }
+
+    .sum-divider {
+      width: 1px;
+      height: 36px;
+      background: rgba(255,255,255,0.12);
+    }
+
+    .sum-pct {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .pct-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pct-row label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .pct-row input {
+      width: 64px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 4px;
+      color: var(--gold2);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-align: center;
+      padding: 3px 6px;
+    }
+
+    .pct-row input:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    /* Print output */
+    #printArea {
+      display: none;
+      background: white;
+      color: #111;
+      font-family: 'Barlow', sans-serif;
+      padding: 32px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    #printArea h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.6rem;
+      color: #0d1b2a;
+    }
+
+    #printArea table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 0.85rem;
+    }
+
+    #printArea th {
+      background: #0d1b2a;
+      color: white;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 7px 10px;
+      text-align: left;
+    }
+
+    #printArea td {
+      padding: 6px 10px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    #printArea tr:nth-child(even) td {
+      background: #f8f9fa;
+    }
+
+    #printArea .sec-row td {
+      background: #f5a623;
+      color: #0d1b2a;
+      font-weight: 700;
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+
+    #printArea .totals-table {
+      margin-top: 20px;
+      width: 340px;
+      margin-left: auto;
+    }
+
+    #printArea .totals-table td {
+      font-size: 0.9rem;
+    }
+
+    #printArea .grand-total td {
+      background: #0d1b2a;
+      color: #f9a825;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    @media print {
+      body > *:not(#printArea) {
+        display: none !important;
+      }
+      #printArea {
+        display: block !important;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .job-card {
+        grid-template-columns: 1fr 1fr;
+      }
+      .tabs {
+        padding: 0 12px;
+      }
+      .container {
+        padding: 16px 12px 100px;
+      }
+      .summary-bar {
+        flex-wrap: wrap;
+        padding: 10px 16px;
+        gap: 12px;
+      }
+      .col-headers,
+      .item-row {
+        grid-template-columns: 22px 1fr 56px 68px 80px 90px;
+      }
+    }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen pb-12">
-  <div class="max-w-6xl mx-auto p-6">
-    <div class="flex justify-between items-center mb-8">
-      <div>
-        <h1 class="text-3xl font-semibold text-gray-900">⚡Job Costing Dashboard⚡</h1>
-        <p class="text-gray-600">Risha Vishal Electrical &amp; Construction Co. Ltd.</p>
-      </div>
-      <div class="text-right flex flex-col items-end gap-2">
-        <p id="status" class="text-sm text-emerald-600 font-medium">⏳ Loading materials...</p>
-        <button onclick="loadMaterials()" class="text-xs border border-gray-300 text-gray-500 hover:text-blue-600 hover:border-blue-400 px-3 py-1.5 rounded-xl transition-colors">↻ Refresh</button>
-      </div>
+<body>
+  <header>
+    <div>
+      <div class="logo">⚡<span>ELEC</span></div>
     </div>
+    <div>
+      <h1>Job Costing Dashboard</h1>
+    </div>
+    <div class="header-right">
+      <button class="btn btn-outline" onclick="loadMaterials()">↻ Refresh</button>
+    </div>
+  </header>
+
+  <div class="container">
 
     <!-- Job Details -->
-    <div class="bg-white rounded-2xl shadow p-6 mb-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Customer Name</label>
-        <input id="customer" type="text" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500" placeholder="John Smith">
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Job Address</label>
-        <input id="address" type="text" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500" placeholder="123 Main Road, Chaguanas">
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Date / Reference</label>
-        <input id="date" type="date" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500">
-      </div>
+    <div class="job-card">
+      <h2>⚡ Job Information</h2>
+      <div class="field"><label>Customer Name</label><input id="customer" type="text" placeholder="John Smith"></div>
+      <div class="field"><label>Job Address</label><input id="address" type="text" placeholder="123 Main Road, Chaguanas"></div>
+      <div class="field"><label>Date / Reference</label><input id="date" type="date"></div>
     </div>
 
     <div id="jobSections">
       <div class="job-section" data-job-index="0">
-        <!-- Scope (standalone, 5-line expandable) -->
-        <div class="bg-white rounded-2xl shadow p-6 mb-8">
-          <div class="flex justify-between items-center mb-2">
-            <label class="block text-xl font-bold text-gray-800">Scope</label>
-            <button onclick="removeSection(0)" class="text-red-500 hover:text-red-700 font-medium text-sm" title="Remove Section">✕</button>
+        <!-- Scope -->
+        <div class="section">
+          <div class="section-header">
+            <h3>Scope</h3>
+            <button onclick="removeSection(0)" class="text-red-500 hover:text-red-700 font-medium text-sm" title="Remove Section" style="margin-left: auto;">✕</button>
+            <div class="section-toggle">▼</div>
           </div>
-          <textarea id="scope-0" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500" placeholder="Describe the scope of this job..."></textarea>
+          <div class="section-body">
+            <textarea id="scope-0" style="width: 100%; min-height: 7.5rem; resize: vertical; background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.15); border-radius: var(--radius); color: var(--white); font-family: 'Barlow', sans-serif; font-size: 0.95rem; padding: 9px 12px;" placeholder="Describe the scope of this job..."></textarea>
+          </div>
         </div>
 
         <!-- MATERIAL LIST -->
-        <div class="bg-white rounded-3xl shadow mb-10">
-          <div class="px-6 pt-4 pb-0">
-            <h2 class="font-semibold text-xl mb-3">Material List</h2>
+        <div class="section">
+          <div class="section-header">
+            <h3>Material List</h3>
+            <div class="section-toggle">▼</div>
+          </div>
+          <div class="section-body">
             <!-- Search row + dropdown — all in one relative container so dropdown isn't clipped -->
-            <div class="relative pb-4 border-b">
+            <div class="relative pb-4 border-b" style="padding: 12px 20px;">
               <input id="searchOther-0" type="text" placeholder="Search by item name or SKU..."
-                     class="w-full border border-gray-300 rounded-2xl px-5 py-3 focus:outline-none focus:border-blue-500"
+                     style="width: 100%; background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.15); border-radius: var(--radius); color: var(--white); font-family: 'Barlow', sans-serif; font-size: 0.95rem; padding: 9px 12px;"
                      oninput="filterOther(0)" onkeydown="handleSearchKey(event, 0)" autocomplete="off">
               <ul id="suggestionList-0"
                   class="absolute left-0 right-0 z-50 bg-white border border-gray-200 rounded-2xl shadow-xl mt-1 max-h-72 overflow-y-auto hidden"
                   style="top:100%;"></ul>
             </div>
-          </div>
 
-          <div class="overflow-x-auto">
-            <table class="w-full">
+            <div class="overflow-x-auto">
+              <table class="w-full">
               <thead>
-                <tr class="bg-gray-100">
-                  <th class="text-left p-4 font-medium w-28">SKU</th>
-                  <th class="text-center p-4 font-medium w-28">Qty</th>
-                  <th class="text-left p-4 font-medium w-24">Unit</th>
-                  <th class="text-left p-4 font-medium">Item</th>
-                  <th class="text-center p-4 font-medium w-20">Remove</th>
+                <tr class="col-headers">
+                  <th class="col-h">SKU</th>
+                  <th class="col-h">Qty</th>
+                  <th class="col-h">Unit</th>
+                  <th class="col-h desc">Item</th>
+                  <th class="col-h">Remove</th>
                 </tr>
               </thead>
               <tbody id="materialListBody-0" class="divide-y">
@@ -86,23 +632,22 @@
         </div>
 
         <!-- ITEMS NOT LISTED -->
-        <div class="bg-white rounded-3xl shadow mb-10">
-          <div class="px-6 py-4 border-b flex items-center justify-between">
-            <h2 class="font-semibold text-xl">Items Not Listed</h2>
-            <button onclick="openAddModal(0)"
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-2xl transition-colors">
-              + Add New Item
-            </button>
+        <div class="section">
+          <div class="section-header">
+            <h3>Items Not Listed</h3>
+            <button onclick="openAddModal(0)" class="btn btn-primary" style="margin-left: auto;">+ Add New Item</button>
+            <div class="section-toggle">▼</div>
           </div>
-          <div class="overflow-x-auto">
-            <table class="w-full">
+          <div class="section-body">
+            <div class="overflow-x-auto">
+              <table class="w-full">
               <thead>
-                <tr class="bg-gray-100">
-                  <th class="text-left p-4 font-medium w-28">SKU</th>
-                  <th class="text-center p-4 font-medium w-28">Qty</th>
-                  <th class="text-left p-4 font-medium w-24">Unit</th>
-                  <th class="text-left p-4 font-medium">Item</th>
-                  <th class="text-center p-4 font-medium w-20">Remove</th>
+                <tr class="col-headers">
+                  <th class="col-h">SKU</th>
+                  <th class="col-h">Qty</th>
+                  <th class="col-h">Unit</th>
+                  <th class="col-h desc">Item</th>
+                  <th class="col-h">Remove</th>
                 </tr>
               </thead>
               <tbody id="tmpListBody-0" class="divide-y">
@@ -114,45 +659,55 @@
       </div>
     </div>
 
+    <!-- Summary Bar -->
+    <div class="summary-bar">
+      <div class="total">
+        <span class="total-label">Total:</span>
+        <span class="total-value" id="totalCost">$0.00</span>
+      </div>
+      <div class="actions">
+        <button class="btn btn-outline" onclick="generatePDF()">📄 PDF</button>
+        <button class="btn btn-outline" onclick="exportCSV()">📊 CSV</button>
+        <button class="btn btn-primary" onclick="clearAll()">🗑️ Clear All</button>
+      </div>
+    </div>
+
     <div id="addNewSectionContainer" class="mb-10">
-      <button id="addNewSectionBtn" onclick="addNewSection()"
-              class="w-full max-w-xs mx-auto block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-2xl transition-colors">
+      <button id="addNewSectionBtn" onclick="addNewSection()" class="btn btn-primary">
         + Add New Section
       </button>
     </div>
 
     <!-- Add New Item Modal -->
-    <div id="addModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
-      <div class="absolute inset-0 bg-black bg-opacity-40" onclick="closeAddModal()"></div>
-      <div class="relative bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md mx-4">
-        <h3 class="text-xl font-semibold text-gray-900 mb-6">Add Unlisted Item</h3>
+    <div id="addModal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <h3>Add Unlisted Item</h3>
         <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Item Name <span class="text-red-500">*</span></label>
-            <input id="modalItemName" type="text"
-                   class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500"
+          <div class="field">
+            <label>Item Name <span class="text-red-500">*</span></label>
+            <input id="modalItemName" type="text" placeholder="Enter item name">
                    placeholder="e.g. Custom conduit fitting"
                    onkeydown="if(event.key==='Enter') confirmAddModal()">
           </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
-            <input id="modalQty" type="number" value="1" min="0" step="any"
-                   class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500"
-                   onkeydown="if(event.key==='Enter') confirmAddModal()">
+          <div class="field">
+            <label>Quantity</label>
+            <input id="modalQty" type="number" value="1" min="0" step="any" onkeydown="if(event.key==='Enter') confirmAddModal()">
           </div>
           <div class="flex gap-4">
             <div class="flex-1">
-              <label class="block text-sm font-medium text-gray-500 mb-1">SKU (auto)</label>
+              <label>SKU (auto)</label>
               <div id="modalSkuPreview" class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm font-mono text-gray-400">TMP-001</div>
             </div>
             <div class="flex-1">
-              <label class="block text-sm font-medium text-gray-500 mb-1">Unit (auto)</label>
+              <label>Unit (auto)</label>
               <div class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-400">each</div>
             </div>
           </div>
         </div>
-        <div class="flex gap-3 mt-8">
-          <button onclick="closeAddModal()"
+        <div class="modal-actions">
+          <button onclick="closeAddModal()" class="btn btn-outline">Cancel</button>
+          <button onclick="confirmAddModal()" class="btn btn-primary">Add Item</button>
+        </div>
                   class="flex-1 border border-gray-300 text-gray-700 font-medium py-3 rounded-2xl hover:bg-gray-50 transition-colors">
             Cancel
           </button>
@@ -266,36 +821,41 @@
     function createJobSection(jobIndex) {
       return `
       <div class="job-section" data-job-index="${jobIndex}">
-        <div class="bg-white rounded-2xl shadow p-6 mb-8">
-          <div class="flex justify-between items-center mb-2">
-            <label class="block text-xl font-bold text-gray-800">Scope</label>
-            <button onclick="removeSection(${jobIndex})" class="text-red-500 hover:text-red-700 font-medium text-sm" title="Remove Section">✕</button>
+        <div class="section">
+          <div class="section-header">
+            <h3>Scope</h3>
+            <button onclick="removeSection(${jobIndex})" class="text-red-500 hover:text-red-700 font-medium text-sm" title="Remove Section" style="margin-left: auto;">✕</button>
+            <div class="section-toggle">▼</div>
           </div>
-          <textarea id="scope-${jobIndex}" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500" placeholder="Describe the scope of this job..."></textarea>
+          <div class="section-body">
+            <textarea id="scope-${jobIndex}" style="width: 100%; min-height: 7.5rem; resize: vertical; background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.15); border-radius: var(--radius); color: var(--white); font-family: 'Barlow', sans-serif; font-size: 0.95rem; padding: 9px 12px;" placeholder="Describe the scope of this job..."></textarea>
+          </div>
         </div>
 
-        <div class="bg-white rounded-3xl shadow mb-10">
-          <div class="px-6 pt-4 pb-0">
-            <h2 class="font-semibold text-xl mb-3">Material List</h2>
-            <div class="relative pb-4 border-b">
+        <div class="section">
+          <div class="section-header">
+            <h3>Material List</h3>
+            <div class="section-toggle">▼</div>
+          </div>
+          <div class="section-body">
+            <div class="relative pb-4 border-b" style="padding: 12px 20px;">
               <input id="searchOther-${jobIndex}" type="text" placeholder="Search by item name or SKU..."
-                     class="w-full border border-gray-300 rounded-2xl px-5 py-3 focus:outline-none focus:border-blue-500"
+                     style="width: 100%; background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.15); border-radius: var(--radius); color: var(--white); font-family: 'Barlow', sans-serif; font-size: 0.95rem; padding: 9px 12px;"
                      oninput="filterOther(${jobIndex})" onkeydown="handleSearchKey(event, ${jobIndex})" autocomplete="off">
               <ul id="suggestionList-${jobIndex}"
                   class="absolute left-0 right-0 z-50 bg-white border border-gray-200 rounded-2xl shadow-xl mt-1 max-h-72 overflow-y-auto hidden"
                   style="top:100%;"></ul>
             </div>
-          </div>
 
-          <div class="overflow-x-auto">
-            <table class="w-full">
+            <div class="overflow-x-auto">
+              <table class="w-full">
               <thead>
-                <tr class="bg-gray-100">
-                  <th class="text-left p-4 font-medium w-28">SKU</th>
-                  <th class="text-center p-4 font-medium w-28">Qty</th>
-                  <th class="text-left p-4 font-medium w-24">Unit</th>
-                  <th class="text-left p-4 font-medium">Item</th>
-                  <th class="text-center p-4 font-medium w-20">Remove</th>
+                <tr class="col-headers">
+                  <th class="col-h">SKU</th>
+                  <th class="col-h">Qty</th>
+                  <th class="col-h">Unit</th>
+                  <th class="col-h desc">Item</th>
+                  <th class="col-h">Remove</th>
                 </tr>
               </thead>
               <tbody id="materialListBody-${jobIndex}" class="divide-y">
@@ -304,24 +864,24 @@
             </table>
           </div>
         </div>
+      </div>
 
-        <div class="bg-white rounded-3xl shadow mb-10">
-          <div class="px-6 py-4 border-b flex items-center justify-between">
-            <h2 class="font-semibold text-xl">Items Not Listed</h2>
-            <button onclick="openAddModal(${jobIndex})"
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-2xl transition-colors">
-              + Add New Item
-            </button>
+        <div class="section">
+          <div class="section-header">
+            <h3>Items Not Listed</h3>
+            <button onclick="openAddModal(${jobIndex})" class="btn btn-primary" style="margin-left: auto;">+ Add New Item</button>
+            <div class="section-toggle">▼</div>
           </div>
-          <div class="overflow-x-auto">
-            <table class="w-full">
+          <div class="section-body">
+            <div class="overflow-x-auto">
+              <table class="w-full">
               <thead>
-                <tr class="bg-gray-100">
-                  <th class="text-left p-4 font-medium w-28">SKU</th>
-                  <th class="text-center p-4 font-medium w-28">Qty</th>
-                  <th class="text-left p-4 font-medium w-24">Unit</th>
-                  <th class="text-left p-4 font-medium">Item</th>
-                  <th class="text-center p-4 font-medium w-20">Remove</th>
+                <tr class="col-headers">
+                  <th class="col-h">SKU</th>
+                  <th class="col-h">Qty</th>
+                  <th class="col-h">Unit</th>
+                  <th class="col-h desc">Item</th>
+                  <th class="col-h">Remove</th>
                 </tr>
               </thead>
               <tbody id="tmpListBody-${jobIndex}" class="divide-y">
@@ -536,13 +1096,13 @@
       }
       job.addedItems.forEach((item, i) => {
         const row = document.createElement('tr');
-        row.className = 'hover:bg-gray-50';
+        row.className = 'item-row';
         row.innerHTML =
-          '<td class="p-4" style="font-family:monospace;font-size:0.75rem;color:#9ca3af">' + item.SKU + '</td>' +
-          '<td class="p-4 text-center"><input type="number" value="' + item.Qty + '" min="0" step="any" class="w-20 text-center border border-gray-300 rounded-xl py-2 focus:outline-none focus:border-blue-500" onchange="updateQty(' + jobIndex + ', ' + i + ', this.value)"></td>' +
-          '<td class="p-4 text-gray-500">' + item.Unit + '</td>' +
-          '<td class="p-4 font-medium text-gray-800">' + item.Item + '</td>' +
-          '<td class="p-4 text-center"><button onclick="removeItem(' + jobIndex + ', ' + i + ')" class="text-red-400 hover:text-red-600 font-bold text-lg" title="Remove">✕</button></td>';
+          '<td class="item-cell item-num">' + item.SKU + '</td>' +
+          '<td class="item-cell qty-cell"><input type="number" value="' + item.Qty + '" min="0" step="any" class="qty-input" onchange="updateQty(' + jobIndex + ', ' + i + ', this.value)"></td>' +
+          '<td class="item-cell">' + item.Unit + '</td>' +
+          '<td class="item-cell item-desc">' + item.Item + '</td>' +
+          '<td class="item-cell"><button onclick="removeItem(' + jobIndex + ', ' + i + ')" class="remove-btn" title="Remove">✕</button></td>';
         tbody.appendChild(row);
       });
     }
@@ -763,13 +1323,13 @@
       }
       job.tmpItems.forEach((item, i) => {
         const row = document.createElement('tr');
-        row.className = 'hover:bg-gray-50';
+        row.className = 'item-row';
         row.innerHTML =
-          '<td class="p-4" style="font-family:monospace;font-size:0.75rem;color:#9ca3af">' + item.SKU + '</td>' +
-          '<td class="p-4 text-center"><input type="number" value="' + item.Qty + '" min="0" step="any" class="w-20 text-center border border-gray-300 rounded-xl py-2 focus:outline-none focus:border-blue-500" onchange="updateTmpQty(' + jobIndex + ', ' + i + ', this.value)"></td>' +
-          '<td class="p-4 text-gray-500">' + item.Unit + '</td>' +
-          '<td class="p-4 font-medium text-gray-800">' + item.Item + '</td>' +
-          '<td class="p-4 text-center"><button onclick="removeTmpItem(' + jobIndex + ', ' + i + ')" class="text-red-400 hover:text-red-600 font-bold text-lg" title="Remove">&#x2715;</button></td>';
+          '<td class="item-cell item-num">' + item.SKU + '</td>' +
+          '<td class="item-cell qty-cell"><input type="number" value="' + item.Qty + '" min="0" step="any" class="qty-input" onchange="updateTmpQty(' + jobIndex + ', ' + i + ', this.value)"></td>' +
+          '<td class="item-cell">' + item.Unit + '</td>' +
+          '<td class="item-cell item-desc">' + item.Item + '</td>' +
+          '<td class="item-cell"><button onclick="removeTmpItem(' + jobIndex + ', ' + i + ')" class="remove-btn" title="Remove">✕</button></td>';
         tbody.appendChild(row);
       });
     }
@@ -784,6 +1344,22 @@
     document.addEventListener('click', e => {
       if (!e.target.closest('[id^="searchOther-"]') && !e.target.closest('[id^="suggestionList-"]'))
         hideSuggestions();
+    });
+
+    // Section toggle functionality
+    document.addEventListener('click', e => {
+      if (e.target.classList.contains('section-toggle')) {
+        const header = e.target.closest('.section-header');
+        const body = header.nextElementSibling;
+        const toggle = e.target;
+        if (body.style.display === 'none') {
+          body.style.display = 'block';
+          toggle.textContent = '▼';
+        } else {
+          body.style.display = 'none';
+          toggle.textContent = '▶';
+        }
+      }
     });
 
     window.onload = () => {
