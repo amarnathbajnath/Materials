@@ -528,7 +528,6 @@
       }
       job.addedItems.forEach((item, i) => {
         const row = document.createElement('tr');
-        row.className = 'hover:bg-gray-50';
         row.innerHTML =
           '<td class="p-4" style="font-family:monospace;font-size:0.75rem;color:#9ca3af">' + item.SKU + '</td>' +
           '<td class="p-4 text-center"><input type="number" value="' + item.Qty + '" min="0" step="any" class="w-20 text-center field-input" onchange="updateQty(' + jobIndex + ', ' + i + ', this.value)"></td>' +
@@ -755,7 +754,6 @@
       }
       job.tmpItems.forEach((item, i) => {
         const row = document.createElement('tr');
-        row.className = 'hover:bg-gray-50';
         row.innerHTML =
           '<td class="p-4" style="font-family:monospace;font-size:0.75rem;color:#9ca3af">' + item.SKU + '</td>' +
           '<td class="p-4 text-center"><input type="number" value="' + item.Qty + '" min="0" step="any" class="w-20 text-center field-input" onchange="updateTmpQty(' + jobIndex + ', ' + i + ', this.value)"></td>' +
