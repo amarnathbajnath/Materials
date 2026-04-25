@@ -30,6 +30,10 @@
       padding: 0;
     }
 
+    .hidden {
+      display: none !important;
+    }
+
     body {
       font-family: 'Barlow', sans-serif;
       background: var(--navy);
@@ -560,21 +564,18 @@
   </style>
 </head>
 <body>
-  <header>
-    <div>
-      <div class="logo">⚡<span>ELEC</span></div>
-    </div>
-    <div>
-      <h1>Job Costing Dashboard</h1>
-    </div>
-    <div class="header-right">
-      <button class="btn btn-outline" onclick="loadMaterials()">↻ Refresh</button>
-    </div>
-  </header>
-
   <div class="container">
+    <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; gap:18px; margin-bottom:32px;">
+      <div>
+        <h1 style="font-size:2.35rem; font-weight:800; margin-bottom:6px; color:var(--white);">⚡ Job Costing Dashboard ⚡</h1>
+        <p style="font-size:1rem; color:var(--muted);">Risha Vishal Electrical & Construction Co. Ltd.</p>
+      </div>
+      <div style="text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:10px;">
+        <p id="status" style="font-size:0.9rem; color:var(--green); font-weight:600;">⏳ Loading materials...</p>
+        <button onclick="loadMaterials()" class="btn btn-outline" style="padding:10px 18px;">↻ Refresh</button>
+      </div>
+    </div>
 
-    <!-- Job Details -->
     <div class="job-card">
       <h2>⚡ Job Information</h2>
       <div class="field"><label>Customer Name</label><input id="customer" type="text" placeholder="John Smith"></div>
@@ -584,190 +585,120 @@
 
     <div id="jobSections">
       <div class="job-section" data-job-index="0">
-        <!-- Scope -->
         <div class="section">
-          <div class="section-header">
+          <div class="section-header" style="cursor:default;">
             <h3>Scope</h3>
-            <button onclick="removeSection(0)" class="text-red-500 hover:text-red-700 font-medium text-sm" title="Remove Section" style="margin-left: auto;">✕</button>
-            <div class="section-toggle">▼</div>
           </div>
           <div class="section-body">
-            <textarea id="scope-0" style="width: 100%; min-height: 7.5rem; resize: vertical; background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.15); border-radius: var(--radius); color: var(--white); font-family: 'Barlow', sans-serif; font-size: 0.95rem; padding: 9px 12px;" placeholder="Describe the scope of this job..."></textarea>
+            <textarea id="scope-0" style="width:100%; min-height:7.5rem; resize:vertical; background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.12); border-radius:var(--radius); color:var(--white); font-family:'Barlow',sans-serif; font-size:0.95rem; padding:12px;" placeholder="Describe the scope of this job..."></textarea>
           </div>
         </div>
 
-        <!-- MATERIAL LIST -->
         <div class="section">
-          <div class="section-header">
+          <div class="section-header" style="cursor:default;">
             <h3>Material List</h3>
-            <div class="section-toggle">▼</div>
           </div>
           <div class="section-body">
-            <!-- Search row + dropdown — all in one relative container so dropdown isn't clipped -->
-            <div class="relative pb-4 border-b" style="padding: 12px 20px;">
+            <div style="position:relative; padding:16px 20px 12px;">
               <input id="searchOther-0" type="text" placeholder="Search by item name or SKU..."
-                     style="width: 100%; background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.15); border-radius: var(--radius); color: var(--white); font-family: 'Barlow', sans-serif; font-size: 0.95rem; padding: 9px 12px;"
+                     style="width:100%; background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.12); border-radius:var(--radius); color:var(--white); font-family:'Barlow',sans-serif; font-size:0.95rem; padding:12px;"
                      oninput="filterOther(0)" onkeydown="handleSearchKey(event, 0)" autocomplete="off">
-              <ul id="suggestionList-0"
-                  class="absolute left-0 right-0 z-50 bg-white border border-gray-200 rounded-2xl shadow-xl mt-1 max-h-72 overflow-y-auto hidden"
-                  style="top:100%;"></ul>
+              <ul id="suggestionList-0" class="hidden"
+                  style="position:absolute; left:0; right:0; background:white; border:1px solid rgba(226,232,240,0.9); border-radius:16px; box-shadow:0 12px 24px rgba(15,23,42,0.08); margin-top:8px; max-height:260px; overflow-y:auto; z-index:50;"></ul>
             </div>
 
-            <div class="overflow-x-auto">
-              <table class="w-full">
-              <thead>
-                <tr class="col-headers">
-                  <th class="col-h">SKU</th>
-                  <th class="col-h">Qty</th>
-                  <th class="col-h">Unit</th>
-                  <th class="col-h desc">Item</th>
-                  <th class="col-h">Remove</th>
-                </tr>
-              </thead>
-              <tbody id="materialListBody-0" class="divide-y">
-                <tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No items added yet. Search and add materials above.</td></tr>
-              </tbody>
-            </table>
+            <div style="overflow-x:auto;">
+              <table style="width:100%; border-collapse:collapse;">
+                <thead>
+                  <tr style="background:rgba(255,255,255,0.06);">
+                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">SKU</th>
+                    <th style="padding:14px 12px; text-align:center; color:var(--muted); font-size:0.82rem;">Qty</th>
+                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">Unit</th>
+                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">Item</th>
+                    <th style="padding:14px 12px; text-align:center; color:var(--muted); font-size:0.82rem;">Remove</th>
+                  </tr>
+                </thead>
+                <tbody id="materialListBody-0">
+                  <tr><td colspan="5" style="padding:32px 16px; text-align:center; color:var(--muted);">No items added yet. Search and add materials above.</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
-        <!-- ITEMS NOT LISTED -->
         <div class="section">
-          <div class="section-header">
+          <div class="section-header" style="display:flex; align-items:center; gap:12px;">
             <h3>Items Not Listed</h3>
-            <button onclick="openAddModal(0)" class="btn btn-primary" style="margin-left: auto;">+ Add New Item</button>
-            <div class="section-toggle">▼</div>
+            <button onclick="openAddModal(0)" class="btn btn-gold" style="margin-left:auto; color:var(--navy);">+ Add New Item</button>
           </div>
           <div class="section-body">
-            <div class="overflow-x-auto">
-              <table class="w-full">
-              <thead>
-                <tr class="col-headers">
-                  <th class="col-h">SKU</th>
-                  <th class="col-h">Qty</th>
-                  <th class="col-h">Unit</th>
-                  <th class="col-h desc">Item</th>
-                  <th class="col-h">Remove</th>
-                </tr>
-              </thead>
-              <tbody id="tmpListBody-0" class="divide-y">
-                <tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No unlisted items added yet. Click "Add New Item" to add one.</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Summary Bar -->
-    <div class="summary-bar">
-      <div class="total">
-        <span class="total-label">Total:</span>
-        <span class="total-value" id="totalCost">$0.00</span>
-      </div>
-      <div class="actions">
-        <button class="btn btn-outline" onclick="generatePDF()">📄 PDF</button>
-        <button class="btn btn-outline" onclick="exportCSV()">📊 CSV</button>
-        <button class="btn btn-primary" onclick="clearAll()">🗑️ Clear All</button>
-      </div>
-    </div>
-
-    <div id="addNewSectionContainer" class="mb-10">
-      <button id="addNewSectionBtn" onclick="addNewSection()" class="btn btn-primary">
-        + Add New Section
-      </button>
-    </div>
-
-    <!-- Add New Item Modal -->
-    <div id="addModal" class="modal-overlay hidden">
-      <div class="modal-content">
-        <h3>Add Unlisted Item</h3>
-        <div class="space-y-4">
-          <div class="field">
-            <label>Item Name <span class="text-red-500">*</span></label>
-            <input id="modalItemName" type="text" placeholder="Enter item name">
-                   placeholder="e.g. Custom conduit fitting"
-                   onkeydown="if(event.key==='Enter') confirmAddModal()">
-          </div>
-          <div class="field">
-            <label>Quantity</label>
-            <input id="modalQty" type="number" value="1" min="0" step="any" onkeydown="if(event.key==='Enter') confirmAddModal()">
-          </div>
-          <div class="flex gap-4">
-            <div class="flex-1">
-              <label>SKU (auto)</label>
-              <div id="modalSkuPreview" class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm font-mono text-gray-400">TMP-001</div>
-            </div>
-            <div class="flex-1">
-              <label>Unit (auto)</label>
-              <div class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-400">each</div>
+            <div style="overflow-x:auto;">
+              <table style="width:100%; border-collapse:collapse;">
+                <thead>
+                  <tr style="background:rgba(255,255,255,0.06);">
+                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">SKU</th>
+                    <th style="padding:14px 12px; text-align:center; color:var(--muted); font-size:0.82rem;">Qty</th>
+                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">Unit</th>
+                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">Item</th>
+                    <th style="padding:14px 12px; text-align:center; color:var(--muted); font-size:0.82rem;">Remove</th>
+                  </tr>
+                </thead>
+                <tbody id="tmpListBody-0">
+                  <tr><td colspan="5" style="padding:32px 16px; text-align:center; color:var(--muted);">No unlisted items added yet. Click "Add New Item" to add one.</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
-        <div class="modal-actions">
-          <button onclick="closeAddModal()" class="btn btn-outline">Cancel</button>
-          <button onclick="confirmAddModal()" class="btn btn-primary">Add Item</button>
+      </div>
+    </div>
+
+    <div style="margin:32px 0;">
+      <button id="addNewSectionBtn" onclick="addNewSection()" class="btn btn-gold" style="color:var(--navy);">+ Add New Section</button>
+    </div>
+
+    <div style="display:flex; flex-wrap:wrap; gap:14px; margin-bottom:32px;">
+      <button onclick="generatePDF()" class="btn btn-outline">PDF</button>
+      <button onclick="exportCSV()" class="btn btn-outline">CSV</button>
+      <button onclick="clearAll()" class="btn btn-gold" style="color:var(--navy);">Clear All</button>
+    </div>
+
+    <div id="addModal" class="modal-overlay hidden" style="position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.45);">
+      <div class="modal-content" style="background:var(--navy2); border:1px solid rgba(255,255,255,0.14); border-radius:18px; padding:28px; width:min(100%,420px); position:relative;">
+        <h3 style="font-size:1.25rem; margin-bottom:18px; color:var(--gold);">Add Unlisted Item</h3>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div class="field"><label>Item Name <span style="color:#fdd835;">*</span></label><input id="modalItemName" type="text" placeholder="Enter item name" style="width:100%;" onkeydown="if(event.key==='Enter') confirmAddModal()"></div>
+          <div class="field"><label>Quantity</label><input id="modalQty" type="number" value="1" min="0" step="any" style="width:100%;" onkeydown="if(event.key==='Enter') confirmAddModal()"></div>
+          <div style="display:flex; gap:14px;">
+            <div class="field" style="flex:1;"><label>SKU (auto)</label><div id="modalSkuPreview" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius); padding:12px; color:var(--muted); font-family:monospace;">TMP-001</div></div>
+            <div class="field" style="flex:1;"><label>Unit (auto)</label><div style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius); padding:12px; color:var(--muted);">each</div></div>
+          </div>
         </div>
-                  class="flex-1 border border-gray-300 text-gray-700 font-medium py-3 rounded-2xl hover:bg-gray-50 transition-colors">
-            Cancel
-          </button>
-          <button onclick="confirmAddModal()"
-                  class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-2xl transition-colors">
-            Add Item
-          </button>
+        <div style="display:flex; gap:12px; margin-top:24px;">
+          <button onclick="closeAddModal()" class="btn btn-outline" style="flex:1;">Cancel</button>
+          <button onclick="confirmAddModal()" class="btn btn-gold" style="flex:1; color:var(--navy);">Add Item</button>
         </div>
       </div>
     </div>
 
-    <!-- Qty Modal (search selection) -->
-    <div id="qtyModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
-      <div class="absolute inset-0 bg-black bg-opacity-40" onclick="closeQtyModal()"></div>
-      <div class="relative bg-white rounded-3xl shadow-2xl p-8 w-full max-w-sm mx-4">
-        <h3 class="text-xl font-semibold text-gray-900 mb-1" id="qtyModalTitle">Add Item</h3>
-        <p id="qtyModalSku" class="text-xs font-mono text-gray-400 mb-6"></p>
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
-            <input id="qtyModalQty" type="number" value="1" min="0" step="any"
-                   class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500"
-                   onkeydown="if(event.key==='Enter') confirmQtyModal()">
-          </div>
-          <div class="flex gap-4">
-            <div class="flex-1">
-              <label class="block text-sm font-medium text-gray-500 mb-1">Unit</label>
-              <div id="qtyModalUnit" class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-400"></div>
-            </div>
-          </div>
+    <div id="qtyModal" class="modal-overlay hidden" style="position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.45);">
+      <div style="background:var(--navy2); border:1px solid rgba(255,255,255,0.14); border-radius:18px; padding:28px; width:min(100%,420px); position:relative;">
+        <h3 id="qtyModalTitle" style="font-size:1.25rem; margin-bottom:12px; color:var(--gold);">Add Item</h3>
+        <p id="qtyModalSku" style="font-family:monospace; color:var(--muted); margin-bottom:16px;"></p>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div class="field"><label>Quantity</label><input id="qtyModalQty" type="number" value="1" min="0" step="any" style="width:100%;" onkeydown="if(event.key==='Enter') confirmQtyModal()"></div>
+          <div class="field"><label>Unit</label><div id="qtyModalUnit" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius); padding:12px; color:var(--muted);"></div></div>
         </div>
-        <div class="flex gap-3 mt-8">
-          <button onclick="closeQtyModal()"
-                  class="flex-1 border border-gray-300 text-gray-700 font-medium py-3 rounded-2xl hover:bg-gray-50 transition-colors">
-            Cancel
-          </button>
-          <button onclick="confirmQtyModal()"
-                  class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-2xl transition-colors">
-            Add to List
-          </button>
+        <div style="display:flex; gap:12px; margin-top:24px;">
+          <button onclick="closeQtyModal()" class="btn btn-outline" style="flex:1;">Cancel</button>
+          <button onclick="confirmQtyModal()" class="btn btn-gold" style="flex:1; color:var(--navy);">Add to List</button>
         </div>
       </div>
     </div>
 
-    <!-- Notes -->
-    <div class="bg-white rounded-3xl shadow p-6 mb-10">
-      <h2 class="font-semibold text-xl mb-3">Notes</h2>
-      <textarea id="notes" rows="5" class="w-full border border-gray-300 rounded-2xl px-5 py-4 focus:outline-none focus:border-blue-500" placeholder="Additional notes for this job..."></textarea>
-    </div>
-
-    <!-- Action Buttons -->
-    <div class="bg-emerald-600 text-white rounded-3xl p-8">
-      <button onclick="generatePDF()"
-              class="w-full bg-white text-emerald-700 hover:bg-emerald-50 font-semibold py-4 rounded-2xl flex items-center justify-center gap-3 text-xl transition-colors">
-        Share Material List PDF
-      </button>
-      <button onclick="exportCSV()"
-              class="mt-3 w-full border border-white text-white hover:bg-emerald-700 font-medium py-4 rounded-2xl flex items-center justify-center gap-3 transition-colors">
-        Share Material List CSV
-      </button>
+    <div class="section" style="padding:24px; margin-bottom:32px;">
+      <h2 style="margin-bottom:16px; color:var(--white);">Notes</h2>
+      <textarea id="notes" rows="5" style="width:100%; background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.12); border-radius:var(--radius); color:var(--white); font-family:'Barlow',sans-serif; font-size:0.95rem; padding:14px;" placeholder="Additional notes for this job..."></textarea>
     </div>
   </div>
 
@@ -822,72 +753,68 @@
       return `
       <div class="job-section" data-job-index="${jobIndex}">
         <div class="section">
-          <div class="section-header">
+          <div class="section-header" style="cursor:default;">
             <h3>Scope</h3>
-            <button onclick="removeSection(${jobIndex})" class="text-red-500 hover:text-red-700 font-medium text-sm" title="Remove Section" style="margin-left: auto;">✕</button>
-            <div class="section-toggle">▼</div>
+            <button onclick="removeSection(${jobIndex})" class="btn btn-outline" style="margin-left:auto; padding:8px 12px;">Remove</button>
           </div>
           <div class="section-body">
-            <textarea id="scope-${jobIndex}" style="width: 100%; min-height: 7.5rem; resize: vertical; background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.15); border-radius: var(--radius); color: var(--white); font-family: 'Barlow', sans-serif; font-size: 0.95rem; padding: 9px 12px;" placeholder="Describe the scope of this job..."></textarea>
+            <textarea id="scope-${jobIndex}" style="width:100%; min-height:7.5rem; resize:vertical; background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.12); border-radius:var(--radius); color:var(--white); font-family:'Barlow',sans-serif; font-size:0.95rem; padding:12px;" placeholder="Describe the scope of this job..."></textarea>
           </div>
         </div>
 
         <div class="section">
-          <div class="section-header">
+          <div class="section-header" style="cursor:default;">
             <h3>Material List</h3>
-            <div class="section-toggle">▼</div>
           </div>
           <div class="section-body">
-            <div class="relative pb-4 border-b" style="padding: 12px 20px;">
+            <div style="position:relative; padding:16px 20px 12px;">
               <input id="searchOther-${jobIndex}" type="text" placeholder="Search by item name or SKU..."
-                     style="width: 100%; background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.15); border-radius: var(--radius); color: var(--white); font-family: 'Barlow', sans-serif; font-size: 0.95rem; padding: 9px 12px;"
+                     style="width:100%; background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.12); border-radius:var(--radius); color:var(--white); font-family:'Barlow',sans-serif; font-size:0.95rem; padding:12px;"
                      oninput="filterOther(${jobIndex})" onkeydown="handleSearchKey(event, ${jobIndex})" autocomplete="off">
-              <ul id="suggestionList-${jobIndex}"
-                  class="absolute left-0 right-0 z-50 bg-white border border-gray-200 rounded-2xl shadow-xl mt-1 max-h-72 overflow-y-auto hidden"
-                  style="top:100%;"></ul>
+              <ul id="suggestionList-${jobIndex}" class="hidden"
+                  style="position:absolute; left:0; right:0; background:white; border:1px solid rgba(226,232,240,0.9); border-radius:16px; box-shadow:0 12px 24px rgba(15,23,42,0.08); margin-top:8px; max-height:260px; overflow-y:auto; z-index:50;"></ul>
             </div>
-
-            <div class="overflow-x-auto">
-              <table class="w-full">
-              <thead>
-                <tr class="col-headers">
-                  <th class="col-h">SKU</th>
-                  <th class="col-h">Qty</th>
-                  <th class="col-h">Unit</th>
-                  <th class="col-h desc">Item</th>
-                  <th class="col-h">Remove</th>
-                </tr>
-              </thead>
-              <tbody id="materialListBody-${jobIndex}" class="divide-y">
-                <tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No items added yet. Search and add materials above.</td></tr>
-              </tbody>
-            </table>
+            <div style="overflow-x:auto;">
+              <table style="width:100%; border-collapse:collapse;">
+                <thead>
+                  <tr style="background:rgba(255,255,255,0.06);">
+                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">SKU</th>
+                    <th style="padding:14px 12px; text-align:center; color:var(--muted); font-size:0.82rem;">Qty</th>
+                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">Unit</th>
+                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">Item</th>
+                    <th style="padding:14px 12px; text-align:center; color:var(--muted); font-size:0.82rem;">Remove</th>
+                  </tr>
+                </thead>
+                <tbody id="materialListBody-${jobIndex}">
+                  <tr><td colspan="5" style="padding:32px 16px; text-align:center; color:var(--muted);">No items added yet. Search and add materials above.</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
 
         <div class="section">
-          <div class="section-header">
+          <div class="section-header" style="display:flex; align-items:center; gap:12px;">
             <h3>Items Not Listed</h3>
-            <button onclick="openAddModal(${jobIndex})" class="btn btn-primary" style="margin-left: auto;">+ Add New Item</button>
-            <div class="section-toggle">▼</div>
+            <button onclick="openAddModal(${jobIndex})" class="btn btn-gold" style="margin-left:auto; color:var(--navy);">+ Add New Item</button>
           </div>
           <div class="section-body">
-            <div class="overflow-x-auto">
-              <table class="w-full">
-              <thead>
-                <tr class="col-headers">
-                  <th class="col-h">SKU</th>
-                  <th class="col-h">Qty</th>
-                  <th class="col-h">Unit</th>
-                  <th class="col-h desc">Item</th>
-                  <th class="col-h">Remove</th>
-                </tr>
-              </thead>
-              <tbody id="tmpListBody-${jobIndex}" class="divide-y">
-                <tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No unlisted items added yet. Click "Add New Item" to add one.</td></tr>
-              </tbody>
-            </table>
+            <div style="overflow-x:auto;">
+              <table style="width:100%; border-collapse:collapse;">
+                <thead>
+                  <tr style="background:rgba(255,255,255,0.06);">
+                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">SKU</th>
+                    <th style="padding:14px 12px; text-align:center; color:var(--muted); font-size:0.82rem;">Qty</th>
+                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">Unit</th>
+                    <th style="padding:14px 12px; text-align:left; color:var(--muted); font-size:0.82rem;">Item</th>
+                    <th style="padding:14px 12px; text-align:center; color:var(--muted); font-size:0.82rem;">Remove</th>
+                  </tr>
+                </thead>
+                <tbody id="tmpListBody-${jobIndex}">
+                  <tr><td colspan="5" style="padding:32px 16px; text-align:center; color:var(--muted);">No unlisted items added yet. Click "Add New Item" to add one.</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>`;
@@ -1344,22 +1271,6 @@
     document.addEventListener('click', e => {
       if (!e.target.closest('[id^="searchOther-"]') && !e.target.closest('[id^="suggestionList-"]'))
         hideSuggestions();
-    });
-
-    // Section toggle functionality
-    document.addEventListener('click', e => {
-      if (e.target.classList.contains('section-toggle')) {
-        const header = e.target.closest('.section-header');
-        const body = header.nextElementSibling;
-        const toggle = e.target;
-        if (body.style.display === 'none') {
-          body.style.display = 'block';
-          toggle.textContent = '▼';
-        } else {
-          body.style.display = 'none';
-          toggle.textContent = '▶';
-        }
-      }
     });
 
     window.onload = () => {
