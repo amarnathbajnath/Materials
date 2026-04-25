@@ -531,9 +531,9 @@
         row.className = 'hover:bg-gray-50';
         row.innerHTML =
           '<td class="p-4" style="font-family:monospace;font-size:0.75rem;color:#9ca3af">' + item.SKU + '</td>' +
-          '<td class="p-4 text-center"><input type="number" value="' + item.Qty + '" min="0" step="any" class="w-20 text-center border border-gray-300 rounded-xl py-2 focus:outline-none focus:border-blue-500" onchange="updateQty(' + jobIndex + ', ' + i + ', this.value)"></td>' +
-          '<td class="p-4 text-gray-500">' + item.Unit + '</td>' +
-          '<td class="p-4 font-medium text-gray-800">' + item.Item + '</td>' +
+          '<td class="p-4 text-center"><input type="number" value="' + item.Qty + '" min="0" step="any" class="w-20 text-center field-input" onchange="updateQty(' + jobIndex + ', ' + i + ', this.value)"></td>' +
+          '<td class="p-4 text-gray-300">' + item.Unit + '</td>' +
+          '<td class="p-4 font-medium text-white">' + item.Item + '</td>' +
           '<td class="p-4 text-center"><button onclick="removeItem(' + jobIndex + ', ' + i + ')" class="text-red-400 hover:text-red-600 font-bold text-lg" title="Remove">✕</button></td>';
         tbody.appendChild(row);
       });
@@ -758,9 +758,9 @@
         row.className = 'hover:bg-gray-50';
         row.innerHTML =
           '<td class="p-4" style="font-family:monospace;font-size:0.75rem;color:#9ca3af">' + item.SKU + '</td>' +
-          '<td class="p-4 text-center"><input type="number" value="' + item.Qty + '" min="0" step="any" class="w-20 text-center border border-gray-300 rounded-xl py-2 focus:outline-none focus:border-blue-500" onchange="updateTmpQty(' + jobIndex + ', ' + i + ', this.value)"></td>' +
-          '<td class="p-4 text-gray-500">' + item.Unit + '</td>' +
-          '<td class="p-4 font-medium text-gray-800">' + item.Item + '</td>' +
+          '<td class="p-4 text-center"><input type="number" value="' + item.Qty + '" min="0" step="any" class="w-20 text-center field-input" onchange="updateTmpQty(' + jobIndex + ', ' + i + ', this.value)"></td>' +
+          '<td class="p-4 text-gray-300">' + item.Unit + '</td>' +
+          '<td class="p-4 font-medium text-white">' + item.Item + '</td>' +
           '<td class="p-4 text-center"><button onclick="removeTmpItem(' + jobIndex + ', ' + i + ')" class="text-red-400 hover:text-red-600 font-bold text-lg" title="Remove">&#x2715;</button></td>';
         tbody.appendChild(row);
       });
