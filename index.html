@@ -5,71 +5,72 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Electrical Job Costing Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="styles.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&display=swap');
-    body { font-family: 'Barlow', sans-serif; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+    body { font-family: 'Inter', system_ui, sans-serif; }
     #scope { min-height: 7.5rem; resize: vertical; }
   </style>
 </head>
-<body class="min-h-screen pb-12 app-shell">
-  <div class="max-w-6xl mx-auto p-6 app-container">
-    <div class="flex justify-between items-center mb-8 page-header">
+<body class="bg-gray-50 min-h-screen pb-12">
+  <div class="max-w-6xl mx-auto p-6">
+    <div class="flex justify-between items-center mb-8">
       <div>
-        <h1 class="text-3xl font-semibold title-white">⚡Job Costing Dashboard⚡</h1>
-        <p class="subtitle">Risha Vishal Electrical &amp; Construction Co. Ltd.</p>
+        <h1 class="text-3xl font-semibold text-gray-900">⚡Job Costing Dashboard⚡</h1>
+        <p class="text-gray-600">Risha Vishal Electrical &amp; Construction Co. Ltd.</p>
       </div>
       <div class="text-right flex flex-col items-end gap-2">
         <p id="status" class="text-sm text-emerald-600 font-medium">⏳ Loading materials...</p>
-        <button onclick="loadMaterials()" class="btn-outline text-xs px-3 py-1.5">↻ Refresh</button>
+        <button onclick="loadMaterials()" class="text-xs border border-gray-300 text-gray-500 hover:text-blue-600 hover:border-blue-400 px-3 py-1.5 rounded-xl transition-colors">↻ Refresh</button>
       </div>
     </div>
 
     <!-- Job Details -->
-    <div class="rounded-2xl shadow p-6 mb-6 grid grid-cols-1 md:grid-cols-3 gap-6 panel">
+    <div class="bg-white rounded-2xl shadow p-6 mb-6 grid grid-cols-1 md:grid-cols-3 gap-6">
       <div>
-        <label class="field-label">Customer Name</label>
-        <input id="customer" type="text" class="w-full rounded-xl px-4 py-3 focus:outline-none field-input" placeholder="John Smith">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Customer Name</label>
+        <input id="customer" type="text" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500" placeholder="John Smith">
       </div>
       <div>
-        <label class="field-label">Job Address</label>
-        <input id="address" type="text" class="w-full rounded-xl px-4 py-3 focus:outline-none field-input" placeholder="123 Main Road, Chaguanas">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Job Address</label>
+        <input id="address" type="text" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500" placeholder="123 Main Road, Chaguanas">
       </div>
       <div>
-        <label class="field-label">Date / Reference</label>
-        <input id="date" type="date" class="w-full rounded-xl px-4 py-3 focus:outline-none field-input">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Date / Reference</label>
+        <input id="date" type="date" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500">
       </div>
     </div>
 
     <div id="jobSections">
       <div class="job-section" data-job-index="0">
         <!-- Scope (standalone, 5-line expandable) -->
-        <div class="rounded-2xl shadow p-6 mb-8 panel">
+        <div class="bg-white rounded-2xl shadow p-6 mb-8">
           <div class="flex justify-between items-center mb-2">
-            <label class="block text-xl font-bold title-white">Scope</label>
+            <label class="block text-xl font-bold text-gray-800">Scope</label>
             <button onclick="removeSection(0)" class="text-red-500 hover:text-red-700 font-medium text-sm" title="Remove Section">✕</button>
           </div>
-          <textarea id="scope-0" class="w-full rounded-xl px-4 py-3 focus:outline-none field-input" placeholder="Describe the scope of this job..."></textarea>
+          <textarea id="scope-0" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500" placeholder="Describe the scope of this job..."></textarea>
         </div>
 
         <!-- MATERIAL LIST -->
-        <div class="rounded-3xl shadow mb-10 table-panel">
+        <div class="bg-white rounded-3xl shadow mb-10">
           <div class="px-6 pt-4 pb-0">
-            <h2 class="font-semibold text-xl mb-3 title-white">Material List</h2>
+            <h2 class="font-semibold text-xl mb-3">Material List</h2>
             <!-- Search row + dropdown — all in one relative container so dropdown isn't clipped -->
             <div class="relative pb-4 border-b">
               <input id="searchOther-0" type="text" placeholder="Search by item name or SKU..."
-                     class="w-full rounded-2xl px-5 py-3 focus:outline-none field-input"
+                     class="w-full border border-gray-300 rounded-2xl px-5 py-3 focus:outline-none focus:border-blue-500"
                      oninput="filterOther(0)" onkeydown="handleSearchKey(event, 0)" autocomplete="off">
-              <ul id="suggestionList-0" class="suggestion-list hidden" style="top:100%;"></ul>
+              <ul id="suggestionList-0"
+                  class="absolute left-0 right-0 z-50 bg-white border border-gray-200 rounded-2xl shadow-xl mt-1 max-h-72 overflow-y-auto hidden"
+                  style="top:100%;"></ul>
             </div>
           </div>
 
           <div class="overflow-x-auto">
             <table class="w-full">
-              <thead class="table-header">
-                <tr>
+              <thead>
+                <tr class="bg-gray-100">
                   <th class="text-left p-4 font-medium w-28">SKU</th>
                   <th class="text-center p-4 font-medium w-28">Qty</th>
                   <th class="text-left p-4 font-medium w-24">Unit</th>
@@ -77,7 +78,7 @@
                   <th class="text-center p-4 font-medium w-20">Remove</th>
                 </tr>
               </thead>
-              <tbody id="materialListBody-0">
+              <tbody id="materialListBody-0" class="divide-y">
                 <tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No items added yet. Search and add materials above.</td></tr>
               </tbody>
             </table>
@@ -85,17 +86,18 @@
         </div>
 
         <!-- ITEMS NOT LISTED -->
-        <div class="rounded-3xl shadow mb-10 panel">
+        <div class="bg-white rounded-3xl shadow mb-10">
           <div class="px-6 py-4 border-b flex items-center justify-between">
-            <h2 class="font-semibold text-xl title-white">Items Not Listed</h2>
-            <button onclick="openAddModal(0)" class="btn-primary px-6 py-2.5">
+            <h2 class="font-semibold text-xl">Items Not Listed</h2>
+            <button onclick="openAddModal(0)"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-2xl transition-colors">
               + Add New Item
             </button>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full">
-              <thead class="table-header">
-                <tr>
+              <thead>
+                <tr class="bg-gray-100">
                   <th class="text-left p-4 font-medium w-28">SKU</th>
                   <th class="text-center p-4 font-medium w-28">Qty</th>
                   <th class="text-left p-4 font-medium w-24">Unit</th>
@@ -113,7 +115,8 @@
     </div>
 
     <div id="addNewSectionContainer" class="mb-10">
-      <button id="addNewSectionBtn" onclick="addNewSection()" class="btn-primary w-full max-w-xs mx-auto block text-center">
+      <button id="addNewSectionBtn" onclick="addNewSection()"
+              class="w-full max-w-xs mx-auto block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-2xl transition-colors">
         + Add New Section
       </button>
     </div>
@@ -121,38 +124,40 @@
     <!-- Add New Item Modal -->
     <div id="addModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
       <div class="absolute inset-0 bg-black bg-opacity-40" onclick="closeAddModal()"></div>
-      <div class="modal-card mx-4">
-        <h3 class="modal-title">Add Unlisted Item</h3>
+      <div class="relative bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md mx-4">
+        <h3 class="text-xl font-semibold text-gray-900 mb-6">Add Unlisted Item</h3>
         <div class="space-y-4">
           <div>
-            <label class="modal-label">Item Name <span class="text-accent">*</span></label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Item Name <span class="text-red-500">*</span></label>
             <input id="modalItemName" type="text"
-                   class="w-full rounded-xl px-4 py-3 focus:outline-none field-input"
+                   class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500"
                    placeholder="e.g. Custom conduit fitting"
                    onkeydown="if(event.key==='Enter') confirmAddModal()">
           </div>
           <div>
-            <label class="modal-label">Quantity</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
             <input id="modalQty" type="number" value="1" min="0" step="any"
-                   class="w-full rounded-xl px-4 py-3 focus:outline-none field-input"
+                   class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500"
                    onkeydown="if(event.key==='Enter') confirmAddModal()">
           </div>
           <div class="flex gap-4">
             <div class="flex-1">
-              <label class="modal-label">SKU (auto)</label>
-              <div id="modalSkuPreview" class="modal-badge rounded-xl px-4 py-3 text-sm font-mono">TMP-001</div>
+              <label class="block text-sm font-medium text-gray-500 mb-1">SKU (auto)</label>
+              <div id="modalSkuPreview" class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm font-mono text-gray-400">TMP-001</div>
             </div>
             <div class="flex-1">
-              <label class="modal-label">Unit (auto)</label>
-              <div class="modal-badge rounded-xl px-4 py-3 text-sm">each</div>
+              <label class="block text-sm font-medium text-gray-500 mb-1">Unit (auto)</label>
+              <div class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-400">each</div>
             </div>
           </div>
         </div>
-        <div class="flex gap-3 mt-8 modal-actions">
-          <button onclick="closeAddModal()" class="btn-outline flex-1 py-3">
+        <div class="flex gap-3 mt-8">
+          <button onclick="closeAddModal()"
+                  class="flex-1 border border-gray-300 text-gray-700 font-medium py-3 rounded-2xl hover:bg-gray-50 transition-colors">
             Cancel
           </button>
-          <button onclick="confirmAddModal()" class="btn-primary flex-1 py-3">
+          <button onclick="confirmAddModal()"
+                  class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-2xl transition-colors">
             Add Item
           </button>
         </div>
@@ -162,28 +167,30 @@
     <!-- Qty Modal (search selection) -->
     <div id="qtyModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
       <div class="absolute inset-0 bg-black bg-opacity-40" onclick="closeQtyModal()"></div>
-      <div class="modal-card mx-4">
-        <h3 class="modal-title" id="qtyModalTitle">Add Item</h3>
-        <p id="qtyModalSku" class="text-xs font-mono modal-meta"></p>
+      <div class="relative bg-white rounded-3xl shadow-2xl p-8 w-full max-w-sm mx-4">
+        <h3 class="text-xl font-semibold text-gray-900 mb-1" id="qtyModalTitle">Add Item</h3>
+        <p id="qtyModalSku" class="text-xs font-mono text-gray-400 mb-6"></p>
         <div class="space-y-4">
           <div>
-            <label class="modal-label">Quantity</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
             <input id="qtyModalQty" type="number" value="1" min="0" step="any"
-                   class="w-full rounded-xl px-4 py-3 focus:outline-none field-input"
+                   class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500"
                    onkeydown="if(event.key==='Enter') confirmQtyModal()">
           </div>
           <div class="flex gap-4">
             <div class="flex-1">
-              <label class="modal-label">Unit</label>
-              <div id="qtyModalUnit" class="modal-badge rounded-xl px-4 py-3 text-sm"></div>
+              <label class="block text-sm font-medium text-gray-500 mb-1">Unit</label>
+              <div id="qtyModalUnit" class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-400"></div>
             </div>
           </div>
         </div>
-        <div class="flex gap-3 mt-8 modal-actions">
-          <button onclick="closeQtyModal()" class="btn-outline flex-1 py-3">
+        <div class="flex gap-3 mt-8">
+          <button onclick="closeQtyModal()"
+                  class="flex-1 border border-gray-300 text-gray-700 font-medium py-3 rounded-2xl hover:bg-gray-50 transition-colors">
             Cancel
           </button>
-          <button onclick="confirmQtyModal()" class="btn-primary flex-1 py-3">
+          <button onclick="confirmQtyModal()"
+                  class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-2xl transition-colors">
             Add to List
           </button>
         </div>
@@ -191,19 +198,19 @@
     </div>
 
     <!-- Notes -->
-    <div class="rounded-3xl shadow p-6 mb-10 panel">
-      <h2 class="font-semibold text-xl mb-3 title-white">Notes</h2>
-      <textarea id="notes" rows="5" class="w-full rounded-2xl px-5 py-4 focus:outline-none field-input" placeholder="Additional notes for this job..."></textarea>
+    <div class="bg-white rounded-3xl shadow p-6 mb-10">
+      <h2 class="font-semibold text-xl mb-3">Notes</h2>
+      <textarea id="notes" rows="5" class="w-full border border-gray-300 rounded-2xl px-5 py-4 focus:outline-none focus:border-blue-500" placeholder="Additional notes for this job..."></textarea>
     </div>
 
     <!-- Action Buttons -->
-    <div class="rounded-3xl p-8 panel action-panel-green">
+    <div class="bg-emerald-600 text-white rounded-3xl p-8">
       <button onclick="generatePDF()"
-              class="btn-secondary w-full font-semibold py-4 rounded-2xl flex items-center justify-center gap-3 text-xl">
+              class="w-full bg-white text-emerald-700 hover:bg-emerald-50 font-semibold py-4 rounded-2xl flex items-center justify-center gap-3 text-xl transition-colors">
         Share Material List PDF
       </button>
       <button onclick="exportCSV()"
-              class="mt-3 btn-outline w-full font-medium py-4 rounded-2xl flex items-center justify-center gap-3">
+              class="mt-3 w-full border border-white text-white hover:bg-emerald-700 font-medium py-4 rounded-2xl flex items-center justify-center gap-3 transition-colors">
         Share Material List CSV
       </button>
     </div>
@@ -259,64 +266,65 @@
     function createJobSection(jobIndex) {
       return `
       <div class="job-section" data-job-index="${jobIndex}">
-        <div class="rounded-2xl shadow p-6 mb-8 panel">
+        <div class="bg-white rounded-2xl shadow p-6 mb-8">
           <div class="flex justify-between items-center mb-2">
-            <label class="block text-xl font-bold title-white">Scope</label>
+            <label class="block text-xl font-bold text-gray-800">Scope</label>
             <button onclick="removeSection(${jobIndex})" class="text-red-500 hover:text-red-700 font-medium text-sm" title="Remove Section">✕</button>
           </div>
-          <textarea id="scope-${jobIndex}" class="w-full rounded-xl px-4 py-3 focus:outline-none field-input" placeholder="Describe the scope of this job..."></textarea>
+          <textarea id="scope-${jobIndex}" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500" placeholder="Describe the scope of this job..."></textarea>
         </div>
 
-        <div class="rounded-3xl shadow mb-10 table-panel">
+        <div class="bg-white rounded-3xl shadow mb-10">
           <div class="px-6 pt-4 pb-0">
-            <h2 class="font-semibold text-xl mb-3 title-white">Material List</h2>
+            <h2 class="font-semibold text-xl mb-3">Material List</h2>
             <div class="relative pb-4 border-b">
               <input id="searchOther-${jobIndex}" type="text" placeholder="Search by item name or SKU..."
-                     class="w-full rounded-2xl px-5 py-3 focus:outline-none field-input"
+                     class="w-full border border-gray-300 rounded-2xl px-5 py-3 focus:outline-none focus:border-blue-500"
                      oninput="filterOther(${jobIndex})" onkeydown="handleSearchKey(event, ${jobIndex})" autocomplete="off">
               <ul id="suggestionList-${jobIndex}"
-                  class="suggestion-list hidden"
+                  class="absolute left-0 right-0 z-50 bg-white border border-gray-200 rounded-2xl shadow-xl mt-1 max-h-72 overflow-y-auto hidden"
                   style="top:100%;"></ul>
             </div>
           </div>
 
           <div class="overflow-x-auto">
             <table class="w-full">
-              <thead class="table-header">
-                <tr>
-                  <th class="text-left font-medium w-28">SKU</th>
-                  <th class="text-center font-medium w-28">Qty</th>
-                  <th class="text-left font-medium w-24">Unit</th>
-                  <th class="text-left font-medium">Item</th>
-                  <th class="text-center font-medium w-20">Remove</th>
+              <thead>
+                <tr class="bg-gray-100">
+                  <th class="text-left p-4 font-medium w-28">SKU</th>
+                  <th class="text-center p-4 font-medium w-28">Qty</th>
+                  <th class="text-left p-4 font-medium w-24">Unit</th>
+                  <th class="text-left p-4 font-medium">Item</th>
+                  <th class="text-center p-4 font-medium w-20">Remove</th>
                 </tr>
               </thead>
-              <tbody id="materialListBody-${jobIndex}">
+              <tbody id="materialListBody-${jobIndex}" class="divide-y">
                 <tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No items added yet. Search and add materials above.</td></tr>
               </tbody>
             </table>
           </div>
         </div>
 
-        <div class="rounded-3xl shadow mb-10 table-panel">
+        <div class="bg-white rounded-3xl shadow mb-10">
           <div class="px-6 py-4 border-b flex items-center justify-between">
-            <h2 class="font-semibold text-xl title-white">Items Not Listed</h2>
-            <button onclick="openAddModal(${jobIndex})" class="btn-primary px-6 py-2.5">
+            <h2 class="font-semibold text-xl">Items Not Listed</h2>
+            <button onclick="openAddModal(${jobIndex})"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-2xl transition-colors">
               + Add New Item
             </button>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full">
-              <thead class="table-header">
-                <tr>
-                  <th class="text-left font-medium w-28">SKU</th>
-                  <th class="text-center font-medium w-28">Qty</th>
-                  <th class="text-left font-medium w-24">Unit</th>
-                  <th class="text-left font-medium">Item</th>
-                  <th class="text-center font-medium w-20">Remove</th>
+              <thead>
+                <tr class="bg-gray-100">
+                  <th class="text-left p-4 font-medium w-28">SKU</th>
+                  <th class="text-center p-4 font-medium w-28">Qty</th>
+                  <th class="text-left p-4 font-medium w-24">Unit</th>
+                  <th class="text-left p-4 font-medium">Item</th>
+                  <th class="text-center p-4 font-medium w-20">Remove</th>
                 </tr>
               </thead>
-              <tbody id="tmpListBody-${jobIndex}">
+              <tbody id="tmpListBody-${jobIndex}" class="divide-y">
                 <tr><td colspan="5" class="p-8 text-center text-gray-400 italic">No unlisted items added yet. Click "Add New Item" to add one.</td></tr>
               </tbody>
             </table>
@@ -528,11 +536,12 @@
       }
       job.addedItems.forEach((item, i) => {
         const row = document.createElement('tr');
+        row.className = 'hover:bg-gray-50';
         row.innerHTML =
           '<td class="p-4" style="font-family:monospace;font-size:0.75rem;color:#9ca3af">' + item.SKU + '</td>' +
-          '<td class="p-4 text-center"><input type="number" value="' + item.Qty + '" min="0" step="any" class="w-20 text-center field-input" onchange="updateQty(' + jobIndex + ', ' + i + ', this.value)"></td>' +
-          '<td class="p-4 text-gray-300">' + item.Unit + '</td>' +
-          '<td class="p-4 font-medium text-white">' + item.Item + '</td>' +
+          '<td class="p-4 text-center"><input type="number" value="' + item.Qty + '" min="0" step="any" class="w-20 text-center border border-gray-300 rounded-xl py-2 focus:outline-none focus:border-blue-500" onchange="updateQty(' + jobIndex + ', ' + i + ', this.value)"></td>' +
+          '<td class="p-4 text-gray-500">' + item.Unit + '</td>' +
+          '<td class="p-4 font-medium text-gray-800">' + item.Item + '</td>' +
           '<td class="p-4 text-center"><button onclick="removeItem(' + jobIndex + ', ' + i + ')" class="text-red-400 hover:text-red-600 font-bold text-lg" title="Remove">✕</button></td>';
         tbody.appendChild(row);
       });
@@ -754,11 +763,12 @@
       }
       job.tmpItems.forEach((item, i) => {
         const row = document.createElement('tr');
+        row.className = 'hover:bg-gray-50';
         row.innerHTML =
           '<td class="p-4" style="font-family:monospace;font-size:0.75rem;color:#9ca3af">' + item.SKU + '</td>' +
-          '<td class="p-4 text-center"><input type="number" value="' + item.Qty + '" min="0" step="any" class="w-20 text-center field-input" onchange="updateTmpQty(' + jobIndex + ', ' + i + ', this.value)"></td>' +
-          '<td class="p-4 text-gray-300">' + item.Unit + '</td>' +
-          '<td class="p-4 font-medium text-white">' + item.Item + '</td>' +
+          '<td class="p-4 text-center"><input type="number" value="' + item.Qty + '" min="0" step="any" class="w-20 text-center border border-gray-300 rounded-xl py-2 focus:outline-none focus:border-blue-500" onchange="updateTmpQty(' + jobIndex + ', ' + i + ', this.value)"></td>' +
+          '<td class="p-4 text-gray-500">' + item.Unit + '</td>' +
+          '<td class="p-4 font-medium text-gray-800">' + item.Item + '</td>' +
           '<td class="p-4 text-center"><button onclick="removeTmpItem(' + jobIndex + ', ' + i + ')" class="text-red-400 hover:text-red-600 font-bold text-lg" title="Remove">&#x2715;</button></td>';
         tbody.appendChild(row);
       });
