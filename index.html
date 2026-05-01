@@ -72,6 +72,32 @@
     <textarea id="notes" rows="4" class="field-input scope-textarea" placeholder="Additional notes for this job..."></textarea>
   </div>
 
+  <!-- LABOUR & INSPECTION -->
+  <div class="panel">
+    <h2 class="title-white" style="font-size:1rem;margin-bottom:1rem;">LABOUR &amp; INSPECTION</h2>
+    <p style="font-size:0.75rem;color:#64748b;margin-bottom:1rem;">Added to the final total at face value — markup and VAT do not apply.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem;">
+      <div>
+        <label class="field-label">Labour (TTD)</label>
+        <div style="position:relative;">
+          <span style="position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:#64748b;font-weight:600;">$</span>
+          <input id="labourCost" type="number" min="0" step="0.01" value="0.00"
+            class="field-input" style="padding-left:1.75rem;"
+            oninput="recalcSummary()" placeholder="0.00">
+        </div>
+      </div>
+      <div>
+        <label class="field-label">Inspection (TTD)</label>
+        <div style="position:relative;">
+          <span style="position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:#64748b;font-weight:600;">$</span>
+          <input id="inspectionCost" type="number" min="0" step="0.01" value="0.00"
+            class="field-input" style="padding-left:1.75rem;"
+            oninput="recalcSummary()" placeholder="0.00">
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- EXPORT BUTTONS -->
   <div class="summary-bar">
     <button onclick="generatePDF()" class="btn-primary" style="flex:1;padding:0.85rem;font-size:1rem;">Share PDF &#128228;</button>
@@ -81,8 +107,8 @@
   <!-- SUMMARY BAR -->
   <div class="summary-bar-2">
     <div class="sum-item">
-      <div class="sum-label">Subtotal</div>
-      <div class="sum-value" id="bar-sub">$0.00</div>
+      <div class="sum-label">Materials</div>
+      <div class="sum-value" id="bar-materials">$0.00</div>
     </div>
     <div class="sum-divider"></div>
     <div class="sum-pct">
@@ -101,8 +127,17 @@
       <div class="sum-value" id="bar-markup">$0.00</div>
     </div>
     <div class="sum-item">
-      <div class="sum-label">VAT (on cost+markup)</div>
+      <div class="sum-label">VAT (on mat+markup)</div>
       <div class="sum-value" id="bar-vat">$0.00</div>
+    </div>
+    <div class="sum-divider"></div>
+    <div class="sum-item">
+      <div class="sum-label">Labour</div>
+      <div class="sum-value" id="bar-labour">$0.00</div>
+    </div>
+    <div class="sum-item">
+      <div class="sum-label">Inspection</div>
+      <div class="sum-value" id="bar-inspection">$0.00</div>
     </div>
     <div class="sum-divider"></div>
     <div class="sum-item">
@@ -542,21 +577,32 @@ function renderTmpList(jobIndex) {
 function validatePct(input) { const v = parseFloat(input.value); if (isNaN(v)||v<0) input.value=0; if (v>999) input.value=999; }
 
 function recalcSummary() {
-  let subtotal = 0, hasNA = false;
+  // Materials subtotal
+  let matSubtotal = 0, hasNA = false;
   jobs.forEach(job => {
-    job.addedItems.forEach(item => { if (item.Price!==null&&item.Price!==undefined) subtotal+=item.Qty*item.Price; else hasNA=true; });
-    job.tmpItems.forEach(item   => { if (item.Price!==null&&item.Price!==undefined) subtotal+=item.Qty*item.Price; else hasNA=true; });
+    job.addedItems.forEach(item => { if (item.Price!==null&&item.Price!==undefined) matSubtotal+=item.Qty*item.Price; else hasNA=true; });
+    job.tmpItems.forEach(item   => { if (item.Price!==null&&item.Price!==undefined) matSubtotal+=item.Qty*item.Price; else hasNA=true; });
   });
+
+  // Markup and VAT apply to materials only
   const markupPct = Math.max(0, parseFloat(document.getElementById('pct-markup').value)||0);
   const vatPct    = Math.max(0, parseFloat(document.getElementById('pct-vat').value)   ||0);
-  const markup = subtotal * (markupPct/100);
-  const vat    = (subtotal+markup) * (vatPct/100);
-  const total  = subtotal+markup+vat;
+  const markup = matSubtotal * (markupPct/100);
+  const vat    = (matSubtotal+markup) * (vatPct/100);
+
+  // Labour & Inspection added at face value after VAT
+  const labour     = Math.max(0, parseFloat(document.getElementById('labourCost').value)     ||0);
+  const inspection = Math.max(0, parseFloat(document.getElementById('inspectionCost').value) ||0);
+
+  const total = matSubtotal + markup + vat + labour + inspection;
   const na = hasNA ? ' + N/A' : '';
-  document.getElementById('bar-sub').textContent    = '$' + subtotal.toFixed(2) + na;
-  document.getElementById('bar-markup').textContent = '$' + markup.toFixed(2);
-  document.getElementById('bar-vat').textContent    = '$' + vat.toFixed(2);
-  document.getElementById('bar-total').textContent  = '$' + total.toFixed(2) + na;
+
+  document.getElementById('bar-materials').textContent  = '$' + matSubtotal.toFixed(2) + na;
+  document.getElementById('bar-markup').textContent     = '$' + markup.toFixed(2);
+  document.getElementById('bar-vat').textContent        = '$' + vat.toFixed(2);
+  document.getElementById('bar-labour').textContent     = '$' + labour.toFixed(2);
+  document.getElementById('bar-inspection').textContent = '$' + inspection.toFixed(2);
+  document.getElementById('bar-total').textContent      = '$' + total.toFixed(2) + na;
 }
 
 // ─────────────────────────────────────────────
@@ -575,6 +621,8 @@ function collectState() {
     markupPct:    document.getElementById('pct-markup').value,
     vatPct:       document.getElementById('pct-vat').value,
     tmpSkuCounter,
+    labour:     document.getElementById('labourCost').value,
+    inspection: document.getElementById('inspectionCost').value,
     jobs: jobs.map(j => ({ scope: j.scope, addedItems: j.addedItems, tmpItems: j.tmpItems }))
   };
 }
@@ -588,6 +636,8 @@ function applyState(state) {
   document.getElementById('pct-markup').value = state.markupPct ?? 27.5;
   document.getElementById('pct-vat').value    = state.vatPct    ?? 12.5;
   tmpSkuCounter = state.tmpSkuCounter || 0;
+  document.getElementById('labourCost').value     = state.labour     ?? 0;
+  document.getElementById('inspectionCost').value = state.inspection ?? 0;
   jobs = (state.jobs||[]).map(j => ({ scope: j.scope||'', addedItems: j.addedItems||[], tmpItems: j.tmpItems||[] }));
   if (!jobs.length) jobs = [{ scope:'', addedItems:[], tmpItems:[] }];
   reRenderAllSections();
@@ -603,8 +653,10 @@ function newJob() {
   document.getElementById('jobSections').innerHTML = '';
   ['customer','address','quoteNo','notes'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('date').value        = new Date().toISOString().split('T')[0];
-  document.getElementById('pct-markup').value  = 27.5;
-  document.getElementById('pct-vat').value     = 12.5;
+  document.getElementById('pct-markup').value      = 27.5;
+  document.getElementById('pct-vat').value          = 12.5;
+  document.getElementById('labourCost').value       = '0.00';
+  document.getElementById('inspectionCost').value   = '0.00';
   addNewSection(); recalcSummary();
   showToast('New job started');
 }
@@ -662,8 +714,10 @@ function generatePDF() {
   const dateRaw   = document.getElementById('date').value      || new Date().toISOString().split('T')[0];
   const quoteNo   = document.getElementById('quoteNo').value   || '';
   const notes     = document.getElementById('notes').value     || '';
-  const markupPct = parseFloat(document.getElementById('pct-markup').value) || 0;
-  const vatPct    = parseFloat(document.getElementById('pct-vat').value)    || 0;
+  const markupPct  = parseFloat(document.getElementById('pct-markup').value)     || 0;
+  const vatPct     = parseFloat(document.getElementById('pct-vat').value)        || 0;
+  const labour     = Math.max(0, parseFloat(document.getElementById('labourCost').value)     || 0);
+  const inspection = Math.max(0, parseFloat(document.getElementById('inspectionCost').value) || 0);
   const dateFmt   = dateRaw ? new Date(dateRaw + 'T00:00:00').toLocaleDateString('en-TT', { year:'numeric', month:'long', day:'numeric' }) : '';
 
   function addPage() { drawPageNumber(); doc.addPage(); pageNum++; y=MT; drawRunningHeader(); }
@@ -683,7 +737,7 @@ function generatePDF() {
   function tableHeader() {
     doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(100,100,100);
     doc.text('SKU',ML,y); doc.text('QTY',ML+28,y); doc.text('UNIT',ML+40,y); doc.text('DESCRIPTION',ML+60,y);
-    doc.text('UNIT $',ML+128,y,{align:'right'}); doc.text('TOTAL TTD',PAGE_W-MR,y,{align:'right'});
+    doc.text('UNIT $',ML+150,y,{align:'right'}); doc.text('TOTAL TTD',PAGE_W-MR,y,{align:'right'});
     y+=3; hline([180,180,180]); y+=4; doc.setFont('helvetica','normal'); doc.setTextColor(30,30,30);
   }
   function tableRow(item) {
@@ -693,7 +747,7 @@ function generatePDF() {
     const nl = doc.splitTextToSize(item.Item, 65); doc.text(nl,ML+60,y);
     const up = item.Price!==null&&item.Price!==undefined ? item.Price : null;
     const lt = up!==null ? (up*item.Qty).toFixed(2) : 'N/A';
-    doc.setTextColor(60,60,60); doc.text(up!==null ? '$'+up.toFixed(2) : 'N/A', ML+128, y, {align:'right'});
+    doc.setTextColor(60,60,60); doc.text(up!==null ? '$'+up.toFixed(2) : 'N/A', ML+150, y, {align:'right'});
     doc.setFont('helvetica','bold'); doc.setTextColor(30,30,30);
     doc.text(lt!=='N/A' ? '$'+lt : 'N/A', PAGE_W-MR, y, {align:'right'});
     doc.setFont('helvetica','normal');
@@ -763,9 +817,9 @@ function generatePDF() {
   checkY(55);
   const markup = grandTotal*(markupPct/100);
   const vat    = (grandTotal+markup)*(vatPct/100);
-  const total  = grandTotal+markup+vat;
+  const total  = grandTotal+markup+vat+labour+inspection;
   const naTag  = grandNA ? ' + N/A' : '';
-  doc.setFillColor(20,24,40); doc.roundedRect(ML,y,contentW,52,3,3,'F');
+  doc.setFillColor(20,24,40); doc.roundedRect(ML,y,contentW,70,3,3,'F');
   const bL=ML+6, bR=PAGE_W-MR-6; let by=y+9;
   function sl(label,value,big) {
     doc.setFont('helvetica',big?'bold':'normal'); doc.setFontSize(big?10.5:9);
@@ -773,10 +827,13 @@ function generatePDF() {
     doc.text(label,bL,by); doc.text(value,bR,by,{align:'right'}); by+=big?9:7;
   }
   function sd() { doc.setDrawColor(60,65,100); doc.setLineWidth(0.3); doc.line(bL,by-1,bR,by-1); }
-  sl('Subtotal (cost)',                        '$'+grandTotal.toFixed(2)+naTag);
+  sl('Materials Subtotal',                     '$'+grandTotal.toFixed(2)+naTag);
   sl('Markup ('+markupPct+'%)',                '$'+markup.toFixed(2));
   sd(); by+=2;
-  sl('VAT ('+vatPct+'% on cost + markup)',     '$'+vat.toFixed(2));
+  sl('VAT ('+vatPct+'% on materials+markup)',  '$'+vat.toFixed(2));
+  sd(); by+=2;
+  sl('Labour',                                 '$'+labour.toFixed(2));
+  sl('Inspection',                             '$'+inspection.toFixed(2));
   sd(); by+=3;
   sl('TOTAL QUOTED (TTD)',                     '$'+total.toFixed(2)+naTag, true);
 
@@ -832,11 +889,16 @@ function exportCSV() {
   });
   const markup=grand*(markupPct/100), vat=(grand+markup)*(vatPct/100), total=grand+markup+vat;
   const naTag=grandNA?' + N/A':'';
+  const csvLabour     = Math.max(0, parseFloat(document.getElementById('labourCost').value)     || 0);
+  const csvInspection = Math.max(0, parseFloat(document.getElementById('inspectionCost').value) || 0);
+  const csvTotal = grand+markup+vat+csvLabour+csvInspection;
   rows.push(row('FINANCIAL SUMMARY'));
-  rows.push(row('Subtotal (cost)',parseFloat(grand.toFixed(2))));
+  rows.push(row('Materials Subtotal',parseFloat(grand.toFixed(2))));
   rows.push(row('Markup ('+markupPct+'%)',parseFloat(markup.toFixed(2))));
-  rows.push(row('VAT ('+vatPct+'% on cost+markup)',parseFloat(vat.toFixed(2))));
-  rows.push(row('TOTAL QUOTED (TTD)',parseFloat(total.toFixed(2))+naTag));
+  rows.push(row('VAT ('+vatPct+'% on materials+markup)',parseFloat(vat.toFixed(2))));
+  rows.push(row('Labour',parseFloat(csvLabour.toFixed(2))));
+  rows.push(row('Inspection',parseFloat(csvInspection.toFixed(2))));
+  rows.push(row('TOTAL QUOTED (TTD)',parseFloat(csvTotal.toFixed(2))+naTag));
   rows.push('');
   if (notes) rows.push(row('Notes',notes));
   const blob = new Blob([rows.join('\n')], { type:'text/csv;charset=utf-8;' });
