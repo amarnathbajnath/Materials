@@ -683,7 +683,7 @@ function generatePDF() {
   function tableHeader() {
     doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(100,100,100);
     doc.text('SKU',ML,y); doc.text('QTY',ML+28,y); doc.text('UNIT',ML+40,y); doc.text('DESCRIPTION',ML+60,y);
-    doc.text('UNIT $',ML+150,y,{align:'right'}); doc.text('TOTAL TTD',PAGE_W-MR,y,{align:'right'});
+    doc.text('UNIT $',ML+128,y,{align:'right'}); doc.text('TOTAL TTD',PAGE_W-MR,y,{align:'right'});
     y+=3; hline([180,180,180]); y+=4; doc.setFont('helvetica','normal'); doc.setTextColor(30,30,30);
   }
   function tableRow(item) {
@@ -693,7 +693,7 @@ function generatePDF() {
     const nl = doc.splitTextToSize(item.Item, 65); doc.text(nl,ML+60,y);
     const up = item.Price!==null&&item.Price!==undefined ? item.Price : null;
     const lt = up!==null ? (up*item.Qty).toFixed(2) : 'N/A';
-    doc.setTextColor(60,60,60); doc.text(up!==null ? '$'+up.toFixed(2) : 'N/A', ML+150, y, {align:'right'});
+    doc.setTextColor(60,60,60); doc.text(up!==null ? '$'+up.toFixed(2) : 'N/A', ML+128, y, {align:'right'});
     doc.setFont('helvetica','bold'); doc.setTextColor(30,30,30);
     doc.text(lt!=='N/A' ? '$'+lt : 'N/A', PAGE_W-MR, y, {align:'right'});
     doc.setFont('helvetica','normal');
@@ -725,7 +725,8 @@ function generatePDF() {
 
   let grandTotal=0, grandNA=false;
   jobs.forEach((job, idx) => {
-    checkY(20);
+    // Section heading + scope stay on page 1 (idx===0) or a fresh page
+    if (idx > 0) addPage();
     doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(50,80,160);
     doc.text('Section '+(idx+1),ML,y); y+=5; hline([100,130,220]); y+=5;
     const sc = job.scope || document.getElementById('scope-'+idx)?.value || '';
@@ -733,6 +734,8 @@ function generatePDF() {
       doc.setFont('helvetica','italic'); doc.setFontSize(8.5); doc.setTextColor(80,80,80);
       const sl = doc.splitTextToSize('Scope: '+sc, contentW); checkY(sl.length*5+4); doc.text(sl,ML,y); y+=sl.length*5+4;
     }
+    // Material list always starts on a new page
+    if (job.addedItems.length || job.tmpItems.length) addPage();
     if (job.addedItems.length) {
       checkY(14); doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.setTextColor(60,60,60);
       doc.text('MATERIALS FROM CATALOGUE',ML,y); y+=5; tableHeader();
